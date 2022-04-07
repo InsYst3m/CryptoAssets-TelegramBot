@@ -1,5 +1,6 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
+using Telegram.Bot.Types.Enums;
 
 namespace NotificationBot.Telegram.Infrastructure.Services
 {
@@ -10,9 +11,25 @@ namespace NotificationBot.Telegram.Infrastructure.Services
             throw new NotImplementedException();
         }
 
-        public Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (update.Type != UpdateType.Message)
+            {
+                return;
+            }
+
+            if (update.Message!.Type != MessageType.Text)
+            {
+                return;
+            }
+
+            var chatId = update.Message.Chat.Id;
+            var message = update.Message.Text;
+
+            Message sentMessage = await botClient.SendTextMessageAsync(
+                chatId,
+                text: $"You said:\n{message}",
+                cancellationToken: cancellationToken);
         }
     }
 }
