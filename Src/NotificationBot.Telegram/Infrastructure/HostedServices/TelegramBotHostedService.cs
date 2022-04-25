@@ -48,9 +48,8 @@ namespace NotificationBot.Telegram.Infrastructure.HostedServices
                 receiverOptions,
                 cancellationToken);
 
-            User me = await _botClient.GetMeAsync(cancellationToken);
-
-            Console.WriteLine($"Bot identifier: {me.Id}, username: {me.Username}.");
+            // TODO: one time a day timer
+            await _botService.SendNotificationAsync(_botClient, cancellationToken);
 
             await Task.CompletedTask;
         }
