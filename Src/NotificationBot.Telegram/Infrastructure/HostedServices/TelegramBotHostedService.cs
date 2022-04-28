@@ -4,12 +4,13 @@ using NotificationBot.Telegram.Configuration;
 using NotificationBot.Telegram.Infrastructure.Services;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
-using Telegram.Bot.Types;
 
 namespace NotificationBot.Telegram.Infrastructure.HostedServices
 {
     public class TelegramBotHostedService : IHostedService
     {
+        private readonly CancellationTokenSource _tokenSource;
+
         private readonly BotSettings _botSettings;
         private readonly TelegramBotClient _botClient;
         private readonly IBotService _botService;
@@ -29,6 +30,7 @@ namespace NotificationBot.Telegram.Infrastructure.HostedServices
             _botSettings = botSettings.Value;
             _botService = botService ?? throw new ArgumentNullException(nameof(botService));
             _botClient = botClientFactory.GetOrCreate(_botSettings.Token);
+            _tokenSource = new CancellationTokenSource();
         }
 
         #region IHostedService Implementation
@@ -48,19 +50,53 @@ namespace NotificationBot.Telegram.Infrastructure.HostedServices
                 receiverOptions,
                 cancellationToken);
 
-            // TODO: one time a day timer
-            await _botService.SendNotificationAsync(_botClient, cancellationToken);
+            await SchedulePeriodicTimer();
 
             await Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
+            _tokenSource.Cancel();
+            _tokenSource.Dispose();
+
             return Task.CompletedTask;
         }
 
         #endregion
 
+        #region Periodic Timer Logic
 
+        private async Task SchedulePeriodicTimer()
+        {
+            PeriodicTimer periodicTimer = new(TimeSpan.FromSeconds(10));
+
+            while (await periodicTimer.WaitForNextTickAsync())
+            {
+                if (IsValidTimeInterval())
+                {
+                    await _botService.SendNotificationAsync(_botClient, _botSettings.ChatId!, _tokenSource.Token);
+                }
+            }
+        }
+
+        private static bool IsValidTimeInterval()
+        {
+            DateTime utcNow = DateTime.UtcNow;
+
+            DateTime startDateUtc = DateTime.Today.AddHours(6);
+            DateTime endDateUtc = DateTime.Today.AddHours(18);
+
+            if (utcNow > startDateUtc && utcNow < endDateUtc)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #endregion
     }
 }

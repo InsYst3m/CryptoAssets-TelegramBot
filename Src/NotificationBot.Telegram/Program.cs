@@ -11,6 +11,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
     {
         configurationBuilder
             .AddJsonFile("appsettings.json", false, true)
+            .AddUserSecrets<Program>()
             .Build();
     })
     .ConfigureServices((hostContext, services) => 

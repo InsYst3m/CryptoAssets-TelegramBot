@@ -6,5 +6,8 @@
     public class BotSettings
     {
         public string? Token { get; set; }
+
+        // TODO: temp
+        public string? ChatId { get; set; }
     }
 }

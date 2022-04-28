@@ -42,10 +42,8 @@ namespace NotificationBot.Telegram.Infrastructure.Services
                 cancellationToken: cancellationToken);
         }
 
-        public async Task SendNotificationAsync(ITelegramBotClient botClient, CancellationToken cancellationToken)
+        public async Task SendNotificationAsync(ITelegramBotClient botClient, string chatId, CancellationToken cancellationToken)
         {
-            const string chatId = "";
-
             await botClient.SendTextMessageAsync(chatId, text: "btc price: 30000$", cancellationToken: cancellationToken);
 
             await Task.CompletedTask;
