@@ -16,7 +16,15 @@ namespace NotificationBot.DataAccess
         {
             modelBuilder.ApplyConfiguration(new CryptoAssetConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new FavoriteCryptoAssetConfiguration());
+
+            modelBuilder.Entity<User>()
+                .HasMany(x => x.CryptoAssets)
+                .WithMany(x => x.Users)
+                .UsingEntity(linkEntity =>
+                {
+                    linkEntity.ToTable("UsersCryptoAssets");
+                });
+
         }
     }
 }

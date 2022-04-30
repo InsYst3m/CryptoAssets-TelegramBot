@@ -76,13 +76,13 @@ namespace NotificationBot.Telegram.Infrastructure.HostedServices
 
         private async Task SchedulePeriodicTimer()
         {
-            PeriodicTimer periodicTimer = new(TimeSpan.FromHours(4));
+            PeriodicTimer periodicTimer = new(TimeSpan.FromHours(3));
 
             while (await periodicTimer.WaitForNextTickAsync())
             {
                 if (IsValidTimeInterval())
                 {
-                    List<CryptoAsset> cryptoAssets = await _dataAccessService.GetFavoriteCryptoAssets("");
+                    List<CryptoAsset> cryptoAssets = await _dataAccessService.GetFavoriteCryptoAssets(1);
                     string message = await _messageGenerator.GenerateCryptoAssetsMessageAsync(cryptoAssets);
                     await _botService.SendNotificationAsync(_botClient, _botSettings.ChatId!, message, _tokenSource.Token);
                 }

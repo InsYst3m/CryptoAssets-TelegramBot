@@ -21,6 +21,21 @@ namespace NotificationBot.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("CryptoAssetUser", b =>
+                {
+                    b.Property<long>("CryptoAssetsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("UsersId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("CryptoAssetsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("UsersCryptoAssets", (string)null);
+                });
+
             modelBuilder.Entity("NotificationBot.DataAccess.Entities.CryptoAsset", b =>
                 {
                     b.Property<long>("Id")
@@ -46,21 +61,6 @@ namespace NotificationBot.DataAccess.Migrations
                     b.ToTable("CryptoAssets");
                 });
 
-            modelBuilder.Entity("NotificationBot.DataAccess.Entities.FavoriteCryptoAsset", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("CryptoAssetId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("UserId", "CryptoAssetId");
-
-                    b.HasIndex("CryptoAssetId");
-
-                    b.ToTable("FavoriteCryptoAssets", (string)null);
-                });
-
             modelBuilder.Entity("NotificationBot.DataAccess.Entities.User", b =>
                 {
                     b.Property<long>("Id")
@@ -78,33 +78,19 @@ namespace NotificationBot.DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("NotificationBot.DataAccess.Entities.FavoriteCryptoAsset", b =>
+            modelBuilder.Entity("CryptoAssetUser", b =>
                 {
-                    b.HasOne("NotificationBot.DataAccess.Entities.CryptoAsset", "CryptoAsset")
-                        .WithMany("FavoriteCryptoAssets")
-                        .HasForeignKey("CryptoAssetId")
+                    b.HasOne("NotificationBot.DataAccess.Entities.CryptoAsset", null)
+                        .WithMany()
+                        .HasForeignKey("CryptoAssetsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NotificationBot.DataAccess.Entities.User", "User")
-                        .WithMany("FavoriteCryptoAssets")
-                        .HasForeignKey("UserId")
+                    b.HasOne("NotificationBot.DataAccess.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("CryptoAsset");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("NotificationBot.DataAccess.Entities.CryptoAsset", b =>
-                {
-                    b.Navigation("FavoriteCryptoAssets");
-                });
-
-            modelBuilder.Entity("NotificationBot.DataAccess.Entities.User", b =>
-                {
-                    b.Navigation("FavoriteCryptoAssets");
                 });
 #pragma warning restore 612, 618
         }

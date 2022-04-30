@@ -14,11 +14,6 @@ namespace NotificationBot.DataAccess.EntityConfigurations
 
             builder.Property(user => user.Email)
                 .IsRequired();
-
-            builder
-                .HasMany(x => x.CryptoAssets)
-                .WithMany(x => x.Users)
-                .UsingEntity<FavoriteCryptoAsset>();
         }
     }
 }

@@ -1,12 +1,26 @@
 ﻿using NotificationBot.DataAccess.Entities;
+using System.Text;
 
 namespace NotificationBot.Telegram.Infrastructure.Generators
 {
     public class MessageGenerator : IMessageGenerator
     {
-        public Task<string> GenerateCryptoAssetsMessageAsync(List<CryptoAsset> cryptoAssets)
+        public async Task<string> GenerateCryptoAssetsMessageAsync(List<CryptoAsset> cryptoAssets)
         {
-            throw new NotImplementedException();
+            if (cryptoAssets.Any())
+            {
+                StringBuilder stringBuilder = new("Favorite Crypto Assets Status:");
+                stringBuilder.AppendLine();
+
+                foreach (CryptoAsset asset in cryptoAssets)
+                {
+                    stringBuilder.AppendLine(asset.Name);
+                }
+
+                return stringBuilder.ToString();
+            }
+
+            return await ValueTask.FromResult("User does not have any favorite crypto assets yet");
         }
     }
 }

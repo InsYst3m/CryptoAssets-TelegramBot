@@ -19,8 +19,17 @@ namespace NotificationBot.DataAccess.Services
             return await context.CryptoAssets.ToListAsync();
         }
 
-        public async Task<List<CryptoAsset>> GetFavoriteCryptoAssets(string userId)
+        public async Task<List<CryptoAsset>> GetFavoriteCryptoAssets(long userId)
         {
+            AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+
+            User? user = context.Users.Include(x => x.CryptoAssets).FirstOrDefault(x => x.Id == userId);
+
+            if (user is not null)
+            {
+                return user.CryptoAssets;
+            }
+
             return new List<CryptoAsset>();
         }
     }

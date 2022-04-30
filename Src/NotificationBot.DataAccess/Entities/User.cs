@@ -10,6 +10,5 @@ namespace NotificationBot.DataAccess.Entities
         public string Email { get; set; } = string.Empty;
 
         public List<CryptoAsset> CryptoAssets { get; set; } = new List<CryptoAsset>();
-        public List<FavoriteCryptoAsset> FavoriteCryptoAssets { get; set; } = new List<FavoriteCryptoAsset>();
     }
 }

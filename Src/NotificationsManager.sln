@@ -8,9 +8,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFD9374A-BF52-46A1-9E1B-3196558ED959}"
 	ProjectSection(SolutionItems) = preProject
 		Readme.txt = Readme.txt
+		Script.sql = Script.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationBot.DataAccess", "NotificationBot.DataAccess\NotificationBot.DataAccess.csproj", "{F895BA9A-F4F4-40B1-8677-D38A9E9BA8C2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationBot.DataAccess", "NotificationBot.DataAccess\NotificationBot.DataAccess.csproj", "{F895BA9A-F4F4-40B1-8677-D38A9E9BA8C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

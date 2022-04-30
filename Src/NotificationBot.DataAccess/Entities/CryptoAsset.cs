@@ -8,6 +8,5 @@
         public string CoinGeckoAbbreviation { get; set; } = string.Empty;
 
         public List<User> Users { get; set; } = new List<User>();
-        public List<FavoriteCryptoAsset> FavoriteCryptoAssets { get; set; } = new List<FavoriteCryptoAsset>();
     }
 }
