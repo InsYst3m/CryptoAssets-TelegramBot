@@ -3,12 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationBot.Telegram", "NotificationBot.Telegram\NotificationBot.Telegram.csproj", "{9A94DB5F-8F92-4F9B-B7A4-8A49EE2B946A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationBot.Telegram", "NotificationBot.Telegram\NotificationBot.Telegram.csproj", "{9A94DB5F-8F92-4F9B-B7A4-8A49EE2B946A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFD9374A-BF52-46A1-9E1B-3196558ED959}"
 	ProjectSection(SolutionItems) = preProject
 		Readme.txt = Readme.txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationBot.DataAccess", "NotificationBot.DataAccess\NotificationBot.DataAccess.csproj", "{F895BA9A-F4F4-40B1-8677-D38A9E9BA8C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +22,10 @@ Global
 		{9A94DB5F-8F92-4F9B-B7A4-8A49EE2B946A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A94DB5F-8F92-4F9B-B7A4-8A49EE2B946A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9A94DB5F-8F92-4F9B-B7A4-8A49EE2B946A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F895BA9A-F4F4-40B1-8677-D38A9E9BA8C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F895BA9A-F4F4-40B1-8677-D38A9E9BA8C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F895BA9A-F4F4-40B1-8677-D38A9E9BA8C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F895BA9A-F4F4-40B1-8677-D38A9E9BA8C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

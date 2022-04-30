@@ -1,6 +1,9 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using NotificationBot.DataAccess.Entities;
+using NotificationBot.DataAccess.Services;
 using NotificationBot.Telegram.Configuration;
+using NotificationBot.Telegram.Infrastructure.Generators;
 using NotificationBot.Telegram.Infrastructure.Services;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
@@ -14,11 +17,15 @@ namespace NotificationBot.Telegram.Infrastructure.HostedServices
         private readonly BotSettings _botSettings;
         private readonly TelegramBotClient _botClient;
         private readonly IBotService _botService;
+        private readonly IMessageGenerator _messageGenerator;
+        private readonly IDataAccessService _dataAccessService;
 
         public TelegramBotHostedService(
             IOptions<BotSettings> botSettings,
             ITelegramBotClientFactory botClientFactory,
-            IBotService botService)
+            IBotService botService,
+            IMessageGenerator messageGenerator,
+            IDataAccessService dataAccessService)
         {
             if (botSettings is null || string.IsNullOrWhiteSpace(botSettings.Value.Token))
             {
@@ -29,6 +36,8 @@ namespace NotificationBot.Telegram.Infrastructure.HostedServices
 
             _botSettings = botSettings.Value;
             _botService = botService ?? throw new ArgumentNullException(nameof(botService));
+            _messageGenerator = messageGenerator ?? throw new ArgumentNullException(nameof(messageGenerator));
+            _dataAccessService = dataAccessService ?? throw new ArgumentNullException(nameof(dataAccessService));
             _botClient = botClientFactory.GetOrCreate(_botSettings.Token);
             _tokenSource = new CancellationTokenSource();
         }
@@ -37,8 +46,6 @@ namespace NotificationBot.Telegram.Infrastructure.HostedServices
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine($"Successfully started. Token: {_botSettings.Token}.");
-
             ReceiverOptions receiverOptions = new()
             {
                 AllowedUpdates = { }
@@ -69,13 +76,15 @@ namespace NotificationBot.Telegram.Infrastructure.HostedServices
 
         private async Task SchedulePeriodicTimer()
         {
-            PeriodicTimer periodicTimer = new(TimeSpan.FromSeconds(10));
+            PeriodicTimer periodicTimer = new(TimeSpan.FromHours(4));
 
             while (await periodicTimer.WaitForNextTickAsync())
             {
                 if (IsValidTimeInterval())
                 {
-                    await _botService.SendNotificationAsync(_botClient, _botSettings.ChatId!, _tokenSource.Token);
+                    List<CryptoAsset> cryptoAssets = await _dataAccessService.GetFavoriteCryptoAssets("");
+                    string message = await _messageGenerator.GenerateCryptoAssetsMessageAsync(cryptoAssets);
+                    await _botService.SendNotificationAsync(_botClient, _botSettings.ChatId!, message, _tokenSource.Token);
                 }
             }
         }

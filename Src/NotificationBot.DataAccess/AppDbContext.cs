@@ -1,0 +1,22 @@
+﻿using Microsoft.EntityFrameworkCore;
+using NotificationBot.DataAccess.Entities;
+using NotificationBot.DataAccess.EntityConfigurations;
+
+namespace NotificationBot.DataAccess
+{
+    public class AppDbContext : DbContext
+    {
+        public DbSet<CryptoAsset> CryptoAssets { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
+
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options) { }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new CryptoAssetConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new FavoriteCryptoAssetConfiguration());
+        }
+    }
+}
