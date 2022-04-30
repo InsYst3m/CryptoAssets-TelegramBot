@@ -1,13 +1,10 @@
 ﻿using Telegram.Bot;
-using Telegram.Bot.Types;
 
 namespace NotificationBot.Telegram.Infrastructure.Services
 {
-    public interface IBotService
+    public interface IBotService : IBotHandlers
     {
-        Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken);
-        Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken);
-
-        Task SendNotificationAsync(ITelegramBotClient botClient, string chatId, string message, CancellationToken cancellationToken);
+        Task Start(CancellationToken cancellationToken);
+        Task SetupPeriodicNotifications(CancellationToken cancellationToken);
     }
 }

@@ -27,6 +27,7 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<ITelegramBotClientFactory, TelegramBotClientFactory>();
         services.AddSingleton<IDataAccessService, DataAccessService>();
         services.AddSingleton<IMessageGenerator, MessageGenerator>();
+        services.AddSingleton<INotificationService, NotificationService>();
         services.AddSingleton<IBotService, BotService>();
 
         services.AddHostedService<TelegramBotHostedService>();
