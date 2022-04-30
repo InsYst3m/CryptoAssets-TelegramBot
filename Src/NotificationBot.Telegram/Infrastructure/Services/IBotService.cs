@@ -4,7 +4,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 {
     public interface IBotService : IBotHandlers
     {
-        Task Start(CancellationToken cancellationToken);
+        void Start(CancellationToken cancellationToken);
         Task SetupPeriodicNotifications(CancellationToken cancellationToken);
     }
 }

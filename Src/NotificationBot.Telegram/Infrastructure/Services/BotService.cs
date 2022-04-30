@@ -40,14 +40,14 @@ namespace NotificationBot.Telegram.Infrastructure.Services
             _botClient = botClientFactory.GetOrCreate(_botSettings.Token);
         }
 
-        public async Task Start(CancellationToken cancellationToken)
+        public void Start(CancellationToken cancellationToken)
         {
             ReceiverOptions receiverOptions = new()
             {
                 AllowedUpdates = { }
             };
 
-            await _botClient.ReceiveAsync(
+            _botClient.StartReceiving(
                 HandleUpdateAsync,
                 HandleErrorAsync,
                 receiverOptions,
