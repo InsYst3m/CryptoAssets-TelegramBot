@@ -1,7 +1,7 @@
 ﻿using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace NotificationBot.Telegram.Infrastructure.Services
+namespace NotificationBot.Telegram.Infrastructure.Services.Interfaces
 {
     public interface IBotHandlers
     {

@@ -1,4 +1,5 @@
-﻿using Telegram.Bot;
+﻿using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
+using Telegram.Bot;
 
 namespace NotificationBot.Telegram.Infrastructure.Services
 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
-using NotificationBot.Telegram.Infrastructure.Services;
+using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 
 namespace NotificationBot.Telegram.Infrastructure.HostedServices
 {

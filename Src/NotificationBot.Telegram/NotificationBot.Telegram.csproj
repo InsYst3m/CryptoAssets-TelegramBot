@@ -9,13 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <GraphQL Remove="Infrastructure\GraphService\Queries\GetCryptoAsset.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Infrastructure\GraphService\Queries\GetCryptoAsset.graphql" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <GraphQLConfig Include="Infrastructure\GraphService\Queries\GetCryptoAsset.graphql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +44,6 @@
     <PackageReference Include="StrawberryShake.Transport.Http" Version="12.8.0" />
     <PackageReference Include="Telegram.Bot" Version="17.0.0" />
     <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="1.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Infrastructure\GraphService\" />
   </ItemGroup>
 
   <ItemGroup>

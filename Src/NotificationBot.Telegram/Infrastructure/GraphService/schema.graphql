@@ -1,0 +1,40 @@
+﻿schema {
+  query: CryptoQuery
+}
+
+type CryptoQuery {
+  supportedCryptoAssets: [String!]!
+  cryptoAsset(abbreviation: String!): CryptoAsset
+  globalCryptoMarketData: GlobalMarketData
+}
+
+type CryptoAsset {
+  name: String!
+  abbreviation: String!
+  marketData: MarketData
+}
+
+type GlobalMarketData {
+  data: Data!
+}
+
+type Data {
+  activeCryptoCurrencies: Decimal!
+  totalMarketCap: TotalMarketCap!
+}
+
+type MarketData {
+  currentPrice: CurrentPrice
+}
+
+type TotalMarketCap {
+  usd: Decimal!
+}
+
+"The built-in `Decimal` scalar type."
+scalar Decimal
+
+type CurrentPrice {
+  usd: Decimal!
+  euro: Decimal!
+}

@@ -1,0 +1,10 @@
+﻿query GetCryptoAsset($abbreviation: String!) {
+  cryptoAsset(abbreviation: $abbreviation) {
+     abbreviation
+     marketData {
+       currentPrice {
+         usd
+       }
+     }
+  }
+}

@@ -8,6 +8,7 @@ using NotificationBot.Telegram.Infrastructure;
 using NotificationBot.Telegram.Infrastructure.Generators;
 using NotificationBot.Telegram.Infrastructure.HostedServices;
 using NotificationBot.Telegram.Infrastructure.Services;
+using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 
 using IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureAppConfiguration(configurationBuilder =>
@@ -28,6 +29,10 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.AddSingleton<IDataAccessService, DataAccessService>();
         services.AddSingleton<IMessageGenerator, MessageGenerator>();
         services.AddSingleton<INotificationService, NotificationService>();
+        services
+            .AddCryptoAssetsGraphServiceClient()
+            .ConfigureHttpClient(client => client.BaseAddress = new Uri("http://insyst3m-002-site1.btempurl.com/graphql"));
+
         services.AddSingleton<IBotService, BotService>();
 
         services.AddHostedService<TelegramBotHostedService>();

@@ -3,6 +3,11 @@ using NotificationBot.DataAccess.Entities;
 using NotificationBot.DataAccess.Services;
 using NotificationBot.Telegram.Configuration;
 using NotificationBot.Telegram.Infrastructure.Generators;
+using NotificationBot.Telegram.Infrastructure.GraphService;
+using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
+using NotificationBot.Telegram.Infrastructure.ViewModels;
+using StrawberryShake;
+using System.Text;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Extensions.Polling;
@@ -20,21 +25,28 @@ namespace NotificationBot.Telegram.Infrastructure.Services
         private readonly IDataAccessService _dataAccessService;
         private readonly INotificationService _notificationService;
 
+        private readonly ICryptoAssetsGraphServiceClient _graphService;
+
         public BotService(
             IOptions<BotSettings> botSettings,
             ITelegramBotClientFactory botClientFactory,
             IMessageGenerator messageGenerator,
             IDataAccessService dataAccessService,
-            INotificationService notificationService)
+            INotificationService notificationService,
+            ICryptoAssetsGraphServiceClient graphService)
         {
-            if (botSettings is null || string.IsNullOrWhiteSpace(botSettings.Value.Token))
-            {
-                throw new ArgumentNullException(nameof(botSettings));
-            }
+            ArgumentNullException.ThrowIfNull(botSettings);
+            ArgumentNullException.ThrowIfNull(botSettings.Value.Token, nameof(botSettings));
+            ArgumentNullException.ThrowIfNull(botClientFactory);
+            ArgumentNullException.ThrowIfNull(messageGenerator);
+            ArgumentNullException.ThrowIfNull(dataAccessService);
+            ArgumentNullException.ThrowIfNull(notificationService);
+            ArgumentNullException.ThrowIfNull(graphService);
 
-            _messageGenerator = messageGenerator ?? throw new ArgumentNullException(nameof(messageGenerator));
-            _dataAccessService = dataAccessService ?? throw new ArgumentNullException(nameof(dataAccessService));
-            _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
+            _messageGenerator = messageGenerator;
+            _dataAccessService = dataAccessService;
+            _notificationService = notificationService;
+            _graphService = graphService;
 
             _botSettings = botSettings.Value;
             _botClient = botClientFactory.GetOrCreate(_botSettings.Token);
@@ -56,21 +68,53 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 
         public async Task SetupPeriodicNotifications(CancellationToken cancellationToken)
         {
-            PeriodicTimer periodicTimer = new(TimeSpan.FromHours(3));
+            //PeriodicTimer periodicTimer = new(TimeSpan.FromHours(3));
+            PeriodicTimer periodicTimer = new(TimeSpan.FromSeconds(10));
 
             while (await periodicTimer.WaitForNextTickAsync(cancellationToken))
             {
                 if (IsValidTimeInterval())
                 {
                     List<CryptoAsset> cryptoAssets = await _dataAccessService.GetFavoriteCryptoAssets(1);
-                    string message = await _messageGenerator.GenerateCryptoAssetsMessageAsync(cryptoAssets);
 
-                    await _notificationService.SendNotificationAsync(_botClient, _botSettings.ChatId!, message, cancellationToken);
+                    StringBuilder sb = new("Favorite Crypto Assets Status:");
+
+                    foreach (CryptoAsset cryptoAsset in cryptoAssets)
+                    {
+                        CryptoAssetViewModel? viewModel = await GetCryptoAssetAsync(cryptoAsset.Abbreviation, cancellationToken);
+
+                        if (viewModel != null)
+                        {
+                            string message = await _messageGenerator.GenerateCryptoAssetsMessageAsync(viewModel);
+                            sb.AppendLine(message);
+                        }
+                    }
+
+                    await _notificationService.SendNotificationAsync(_botClient, _botSettings.ChatId!, sb.ToString(), cancellationToken);
                 }
             }
         }
 
+        public async Task<CryptoAssetViewModel?> GetCryptoAssetAsync(string abbreviation, CancellationToken cancellationToken)
+        {
+            IOperationResult<IGetCryptoAssetResult> cryptoAssetGraphData =
+                await _graphService.GetCryptoAsset.ExecuteAsync(abbreviation, cancellationToken);
+            cryptoAssetGraphData.EnsureNoErrors();
+
+            return MapToCryptoAssetViewModel(cryptoAssetGraphData.Data?.CryptoAsset);
+        }
+
         #region Internal Implementation
+
+        private CryptoAssetViewModel? MapToCryptoAssetViewModel(IGetCryptoAsset_CryptoAsset? cryptoAssetGraphData)
+        {
+            if (cryptoAssetGraphData == null)
+            {
+                return null;
+            }
+
+            return new CryptoAssetViewModel(cryptoAssetGraphData.Abbreviation, cryptoAssetGraphData.MarketData!.CurrentPrice!.Usd);
+        }
 
         private static bool IsValidTimeInterval()
         {
