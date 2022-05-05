@@ -20,6 +20,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
     {
         private readonly TelegramBotClient _botClient;
         private readonly BotSettings _botSettings;
+        private readonly NotificationsSettings _notificationsSettings;
 
         private readonly IMessageGenerator _messageGenerator;
         private readonly IDataAccessService _dataAccessService;
@@ -29,6 +30,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 
         public BotService(
             IOptions<BotSettings> botSettings,
+            IOptions<NotificationsSettings> notificationsSettings,
             ITelegramBotClientFactory botClientFactory,
             IMessageGenerator messageGenerator,
             IDataAccessService dataAccessService,
@@ -36,6 +38,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
             ICryptoAssetsGraphServiceClient graphService)
         {
             ArgumentNullException.ThrowIfNull(botSettings);
+            ArgumentNullException.ThrowIfNull(notificationsSettings);
             ArgumentNullException.ThrowIfNull(botSettings.Value.Token, nameof(botSettings));
             ArgumentNullException.ThrowIfNull(botClientFactory);
             ArgumentNullException.ThrowIfNull(messageGenerator);
@@ -49,6 +52,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
             _graphService = graphService;
 
             _botSettings = botSettings.Value;
+            _notificationsSettings = notificationsSettings.Value;
             _botClient = botClientFactory.GetOrCreate(_botSettings.Token);
         }
 
@@ -68,7 +72,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 
         public async Task SetupPeriodicNotifications(CancellationToken cancellationToken)
         {
-            PeriodicTimer periodicTimer = new(TimeSpan.FromHours(3));
+            PeriodicTimer periodicTimer = new(TimeSpan.FromHours(_notificationsSettings.IntervalInHours));
 
             while (await periodicTimer.WaitForNextTickAsync(cancellationToken))
             {
@@ -115,12 +119,12 @@ namespace NotificationBot.Telegram.Infrastructure.Services
             return new CryptoAssetViewModel(cryptoAssetGraphData.Abbreviation, cryptoAssetGraphData.MarketData!.CurrentPrice!.Usd);
         }
 
-        private static bool IsValidTimeInterval()
+        private bool IsValidTimeInterval()
         {
             DateTime utcNow = DateTime.UtcNow;
 
-            DateTime startDateUtc = DateTime.Today.AddHours(6);
-            DateTime endDateUtc = DateTime.Today.AddHours(18);
+            DateTime startDateUtc = DateTime.Today.AddHours(_notificationsSettings.StartHourUTC);
+            DateTime endDateUtc = DateTime.Today.AddHours(_notificationsSettings.EndHourUTC);
 
             if (utcNow > startDateUtc && utcNow < endDateUtc)
             {

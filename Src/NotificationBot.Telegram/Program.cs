@@ -23,6 +23,9 @@ using IHost host = Host.CreateDefaultBuilder(args)
         services.Configure<BotSettings>(hostContext.Configuration.GetSection(nameof(BotSettings)),
             options => options.BindNonPublicProperties = true);
 
+        services.Configure<NotificationsSettings>(hostContext.Configuration.GetSection(nameof(NotificationsSettings)),
+            options => options.BindNonPublicProperties = true);
+
         services.AddDataAccessLayer(hostContext.Configuration.GetConnectionString("DefaultConnection"));
 
         services.AddSingleton<ITelegramBotClientFactory, TelegramBotClientFactory>();
