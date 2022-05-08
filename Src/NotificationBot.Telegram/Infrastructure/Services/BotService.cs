@@ -72,7 +72,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 
         public async Task SetupPeriodicNotifications(CancellationToken cancellationToken)
         {
-            PeriodicTimer periodicTimer = new(TimeSpan.FromHours(_notificationsSettings.IntervalInHours));
+            PeriodicTimer periodicTimer = new(TimeSpan.FromMinutes(_notificationsSettings.IntervalInMinutes));
 
             while (await periodicTimer.WaitForNextTickAsync(cancellationToken))
             {

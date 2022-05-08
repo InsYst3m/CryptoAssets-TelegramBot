@@ -3,7 +3,7 @@
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public static partial class CryptoAssetsGraphServiceClientServiceCollectionExtensions
     {
         public static global::StrawberryShake.IClientBuilder<global::NotificationBot.Telegram.Infrastructure.GraphService.State.CryptoAssetsGraphServiceClientStoreAccessor> AddCryptoAssetsGraphServiceClient(this global::Microsoft.Extensions.DependencyInjection.IServiceCollection services, global::StrawberryShake.ExecutionStrategy strategy = global::StrawberryShake.ExecutionStrategy.NetworkOnly)
@@ -86,7 +86,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
 namespace NotificationBot.Telegram.Infrastructure.GraphService
 {
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class GetCryptoAssetResult : global::System.IEquatable<GetCryptoAssetResult>, IGetCryptoAssetResult
     {
         public GetCryptoAssetResult(global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset? cryptoAsset)
@@ -151,7 +151,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
         }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class GetCryptoAsset_CryptoAsset_CryptoAsset : global::System.IEquatable<GetCryptoAsset_CryptoAsset_CryptoAsset>, IGetCryptoAsset_CryptoAsset_CryptoAsset
     {
         public GetCryptoAsset_CryptoAsset_CryptoAsset(global::System.String abbreviation, global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData? marketData)
@@ -220,7 +220,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
         }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class GetCryptoAsset_CryptoAsset_MarketData_MarketData : global::System.IEquatable<GetCryptoAsset_CryptoAsset_MarketData_MarketData>, IGetCryptoAsset_CryptoAsset_MarketData_MarketData
     {
         public GetCryptoAsset_CryptoAsset_MarketData_MarketData(global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice? currentPrice)
@@ -285,7 +285,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
         }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class GetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice : global::System.IEquatable<GetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice>, IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice
     {
         public GetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice(global::System.Decimal usd)
@@ -346,13 +346,13 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
         }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial interface IGetCryptoAssetResult
     {
         public global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset? CryptoAsset { get; }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial interface IGetCryptoAsset_CryptoAsset
     {
         public global::System.String Abbreviation { get; }
@@ -360,29 +360,29 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
         public global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData? MarketData { get; }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial interface IGetCryptoAsset_CryptoAsset_CryptoAsset : IGetCryptoAsset_CryptoAsset
     {
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial interface IGetCryptoAsset_CryptoAsset_MarketData
     {
         public global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice? CurrentPrice { get; }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial interface IGetCryptoAsset_CryptoAsset_MarketData_MarketData : IGetCryptoAsset_CryptoAsset_MarketData
     {
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial interface IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice
     {
         public global::System.Decimal Usd { get; }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial interface IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice : IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice
     {
     }
@@ -405,7 +405,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
     /// }
     /// </code>
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class GetCryptoAssetQueryDocument : global::StrawberryShake.IDocument
     {
         private GetCryptoAssetQueryDocument()
@@ -444,7 +444,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
     /// }
     /// </code>
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class GetCryptoAssetQuery : global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAssetQuery
     {
         private readonly global::StrawberryShake.IOperationExecutor<IGetCryptoAssetResult> _operationExecutor;
@@ -514,7 +514,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
     /// }
     /// </code>
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial interface IGetCryptoAssetQuery : global::StrawberryShake.IOperationRequestFactory
     {
         global::System.Threading.Tasks.Task<global::StrawberryShake.IOperationResult<IGetCryptoAssetResult>> ExecuteAsync(global::System.String abbreviation, global::System.Threading.CancellationToken cancellationToken = default);
@@ -524,7 +524,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
     /// <summary>
     /// Represents the CryptoAssetsGraphServiceClient GraphQL client
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class CryptoAssetsGraphServiceClient : global::NotificationBot.Telegram.Infrastructure.GraphService.ICryptoAssetsGraphServiceClient
     {
         private readonly global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAssetQuery _getCryptoAsset;
@@ -540,7 +540,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
     /// <summary>
     /// Represents the CryptoAssetsGraphServiceClient GraphQL client
     /// </summary>
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial interface ICryptoAssetsGraphServiceClient
     {
         global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAssetQuery GetCryptoAsset { get; }
@@ -549,7 +549,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
 
 namespace NotificationBot.Telegram.Infrastructure.GraphService.State
 {
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class GetCryptoAssetResultFactory : global::StrawberryShake.IOperationResultDataFactory<global::NotificationBot.Telegram.Infrastructure.GraphService.GetCryptoAssetResult>
     {
         private readonly global::StrawberryShake.IEntityStore _entityStore;
@@ -640,7 +640,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
         }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class GetCryptoAssetResultInfo : global::StrawberryShake.IOperationResultDataInfo
     {
         private readonly global::System.Collections.Generic.IReadOnlyCollection<global::StrawberryShake.EntityId> _entityIds;
@@ -662,7 +662,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
         }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class GetCryptoAssetBuilder : global::StrawberryShake.IOperationResultBuilder<global::System.Text.Json.JsonDocument, global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAssetResult>
     {
         private readonly global::StrawberryShake.IEntityStore _entityStore;
@@ -801,7 +801,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
         }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class CryptoAssetData
     {
         public CryptoAssetData(global::System.String __typename, global::System.String? abbreviation = default !, global::NotificationBot.Telegram.Infrastructure.GraphService.State.MarketDataData? marketData = default !)
@@ -818,7 +818,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
         public global::NotificationBot.Telegram.Infrastructure.GraphService.State.MarketDataData? MarketData { get; }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class MarketDataData
     {
         public MarketDataData(global::System.String __typename, global::NotificationBot.Telegram.Infrastructure.GraphService.State.CurrentPriceData? currentPrice = default !)
@@ -832,7 +832,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
         public global::NotificationBot.Telegram.Infrastructure.GraphService.State.CurrentPriceData? CurrentPrice { get; }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class CurrentPriceData
     {
         public CurrentPriceData(global::System.String __typename, global::System.Decimal? usd = default !)
@@ -846,7 +846,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
         public global::System.Decimal? Usd { get; }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class CryptoAssetsGraphServiceClientEntityIdFactory : global::StrawberryShake.IEntityIdSerializer
     {
         private static readonly global::System.Text.Json.JsonWriterOptions _options = new global::System.Text.Json.JsonWriterOptions()
@@ -867,7 +867,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
         }
     }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class CryptoAssetsGraphServiceClientStoreAccessor : global::StrawberryShake.StoreAccessor
     {
         public CryptoAssetsGraphServiceClientStoreAccessor(global::StrawberryShake.IOperationStore operationStore, global::StrawberryShake.IEntityStore entityStore, global::StrawberryShake.IEntityIdSerializer entityIdSerializer, global::System.Collections.Generic.IEnumerable<global::StrawberryShake.IOperationRequestFactory> requestFactories, global::System.Collections.Generic.IEnumerable<global::StrawberryShake.IOperationResultDataFactory> resultDataFactories) : base(operationStore, entityStore, entityIdSerializer, requestFactories, resultDataFactories)
