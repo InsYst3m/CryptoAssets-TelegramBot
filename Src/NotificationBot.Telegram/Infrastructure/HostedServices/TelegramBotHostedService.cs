@@ -20,7 +20,7 @@ namespace NotificationBot.Telegram.Infrastructure.HostedServices
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _botService.Start(_tokenSource.Token);
-            await _botService.SetupPeriodicNotifications(_tokenSource.Token);
+            _ = Task.Run(async () => await _botService.SetupPeriodicNotifications(_tokenSource.Token), _tokenSource.Token);
 
             await Task.CompletedTask;
         }

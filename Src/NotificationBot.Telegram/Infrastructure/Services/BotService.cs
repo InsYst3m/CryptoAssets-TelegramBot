@@ -80,7 +80,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
                 {
                     List<CryptoAsset> cryptoAssets = await _dataAccessService.GetFavoriteCryptoAssets(1);
 
-                    StringBuilder sb = new("Favorite Crypto Assets Status:");
+                    StringBuilder sb = new("Favorite Crypto Assets Status:" + Environment.NewLine);
 
                     foreach (CryptoAsset cryptoAsset in cryptoAssets)
                     {
