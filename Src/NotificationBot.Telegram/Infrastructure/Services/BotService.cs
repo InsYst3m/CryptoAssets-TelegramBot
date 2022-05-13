@@ -123,8 +123,13 @@ namespace NotificationBot.Telegram.Infrastructure.Services
         {
             DateTime utcNow = DateTime.UtcNow;
 
-            DateTime startDateUtc = DateTime.Today.AddHours(_notificationsSettings.StartHourUTC);
-            DateTime endDateUtc = DateTime.Today.AddHours(_notificationsSettings.EndHourUTC);
+            DateTime startDateUtc = DateTime
+                .SpecifyKind(DateTime.Today, DateTimeKind.Utc)
+                .AddHours(_notificationsSettings.StartHourUTC);
+
+            DateTime endDateUtc = DateTime
+                .SpecifyKind(DateTime.Today, DateTimeKind.Utc)
+                .AddHours(_notificationsSettings.EndHourUTC);
 
             if (utcNow > startDateUtc && utcNow < endDateUtc)
             {
