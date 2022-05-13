@@ -28,6 +28,8 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 
         private readonly ICryptoAssetsGraphServiceClient _graphService;
 
+        private PeriodicTimer? _periodicTimer;
+
         public BotService(
             IOptions<BotSettings> botSettings,
             IOptions<NotificationsSettings> notificationsSettings,
@@ -68,16 +70,25 @@ namespace NotificationBot.Telegram.Infrastructure.Services
                 HandleErrorAsync,
                 receiverOptions,
                 cancellationToken);
+
+            isBotWorking = true;
         }
 
         public async Task SetupPeriodicNotifications(CancellationToken cancellationToken)
         {
-            PeriodicTimer periodicTimer = new(TimeSpan.FromMinutes(_notificationsSettings.IntervalInMinutes));
+            _periodicTimer = new(TimeSpan.FromMinutes(_notificationsSettings.IntervalInMinutes));
+            nextTimerTick = DateTime.UtcNow.AddMinutes(_notificationsSettings.IntervalInMinutes);
 
-            while (await periodicTimer.WaitForNextTickAsync(cancellationToken))
+            while (await _periodicTimer.WaitForNextTickAsync(cancellationToken))
             {
+                previousTimerTick = nextTimerTick;
+                nextTimerTick = nextTimerTick.AddMinutes(_notificationsSettings.IntervalInMinutes);
+                timerExecutionCount++;
+
                 if (IsValidTimeInterval())
                 {
+                    timerInValidIntervalExecutionCount++;
+
                     List<CryptoAsset> cryptoAssets = await _dataAccessService.GetFavoriteCryptoAssets(1);
 
                     StringBuilder sb = new("Favorite Crypto Assets Status:" + Environment.NewLine);
@@ -178,6 +189,34 @@ namespace NotificationBot.Telegram.Infrastructure.Services
                 chatId,
                 text: $"You said:\n{message}. ChatId: {chatId}.",
                 cancellationToken: cancellationToken);
+        }
+
+        #endregion
+
+        #region IDiagnosticService Implementation
+
+        private bool isBotWorking;
+        private DateTime previousTimerTick;
+        private DateTime nextTimerTick;
+        private long timerExecutionCount;
+        private long timerInValidIntervalExecutionCount;
+
+        public Dictionary<string, string> GetDiagnosticsInfo()
+        {
+            TimeSpan startTime = TimeSpan.FromHours(_notificationsSettings.StartHourUTC);
+            TimeSpan endTime = TimeSpan.FromHours(_notificationsSettings.EndHourUTC);
+
+            return new Dictionary<string, string>
+            {
+                { "Bot Working", isBotWorking.ToString() },
+                { "Periodic Timer Working", (_periodicTimer is not null).ToString() },
+                { "Time period for sending notifications UTC", $"Between {startTime} and {endTime}" },
+                { "Timer Inverval Minutes", _notificationsSettings.IntervalInMinutes.ToString() },
+                { "Previous timer tick UTC", previousTimerTick.ToString() },
+                { "Next timer tick UTC", nextTimerTick.ToString() },
+                { "Timer execution count", timerExecutionCount.ToString() },
+                { "Timer in valid time period execution count", timerInValidIntervalExecutionCount.ToString() }
+            };
         }
 
         #endregion
