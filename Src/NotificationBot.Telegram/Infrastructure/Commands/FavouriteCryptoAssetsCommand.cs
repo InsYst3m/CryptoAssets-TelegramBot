@@ -11,6 +11,12 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         private readonly IGraphService _graphService;
         private readonly IMessageGenerator _messageGenerator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FavouriteCryptoAssetsCommand"/> class.
+        /// </summary>
+        /// <param name="dataAccessService">The data access service.</param>
+        /// <param name="graphService">The graph service.</param>
+        /// <param name="messageGenerator">The message generator.</param>
         public FavouriteCryptoAssetsCommand(
             IDataAccessService dataAccessService,
             IGraphService graphService,

@@ -18,10 +18,15 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 
         public async Task<bool> SendNotificationAsync(
             ITelegramBotClient botClient,
-            long chatId,
+            long? chatId,
             string message,
             CancellationToken cancellationToken)
         {
+            if (chatId == null)
+            {
+                chatId = _notificationsSettings.ChatId;
+            }
+
             if (IsValidTimeInterval())
             {
                 await botClient.SendTextMessageAsync(chatId, message, cancellationToken: cancellationToken);
@@ -54,5 +59,24 @@ namespace NotificationBot.Telegram.Infrastructure.Services
                 return false;
             }
         }
+
+        #region IDiagnosticService Implementation
+
+        public Dictionary<string, string> GetDiagnosticsInfo()
+        {
+            TimeSpan startTimeUtc = TimeSpan.FromHours(_notificationsSettings.StartHourUTC);
+            TimeSpan endTimeUtc = TimeSpan.FromHours(_notificationsSettings.EndHourUTC);
+
+            TimeSpan startTimeMsk = TimeSpan.FromHours(_notificationsSettings.StartHourUTC + 3);
+            TimeSpan endTimeMsk = TimeSpan.FromHours(_notificationsSettings.EndHourUTC + 3);
+
+            return new Dictionary<string, string>
+            {
+                { "Time period for sending notifications UTC", $"Between {startTimeUtc} and {endTimeUtc}" },
+                { "Time period for sending notifications MSK", $"Between {startTimeMsk} and {endTimeMsk}" }
+            };
+        }
+
+        #endregion
     }
 }

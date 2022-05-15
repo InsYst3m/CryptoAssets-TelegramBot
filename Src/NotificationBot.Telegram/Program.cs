@@ -4,10 +4,12 @@ using NotificationBot.Telegram.Configuration;
 using NotificationBot.Telegram.Infrastructure;
 using NotificationBot.Telegram.Infrastructure.Commands.Factory;
 using NotificationBot.Telegram.Infrastructure.Generators;
+using NotificationBot.Telegram.Infrastructure.Handlers;
 using NotificationBot.Telegram.Infrastructure.HostedServices;
 using NotificationBot.Telegram.Infrastructure.HostedServices.Interfaces;
 using NotificationBot.Telegram.Infrastructure.Services;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
+using NotificationBot.Telegram.Services;
 using NotificationBot.Telegram.Services.Interfaces;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
@@ -19,9 +21,12 @@ ConfigurationManager configuration = builder.Configuration;
 IServiceCollection services = builder.Services;
 
 services.Configure<BotSettings>(configuration.GetSection(nameof(BotSettings)),
-            options => options.BindNonPublicProperties = true);
+    options => options.BindNonPublicProperties = true);
 
 services.Configure<NotificationsSettings>(configuration.GetSection(nameof(NotificationsSettings)),
+    options => options.BindNonPublicProperties = true);
+
+services.Configure<TimerWrapperSettings>(configuration.GetSection(nameof(TimerWrapperSettings)),
     options => options.BindNonPublicProperties = true);
 
 services.AddDataAccessLayer(configuration.GetConnectionString("DefaultConnection"));
@@ -29,14 +34,25 @@ services.AddDataAccessLayer(configuration.GetConnectionString("DefaultConnection
 services.AddSingleton<IBotClientFactory, BotClientFactory>();
 services.AddSingleton<IDataAccessService, DataAccessService>();
 services.AddSingleton<IMessageGenerator, MessageGenerator>();
+
 services.AddSingleton<INotificationService, NotificationService>();
+services.AddSingleton<IDiagnosticService>(x => x.GetRequiredService<INotificationService>());
+
 services
     .AddCryptoAssetsGraphServiceClient()
     .ConfigureHttpClient(client => client.BaseAddress = new Uri("http://insyst3m-002-site1.btempurl.com/graphql"));
 
+services.AddSingleton<IGraphService, GraphService>();
 services.AddSingleton<IBotCommandFactory, BotCommandFactory>();
+
+services.AddSingleton<ITimerWrapper, TimerWrapper>();
+services.AddSingleton<IDiagnosticService>(x => x.GetRequiredService<ITimerWrapper>());
+
+services.AddSingleton<IBotHandler, BotHandler>();
+
 services.AddSingleton<IBotService, BotService>();
 services.AddSingleton<IDiagnosticService>(x => x.GetRequiredService<IBotService>());
+
 
 services.AddSingleton<ITelegramBotHostedService, TelegramBotHostedService>();
 services.AddSingleton<IDiagnosticService>(x => x.GetRequiredService<ITelegramBotHostedService>());

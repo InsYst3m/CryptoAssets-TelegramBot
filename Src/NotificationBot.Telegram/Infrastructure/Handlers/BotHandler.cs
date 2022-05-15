@@ -95,7 +95,7 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
                 result = await botCommand.ExecuteAsync(command);
             }
 
-            return await _notificationService.SendNotificationAsync(botClient, message.Chat.Id, result, cancellationToken);
+            return await _notificationService.SendNotificationAsync(botClient, message.Chat?.Id, result, cancellationToken);
         }
 
         #endregion

@@ -2,7 +2,7 @@
 {
     public interface ITimerWrapper : IDiagnosticService, IDisposable
     {
-        event EventHandler<string> PeriodicTimerEventHandler;
+        event EventHandler OnPeriodicTimerTickEventHandler;
         bool SetupPeriodicTimer(CancellationToken cancellationToken = default);
     }
 }

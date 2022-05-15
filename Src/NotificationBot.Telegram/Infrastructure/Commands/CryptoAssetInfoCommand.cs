@@ -9,26 +9,27 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
     public class CryptoAssetInfoCommand : IBotCommand
     {
         private readonly IDataAccessService _dataAccessService;
-        private readonly IMessageGenerator _messageGenerator;
         private readonly IGraphService _graphService;
+        private readonly IMessageGenerator _messageGenerator;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CryptoAssetInfoCommand"/> class.
         /// </summary>
-        /// <param name="messageGenerator">The message generator.</param>
+        /// <param name="dataAccessService">The data access service.</param>
         /// <param name="graphService">The graph service.</param>
+        /// <param name="messageGenerator">The message generator.</param>
         public CryptoAssetInfoCommand(
             IDataAccessService dataAccessService,
-            IMessageGenerator messageGenerator,
-            IGraphService graphService)
+            IGraphService graphService,
+            IMessageGenerator messageGenerator)
         {
             ArgumentNullException.ThrowIfNull(dataAccessService);
-            ArgumentNullException.ThrowIfNull(messageGenerator);
             ArgumentNullException.ThrowIfNull(graphService);
+            ArgumentNullException.ThrowIfNull(messageGenerator);
 
             _dataAccessService = dataAccessService;
-            _messageGenerator = messageGenerator;
             _graphService = graphService;
+            _messageGenerator = messageGenerator;
         }
 
         /// <inheritdoc cref="IBotCommand.ExecuteAsync(string[])" />

@@ -6,9 +6,9 @@ namespace NotificationBot.Telegram.Services
 {
     public class TimerWrapper : ITimerWrapper
     {
-        public event EventHandler<string> PeriodicTimerEventHandler;
+        public event EventHandler? OnPeriodicTimerTickEventHandler;
 
-        private readonly TimerProviderSettings _timerProviderSettings;
+        private readonly TimerWrapperSettings _timerProviderSettings;
 
         private PeriodicTimer? _periodicTimer;
 
@@ -16,7 +16,7 @@ namespace NotificationBot.Telegram.Services
         /// Initializes a new instance of the <see cref="TimerWrapper"/> class.
         /// </summary>
         /// <param name="timerProviderSettings">The timer provider settings.</param>
-        public TimerWrapper(IOptions<TimerProviderSettings> timerProviderSettings)
+        public TimerWrapper(IOptions<TimerWrapperSettings> timerProviderSettings)
         {
             ArgumentNullException.ThrowIfNull(timerProviderSettings);
 
@@ -50,7 +50,7 @@ namespace NotificationBot.Telegram.Services
                 _nextTimerTick = _nextTimerTick.AddMinutes(_timerProviderSettings.PeriodicTimerIntervalInMinutes);
                 _timerExecutionCount++;
 
-                //PeriodicTimerEventHandler.Invoke();
+                OnPeriodicTimerTickEventHandler?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -62,12 +62,16 @@ namespace NotificationBot.Telegram.Services
 
         public Dictionary<string, string> GetDiagnosticsInfo()
         {
+            TimeZoneInfo mskTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Belarus Standard Time");
+
             return new Dictionary<string, string>
             {
                 { "Periodic Timer Initialized", (_periodicTimer is not null).ToString() },
-                { "Timer Inverval Minutes", 180.ToString() },
+                { "Timer Inverval Minutes", _timerProviderSettings.PeriodicTimerIntervalInMinutes.ToString() },
                 { "Previous timer tick UTC", _previousTimerTick.ToString() },
+                { "Previous timer tick MSK", TimeZoneInfo.ConvertTimeFromUtc(_previousTimerTick, mskTimeZoneInfo).ToString() },
                 { "Next timer tick UTC", _nextTimerTick.ToString() },
+                { "Next timer tick MSK", TimeZoneInfo.ConvertTimeFromUtc(_nextTimerTick, mskTimeZoneInfo).ToString() },
                 { "Timer execution count", _timerExecutionCount.ToString() }
             };
         }

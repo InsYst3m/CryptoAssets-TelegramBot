@@ -30,11 +30,18 @@ namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
             {
                 string text when text.StartsWith('/') => text switch 
                 {
-                    string textCommand when supportedCryptoAssetsAbbreviations.Contains(textCommand)
+                    string textCommand when supportedCryptoAssetsAbbreviations.Contains(textCommand[1..])
                         => new CryptoAssetInfoCommand(
                                 _serviceProvider.GetRequiredService<IDataAccessService>(),
-                                _serviceProvider.GetRequiredService<IMessageGenerator>(),
-                                _serviceProvider.GetRequiredService<IGraphService>()),
+                                _serviceProvider.GetRequiredService<IGraphService>(),
+                                _serviceProvider.GetRequiredService<IMessageGenerator>()),
+
+                    "/favourites" or
+                    "/favorites"
+                        => new FavouriteCryptoAssetsCommand(
+                                _serviceProvider.GetRequiredService<IDataAccessService>(),
+                                _serviceProvider.GetRequiredService<IGraphService>(),
+                                _serviceProvider.GetRequiredService<IMessageGenerator>()),
 
                     _ => null
                 },

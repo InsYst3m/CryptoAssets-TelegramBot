@@ -5,6 +5,7 @@ using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Services.Interfaces;
 using Telegram.Bot;
 using Telegram.Bot.Extensions.Polling;
+using Telegram.Bot.Types;
 
 namespace NotificationBot.Telegram.Infrastructure.Services
 {
@@ -14,24 +15,20 @@ namespace NotificationBot.Telegram.Infrastructure.Services
         private readonly BotSettings _botSettings;
 
         private readonly IBotHandler _botHandler;
-        private readonly INotificationService _notificationService;
         private readonly ITimerWrapper _timerProvider;
 
         public BotService(
             IOptions<BotSettings> botSettings,
             IBotClientFactory botClientFactory,
             IBotHandler botHandler,
-            INotificationService notificationService,
             ITimerWrapper timerProvider)
         {
             ArgumentNullException.ThrowIfNull(botSettings);
             ArgumentNullException.ThrowIfNull(botSettings.Value.Token, nameof(botSettings));
             ArgumentNullException.ThrowIfNull(botClientFactory);
             ArgumentNullException.ThrowIfNull(botHandler);
-            ArgumentNullException.ThrowIfNull(notificationService);
             ArgumentNullException.ThrowIfNull(timerProvider);
 
-            _notificationService = notificationService;
             _timerProvider = timerProvider;
             _botHandler = botHandler;
 
@@ -53,6 +50,18 @@ namespace NotificationBot.Telegram.Infrastructure.Services
                 cancellationToken);
 
             _isBotInitialized = true;
+            
+            _timerProvider.OnPeriodicTimerTickEventHandler += 
+                (sender, args) => _botHandler.HandleUpdateAsync(
+                    _botClient, 
+                    new Update() 
+                    { 
+                        Message = new Message()
+                        {
+                            Text = "/favourites"
+                        }
+                    },
+                    cancellationToken);
 
             _timerProvider.SetupPeriodicTimer(cancellationToken);
         }

@@ -1,6 +1,6 @@
 ﻿namespace NotificationBot.Telegram.Configuration
 {
-    public class TimerProviderSettings
+    public class TimerWrapperSettings
     {
         public long PeriodicTimerIntervalInMinutes { get; set; }
     }
