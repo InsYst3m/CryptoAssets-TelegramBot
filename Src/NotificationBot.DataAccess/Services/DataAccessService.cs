@@ -12,14 +12,16 @@ namespace NotificationBot.DataAccess.Services
             _dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
         }
 
-        public async Task<List<CryptoAsset>> GetCryptoAssetsLookup()
+        public async Task<List<CryptoAsset>> GetCryptoAssetsLookupAsync()
         {
+            // TODO: add cache
+
             AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
 
             return await context.CryptoAssets.ToListAsync();
         }
 
-        public async Task<List<CryptoAsset>> GetFavoriteCryptoAssets(long userId)
+        public async Task<List<CryptoAsset>> GetFavouriteCryptoAssetsAsync(long userId)
         {
             AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
 

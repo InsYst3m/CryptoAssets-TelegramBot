@@ -2,12 +2,13 @@ using NotificationBot.DataAccess.Extensions;
 using NotificationBot.DataAccess.Services;
 using NotificationBot.Telegram.Configuration;
 using NotificationBot.Telegram.Infrastructure;
+using NotificationBot.Telegram.Infrastructure.Commands.Factory;
 using NotificationBot.Telegram.Infrastructure.Generators;
 using NotificationBot.Telegram.Infrastructure.HostedServices;
 using NotificationBot.Telegram.Infrastructure.HostedServices.Interfaces;
 using NotificationBot.Telegram.Infrastructure.Services;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
-using NotificationBot.Telegram.Services;
+using NotificationBot.Telegram.Services.Interfaces;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
@@ -25,7 +26,7 @@ services.Configure<NotificationsSettings>(configuration.GetSection(nameof(Notifi
 
 services.AddDataAccessLayer(configuration.GetConnectionString("DefaultConnection"));
 
-services.AddSingleton<ITelegramBotClientFactory, TelegramBotClientFactory>();
+services.AddSingleton<IBotClientFactory, BotClientFactory>();
 services.AddSingleton<IDataAccessService, DataAccessService>();
 services.AddSingleton<IMessageGenerator, MessageGenerator>();
 services.AddSingleton<INotificationService, NotificationService>();
@@ -33,6 +34,7 @@ services
     .AddCryptoAssetsGraphServiceClient()
     .ConfigureHttpClient(client => client.BaseAddress = new Uri("http://insyst3m-002-site1.btempurl.com/graphql"));
 
+services.AddSingleton<IBotCommandFactory, BotCommandFactory>();
 services.AddSingleton<IBotService, BotService>();
 services.AddSingleton<IDiagnosticService>(x => x.GetRequiredService<IBotService>());
 

@@ -1,14 +1,30 @@
 ﻿using NotificationBot.Telegram.Infrastructure.ViewModels;
+using System.Text;
 
 namespace NotificationBot.Telegram.Infrastructure.Generators
 {
     public class MessageGenerator : IMessageGenerator
     {
-        public async Task<string> GenerateCryptoAssetsMessageAsync(CryptoAssetViewModel cryptoAsset)
+        public string GenerateCryptoAssetsMessageAsync(CryptoAssetViewModel cryptoAsset)
         {
-            ArgumentNullException.ThrowIfNull(cryptoAsset, nameof(cryptoAsset));
+            return $"{cryptoAsset.Name}: {cryptoAsset.PriceUsd}$";
+        }
 
-            return await ValueTask.FromResult($"{cryptoAsset.Name}: {cryptoAsset.PriceUsd}$.");
+        public string GenerateCryptoAssetInfoMessageAsync(CryptoAssetViewModel cryptoAsset)
+        {
+            return $"Command {cryptoAsset.Name}: {cryptoAsset.PriceUsd}$";
+        }
+
+        public string GenerateFavouriteCryptoAssetsInfoMessageAsync(List<CryptoAssetViewModel> cryptoAssets)
+        {
+            StringBuilder sb = new("Favourite Crypto Assets Prices:" + Environment.NewLine);
+
+            foreach (var cryptoAsset in cryptoAssets)
+            {
+                sb.AppendLine($"{cryptoAsset.Name}: {cryptoAsset.PriceUsd}$");
+            }
+
+            return sb.ToString();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace NotificationBot.Telegram.Infrastructure
 {
-    public class TelegramBotClientFactory : ITelegramBotClientFactory
+    public class BotClientFactory : IBotClientFactory
     {
         public TelegramBotClient GetOrCreate(string token)
         {

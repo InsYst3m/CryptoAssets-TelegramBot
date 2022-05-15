@@ -1,4 +1,4 @@
-﻿namespace NotificationBot.Telegram.Services
+﻿namespace NotificationBot.Telegram.Services.Interfaces
 {
     public interface IDiagnosticService
     {

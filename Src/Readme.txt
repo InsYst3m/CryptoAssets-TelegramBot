@@ -1,8 +1,8 @@
 TODO:
-	Notifications Manager:
-		1) Отвечает за постановку условий, при которых должны отправляться нотификации
-		2) Отвечает за список пользователей, которым должны отсылаться нотификации
-
-	Telegram bot:
-		1) Считывае данные из GraphQL API
-		2) На основе условий, отправляет нотификации определенным пользователям
+	1) Cache
+	2) Custom commands
+	3) Add users
+	4) Fetch crypto assets by user
+	5) Unit tests
+	6) CI/CD
+	7) Command parser?

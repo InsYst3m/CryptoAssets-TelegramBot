@@ -23,7 +23,6 @@ namespace NotificationBot.Telegram.Infrastructure.HostedServices
             serviceStartedTimeUTC = DateTime.UtcNow;
 
             _botService.Start(_tokenSource.Token);
-            _ = Task.Run(async () => await _botService.SetupPeriodicNotifications(_tokenSource.Token), _tokenSource.Token);
 
             await Task.CompletedTask;
         }

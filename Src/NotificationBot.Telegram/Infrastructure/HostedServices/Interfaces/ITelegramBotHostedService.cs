@@ -1,4 +1,4 @@
-﻿using NotificationBot.Telegram.Services;
+﻿using NotificationBot.Telegram.Services.Interfaces;
 
 namespace NotificationBot.Telegram.Infrastructure.HostedServices.Interfaces
 {

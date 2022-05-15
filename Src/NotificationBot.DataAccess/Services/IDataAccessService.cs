@@ -4,7 +4,7 @@ namespace NotificationBot.DataAccess.Services
 {
     public interface IDataAccessService
     {
-        Task<List<CryptoAsset>> GetCryptoAssetsLookup();
-        Task<List<CryptoAsset>> GetFavoriteCryptoAssets(long userId);
+        Task<List<CryptoAsset>> GetCryptoAssetsLookupAsync();
+        Task<List<CryptoAsset>> GetFavouriteCryptoAssetsAsync(long userId);
     }
 }
