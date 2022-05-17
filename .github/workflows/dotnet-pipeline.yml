@@ -24,7 +24,7 @@ jobs:
               with:
                 dotnet-version: 6.0.x
         
-            - name: Restore dependencies
+            - name: Restore Dependencies
               run: |
                 dotnet restore ./Src/CryptoAssetsTelegramBot.sln
       
@@ -34,7 +34,7 @@ jobs:
                 dotnet build ./Src/CryptoAssetsTelegramBot.sln --configuration Release --no-restore
                 dotnet publish ./Src/CryptoAssetsTelegramBot.sln -c Release -o build
         
-            - name: Run tests
+            - name: Run Tests
               run: |
                 echo Run tests step
 
@@ -50,18 +50,20 @@ jobs:
         needs: Build
 
         steps:
-            - name: Retreive saved artifact
+            - name: Retreive Saved Build Artifact
               uses: actions/download-artifact@v3
               with:
                 name: CryptoAssets-TelegramBot-Artifact
                 path: build
 
-            - name: Variable Substitution
+            - name: Variable Substitution
               uses: microsoft/variable-substitution@v1
               with:
                 files: 'build/appsettings.json'
               env:
                 ConnectionStrings.DefaultConnection: ${{ secrets.CONNECTION_STRING }}
+                BotSettings.Token: ${{ secrets.BOT_TOKEN }}
+                NotificationsSettings.ChatId: ${{ secrets.CHAT_ID }}
 
             - name: SFTP Deploy
               uses: wlixcc/SFTP-Deploy-Action@v1.2.2
