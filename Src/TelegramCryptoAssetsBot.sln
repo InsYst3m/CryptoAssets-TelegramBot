@@ -7,6 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationBot.Telegram", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EFD9374A-BF52-46A1-9E1B-3196558ED959}"
 	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\dotnet-pipeline.yml = ..\.github\workflows\dotnet-pipeline.yml
 		.config\dotnet-tools.json = .config\dotnet-tools.json
 		Readme.txt = Readme.txt
 		Script.sql = Script.sql

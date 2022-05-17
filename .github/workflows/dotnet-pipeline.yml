@@ -1,37 +1,74 @@
-name: .NET
+name: .NET Telegram Bot CI/CD
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches: 
-      - master
+    push:
+        branches:
+            - master
+            - release
+
+    pull_request:
+        branches: 
+            - master
+            - release
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    Build:
+        runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v3
     
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v1
+              with:
+                dotnet-version: 6.0.x
         
-    - name: Restore dependencies
-      run: |
-        dotnet restore ./Src/NotificationsManager.sln
+            - name: Restore dependencies
+              run: |
+                dotnet restore ./Src/TelegramBot.sln
       
-    - name: Build
-      run: |
-        echo $HOME
-        dotnet build ./Src/NotificationsManager.sln --configuration Release --no-restore
-        dotnet publish ./Src/NotificationsManager.sln -c Release -o ../Build
+            - name: Build
+              run: |
+                echo $HOME
+                dotnet build ./Src/TelegramBot.sln --configuration Release --no-restore
+                dotnet publish ./Src/TelegramBot.sln -c Release -o build
         
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: NotificationsManager-artifact
-        path: /home/runner/work/NotificationsManager/Build/
+            - name: Run tests
+              run: |
+                echo Run tests step
+
+            - name: Upload artifacts
+              uses: actions/upload-artifact@v3
+              with:
+                name: CryptoAssets-TelegramBot-Artifact
+                path: build
+                retention-days: 3
+
+    Deploy:
+        runs-on: ubuntu-latest
+        needs: Build
+
+        steps:
+            - name: Retreive saved artifact
+              uses: actions/download-artifact@v3
+              with:
+                name: CryptoAssets-TelegramBot-Artifact
+                path: build
+
+            - name: Variable Substitution
+              uses: microsoft/variable-substitution@v1
+              with:
+                files: 'build/appsettings.json'
+              env:
+                ConnectionStrings.DefaultConnection: ${{ secrets.CONNECTION_STRING }}
+
+            - name: SFTP Deploy
+              uses: wlixcc/SFTP-Deploy-Action@v1.2.2
+              with:
+                server: '${{ secrets.SSH_SERVER_IP }}'
+                username: 'root'
+                ssh_private_key: ${{ secrets.SSH_ROOT_PRIVATE_KEY }}
+                local_path: './build/*'
+                remote_path: '/var/www/cryptoassets-telegram-bot-app'
+                args: '-o ConnectTimeout=5'
