@@ -34,5 +34,19 @@ namespace NotificationBot.DataAccess.Services
 
             return new List<CryptoAsset>();
         }
+
+        public async Task<UserSettings?> GetUserSettingsAsync(long userId)
+        {
+            AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+
+            User? user = context.Users.Include(x => x.Settings).FirstOrDefault(x => x.Id == userId);
+
+            if (user is not null)
+            {
+                return user.Settings;
+            }
+
+            return null;
+        }
     }
 }

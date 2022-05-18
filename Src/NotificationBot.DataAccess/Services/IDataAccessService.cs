@@ -6,5 +6,6 @@ namespace NotificationBot.DataAccess.Services
     {
         Task<List<CryptoAsset>> GetCryptoAssetsLookupAsync();
         Task<List<CryptoAsset>> GetFavouriteCryptoAssetsAsync(long userId);
+        Task<UserSettings?> GetUserSettingsAsync(long userId);
     }
 }

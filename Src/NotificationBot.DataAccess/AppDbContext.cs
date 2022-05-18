@@ -8,6 +8,7 @@ namespace NotificationBot.DataAccess
     {
         public DbSet<CryptoAsset> CryptoAssets { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<UserSettings> UserSettings { get; set; } = null!;
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
@@ -25,6 +26,9 @@ namespace NotificationBot.DataAccess
                     linkEntity.ToTable("UsersCryptoAssets");
                 });
 
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.Settings)
+                .WithOne(x => x.User);
         }
     }
 }

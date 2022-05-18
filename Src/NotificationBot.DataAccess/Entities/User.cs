@@ -8,7 +8,8 @@ namespace NotificationBot.DataAccess.Entities
 
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
-
+        
         public List<CryptoAsset> CryptoAssets { get; set; } = new List<CryptoAsset>();
+        public UserSettings Settings { get; set; } = null!;
     }
 }
