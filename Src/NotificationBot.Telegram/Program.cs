@@ -29,6 +29,8 @@ services.Configure<NotificationsSettings>(configuration.GetSection(nameof(Notifi
 services.Configure<TimerWrapperSettings>(configuration.GetSection(nameof(TimerWrapperSettings)),
     options => options.BindNonPublicProperties = true);
 
+services.AddMemoryCache();
+
 services.AddDataAccessLayer(configuration.GetConnectionString("DefaultConnection"));
 
 services.AddSingleton<IBotClientFactory, BotClientFactory>();

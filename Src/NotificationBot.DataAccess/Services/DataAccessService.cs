@@ -1,29 +1,47 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using NotificationBot.DataAccess.Entities;
 
 namespace NotificationBot.DataAccess.Services
 {
     public class DataAccessService : IDataAccessService
     {
-        private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
+        private const string CRYPTO_ASSETS_LOOKUP_CACHE_KEY = "CryptoAssetsLookupCache";
 
-        public DataAccessService(IDbContextFactory<AppDbContext> dbContextFactory)
+        private readonly IDbContextFactory<AppDbContext> _dbContextFactory;
+        private readonly IMemoryCache _memoryCache;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataAccessService"/> class.
+        /// </summary>
+        /// <param name="dbContextFactory">The database context factory.</param>
+        /// <param name="memoryCache">The memory cache.</param>
+        public DataAccessService(IDbContextFactory<AppDbContext> dbContextFactory, IMemoryCache memoryCache)
         {
-            _dbContextFactory = dbContextFactory ?? throw new ArgumentNullException(nameof(dbContextFactory));
+            ArgumentNullException.ThrowIfNull(nameof(memoryCache));
+            ArgumentNullException.ThrowIfNull(nameof(dbContextFactory));
+
+            _dbContextFactory = dbContextFactory;
+            _memoryCache = memoryCache;
         }
 
         public async Task<List<CryptoAsset>> GetCryptoAssetsLookupAsync()
         {
-            // TODO: add cache
+            using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
 
-            AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+            return await _memoryCache.GetOrCreateAsync(
+                CRYPTO_ASSETS_LOOKUP_CACHE_KEY,
+                async cacheEntry =>
+                {
+                    cacheEntry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(120);
 
-            return await context.CryptoAssets.ToListAsync();
+                    return await context.CryptoAssets.ToListAsync();
+                });
         }
 
         public async Task<List<CryptoAsset>> GetFavouriteCryptoAssetsAsync(long userId)
         {
-            AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+            using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
 
             User? user = context.Users.Include(x => x.CryptoAssets).FirstOrDefault(x => x.Id == userId);
 
@@ -37,7 +55,7 @@ namespace NotificationBot.DataAccess.Services
 
         public async Task<UserSettings?> GetUserSettingsAsync(long userId)
         {
-            AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+            using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
 
             User? user = context.Users.Include(x => x.Settings).FirstOrDefault(x => x.Id == userId);
 
