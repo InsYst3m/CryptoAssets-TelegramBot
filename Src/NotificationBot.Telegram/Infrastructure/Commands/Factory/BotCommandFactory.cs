@@ -59,6 +59,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
 
                 string value when supportedCryptoAssetsAbbreviations.Contains(parsedMessage.CommandText!)
                     => new CryptoAssetInfoCommand(
+                        parsedMessage,
                         _serviceProvider.GetRequiredService<IDataAccessService>(),
                         _serviceProvider.GetRequiredService<IGraphService>(),
                         _serviceProvider.GetRequiredService<IMessageGenerator>()),
