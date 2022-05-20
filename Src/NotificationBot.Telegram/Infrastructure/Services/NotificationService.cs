@@ -35,7 +35,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
             string message,
             CancellationToken cancellationToken = default)
         {
-            if (!await IsValidTimeIntervalAsync(1))
+            if (!await IsValidTimeIntervalAsync(chatId))
             {
                 return false;
             }
@@ -61,11 +61,11 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 
             DateTime sleepTimeStartUtc = DateTime
                 .SpecifyKind(DateTime.Today, DateTimeKind.Utc)
-                .Subtract(userSettings.SleepTimeStart);
+                .Subtract(userSettings.SleepTimeStart!.Value);
 
             DateTime sleepTimeEndUtc = DateTime
                 .SpecifyKind(DateTime.Today, DateTimeKind.Utc)
-                .Subtract(userSettings.SleepTimeEnd);
+                .Subtract(userSettings.SleepTimeEnd!.Value);
 
             if (utcNow > sleepTimeStartUtc && utcNow < sleepTimeEndUtc)
             {

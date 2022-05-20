@@ -40,11 +40,11 @@ namespace NotificationBot.DataAccess.Services
         }
 
         /// <inheritdoc cref="IDataAccessService.GetFavoriteCryptoAssetsByTelegramUserIdAsync(long)" />
-        public async Task<List<CryptoAsset>> GetFavoriteCryptoAssetsByTelegramUserIdAsync(long userId)
+        public async Task<List<CryptoAsset>> GetFavoriteCryptoAssetsByTelegramUserIdAsync(long telegramUserId)
         {
             using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
 
-            User? user = context.Users.Include(x => x.CryptoAssets).FirstOrDefault(x => x.Id == userId);
+            User? user = context.Users.Include(x => x.CryptoAssets).FirstOrDefault(x => x.ChatId == telegramUserId);
 
             if (user is not null)
             {
