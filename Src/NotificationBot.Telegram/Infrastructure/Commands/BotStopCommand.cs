@@ -31,7 +31,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
                 await _dataAccessService.RemoveUserAsync(user);
             }
 
-            return "Successfully completed.";
+            return "User successfully removed.";
         }
     }
 }
