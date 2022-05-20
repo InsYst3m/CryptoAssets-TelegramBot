@@ -63,7 +63,6 @@ jobs:
               env:
                 ConnectionStrings.DefaultConnection: ${{ secrets.CONNECTION_STRING }}
                 BotSettings.Token: ${{ secrets.BOT_TOKEN }}
-                NotificationsSettings.ChatId: ${{ secrets.CHAT_ID }}
 
             - name: SFTP Deploy
               uses: wlixcc/SFTP-Deploy-Action@v1.2.2
