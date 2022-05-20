@@ -28,7 +28,8 @@ namespace NotificationBot.DataAccess
 
             modelBuilder.Entity<User>()
                 .HasOne(x => x.Settings)
-                .WithOne(x => x.User);
+                .WithOne(x => x.User)
+                .HasForeignKey<UserSettings>(x => x.UserId);
         }
     }
 }
