@@ -41,6 +41,8 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
                 await _dataAccessService.UpdateUserAsync(user);
             }
 
+            // TODO: send greeting message
+
             return "User was successfully added.";
         }
     }

@@ -90,17 +90,8 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 
         public Dictionary<string, string> GetDiagnosticsInfo()
         {
-            TimeSpan startTimeUtc = TimeSpan.FromHours(_notificationsSettings.StartHourUTC);
-            TimeSpan endTimeUtc = TimeSpan.FromHours(_notificationsSettings.EndHourUTC);
-
-            TimeSpan startTimeMsk = TimeSpan.FromHours(_notificationsSettings.StartHourUTC + 3);
-            TimeSpan endTimeMsk = TimeSpan.FromHours(_notificationsSettings.EndHourUTC + 3);
-
             return new Dictionary<string, string>
-            {
-                { "Time period for sending notifications UTC", $"Between {startTimeUtc} and {endTimeUtc}" },
-                { "Time period for sending notifications MSK", $"Between {startTimeMsk} and {endTimeMsk}" }
-            };
+            { };
         }
 
         #endregion
