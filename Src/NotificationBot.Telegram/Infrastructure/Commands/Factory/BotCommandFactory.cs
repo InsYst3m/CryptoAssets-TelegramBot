@@ -36,7 +36,8 @@ namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
             IBotCommand? botCommand = parsedMessage.Command switch
             {
                 "/favourites" or
-                "/favorites" => new FavouriteCryptoAssetsCommand(
+                "/favorites" => new FavoriteCryptoAssetsCommand(
+                    parsedMessage,
                     _serviceProvider.GetRequiredService<IDataAccessService>(),
                     _serviceProvider.GetRequiredService<IGraphService>(),
                     _serviceProvider.GetRequiredService<IMessageGenerator>()),

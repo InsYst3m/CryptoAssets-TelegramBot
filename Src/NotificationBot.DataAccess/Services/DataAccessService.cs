@@ -39,7 +39,8 @@ namespace NotificationBot.DataAccess.Services
                 });
         }
 
-        public async Task<List<CryptoAsset>> GetFavouriteCryptoAssetsAsync(long userId)
+        /// <inheritdoc cref="IDataAccessService.GetFavoriteCryptoAssetsByTelegramUserIdAsync(long)" />
+        public async Task<List<CryptoAsset>> GetFavoriteCryptoAssetsByTelegramUserIdAsync(long userId)
         {
             using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
 

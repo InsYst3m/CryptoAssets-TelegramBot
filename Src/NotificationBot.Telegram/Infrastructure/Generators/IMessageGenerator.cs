@@ -6,6 +6,6 @@ namespace NotificationBot.Telegram.Infrastructure.Generators
     {
         string GenerateCryptoAssetsMessageAsync(CryptoAssetViewModel cryptoAsset);
         string GenerateCryptoAssetInfoMessageAsync(CryptoAssetViewModel cryptoAsset);
-        string GenerateFavouriteCryptoAssetsInfoMessageAsync(List<CryptoAssetViewModel> cryptoAssets);
+        string GenerateFavoriteCryptoAssetsInfoMessageAsync(List<CryptoAssetViewModel> cryptoAssets);
     }
 }

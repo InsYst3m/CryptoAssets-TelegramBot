@@ -53,12 +53,12 @@ namespace NotificationBot.Telegram.Infrastructure.Services
             
             _timerProvider.OnPeriodicTimerTickEventHandler += 
                 (sender, args) => _botHandler.HandleUpdateAsync(
-                    _botClient, 
-                    new Update() 
+                    _botClient,
+                    new Update()
                     { 
                         Message = new Message()
                         {
-                            Text = "/favourites"
+                            Text = "/favorites"
                         }
                     },
                     cancellationToken);

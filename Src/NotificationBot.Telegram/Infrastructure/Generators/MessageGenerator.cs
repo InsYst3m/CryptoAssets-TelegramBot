@@ -15,9 +15,9 @@ namespace NotificationBot.Telegram.Infrastructure.Generators
             return $"Command {cryptoAsset.Name}: {cryptoAsset.PriceUsd}$";
         }
 
-        public string GenerateFavouriteCryptoAssetsInfoMessageAsync(List<CryptoAssetViewModel> cryptoAssets)
+        public string GenerateFavoriteCryptoAssetsInfoMessageAsync(List<CryptoAssetViewModel> cryptoAssets)
         {
-            StringBuilder sb = new("Favourite Crypto Assets Prices:" + Environment.NewLine);
+            StringBuilder sb = new("Favorite Crypto Assets Prices:" + Environment.NewLine);
 
             foreach (var cryptoAsset in cryptoAssets)
             {

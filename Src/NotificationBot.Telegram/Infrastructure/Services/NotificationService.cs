@@ -28,24 +28,13 @@ namespace NotificationBot.Telegram.Infrastructure.Services
             _dataAccessService = dataAccessService;
         }
 
-        /// <summary>
-        /// Sends the notification to the user asynchronous.
-        /// </summary>
-        /// <param name="botClient">The bot client.</param>
-        /// <param name="chatId">The chat identifier.</param>
-        /// <param name="message">The message.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <inheritdoc cref="INotificationService.SendNotificationAsync(ITelegramBotClient, long, string, CancellationToken)" />
         public async Task<bool> SendNotificationAsync(
             ITelegramBotClient botClient,
-            long? chatId,
+            long chatId,
             string message,
             CancellationToken cancellationToken)
         {
-            if (chatId == null)
-            {
-                chatId = _notificationsSettings.ChatId;
-            }
-
             if (!await IsValidTimeIntervalAsync(1))
             {
                 return false;
