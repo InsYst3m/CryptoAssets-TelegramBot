@@ -65,6 +65,20 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
             }
         }
 
+        public async Task HandlePeriodicTimerTickAsync(ITelegramBotClient botClient, CancellationToken cancellationToken)
+        {
+            try
+            {
+                IBotCommand command = _botCommandFactory.GetOrCreatePeriodicNotificationCommand();
+
+                await command.ExecuteAsync();
+            }
+            catch (Exception ex)
+            {
+                await HandleErrorAsync(botClient, ex, cancellationToken);
+            }
+        }
+
         #endregion
 
         #region Internal Events Implementation

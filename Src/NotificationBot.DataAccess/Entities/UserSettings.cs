@@ -3,6 +3,7 @@
     public class UserSettings
     {
         public long Id { get; set; }
+        public bool UsePeriodicNotifications { get; set; }
         public bool UseSleepHours { get; set; }
         public TimeSpan SleepTimeStart { get; set; }
         public TimeSpan SleepTimeEnd { get; set; }

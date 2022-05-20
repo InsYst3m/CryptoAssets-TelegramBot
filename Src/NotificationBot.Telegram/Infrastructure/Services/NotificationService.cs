@@ -33,7 +33,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
             ITelegramBotClient botClient,
             long chatId,
             string message,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
             if (!await IsValidTimeIntervalAsync(1))
             {

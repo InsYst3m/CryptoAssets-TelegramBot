@@ -7,5 +7,6 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
     {
         Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken);
         Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken);
+        Task HandlePeriodicTimerTickAsync(ITelegramBotClient botClient, CancellationToken cancellationToken);
     }
 }

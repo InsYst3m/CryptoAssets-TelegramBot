@@ -12,7 +12,11 @@ namespace NotificationBot.Telegram.Infrastructure.Services.Interfaces
         /// <param name="chatId">The chat identifier.</param>
         /// <param name="message">The message.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        Task<bool> SendNotificationAsync(ITelegramBotClient botClient, long chatId, string message, CancellationToken cancellationToken);
+        Task<bool> SendNotificationAsync(
+            ITelegramBotClient botClient,
+            long chatId,
+            string message,
+            CancellationToken cancellationToken = default);
 
         Task<bool> IsValidTimeIntervalAsync(long userId);
     }

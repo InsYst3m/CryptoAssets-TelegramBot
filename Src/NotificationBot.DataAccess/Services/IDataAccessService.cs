@@ -12,6 +12,13 @@ namespace NotificationBot.DataAccess.Services
         /// <param name="telegramUserId">The telegram user identifier.</param>
         /// <returns>List of crypto assets related to user or empty list.</returns>
         Task<List<CryptoAsset>> GetFavoriteCryptoAssetsByTelegramUserIdAsync(long telegramUserId);
+
+        /// <summary>
+        /// Gets the list of users with <see cref="UserSettings.UsePeriodicNotifications"/> flag
+        /// to send periodic notifications asynchronous.
+        /// </summary>
+        /// <returns>List of users or empty list.</returns>
+        Task<List<User>> GetUsersToSendPeriodicNotificationsAsync();
         Task<UserSettings?> GetUserSettingsAsync(long userId);
 
         Task<User> AddUserAsync(long? telegramUserId, long chatId, string? username);

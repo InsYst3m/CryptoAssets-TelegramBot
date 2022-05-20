@@ -54,6 +54,20 @@ namespace NotificationBot.DataAccess.Services
             return new List<CryptoAsset>();
         }
 
+        /// <inheritdoc cref="IDataAccessService.GetUsersToSendPeriodicNotificationsAsync" />
+        public async Task<List<User>> GetUsersToSendPeriodicNotificationsAsync()
+        {
+            List<User> result = new();
+
+            using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+
+            result = await context.Users
+                .Include(x => x.Settings)
+                .Where(x => x.Settings.UsePeriodicNotifications).ToListAsync();
+
+            return result;
+        }
+
         public async Task<UserSettings?> GetUserSettingsAsync(long userId)
         {
             using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();

@@ -12,19 +12,15 @@ namespace NotificationBot.Telegram.Infrastructure.Services
     public class BotService : IBotService
     {
         private readonly TelegramBotClient _botClient;
-        private readonly BotSettings _botSettings;
 
         private readonly IBotHandler _botHandler;
         private readonly ITimerWrapper _timerProvider;
 
         public BotService(
-            IOptions<BotSettings> botSettings,
             IBotClientFactory botClientFactory,
             IBotHandler botHandler,
             ITimerWrapper timerProvider)
         {
-            ArgumentNullException.ThrowIfNull(botSettings);
-            ArgumentNullException.ThrowIfNull(botSettings.Value.Token, nameof(botSettings));
             ArgumentNullException.ThrowIfNull(botClientFactory);
             ArgumentNullException.ThrowIfNull(botHandler);
             ArgumentNullException.ThrowIfNull(timerProvider);
@@ -32,8 +28,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
             _timerProvider = timerProvider;
             _botHandler = botHandler;
 
-            _botSettings = botSettings.Value;
-            _botClient = botClientFactory.GetOrCreate(_botSettings.Token);
+            _botClient = botClientFactory.GetOrCreate();
         }
 
         public void Start(CancellationToken cancellationToken)
@@ -52,15 +47,8 @@ namespace NotificationBot.Telegram.Infrastructure.Services
             _isBotInitialized = true;
             
             _timerProvider.OnPeriodicTimerTickEventHandler += 
-                (sender, args) => _botHandler.HandleUpdateAsync(
+                (sender, args) => _botHandler.HandlePeriodicTimerTickAsync(
                     _botClient,
-                    new Update()
-                    { 
-                        Message = new Message()
-                        {
-                            Text = "/favorites"
-                        }
-                    },
                     cancellationToken);
 
             _timerProvider.SetupPeriodicTimer(cancellationToken);
