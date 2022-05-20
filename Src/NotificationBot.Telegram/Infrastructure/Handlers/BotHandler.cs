@@ -1,5 +1,7 @@
 ﻿using NotificationBot.Telegram.Infrastructure.Commands;
 using NotificationBot.Telegram.Infrastructure.Commands.Factory;
+using NotificationBot.Telegram.Infrastructure.Parsers.Interfaces;
+using NotificationBot.Telegram.Infrastructure.Parsers.Models;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
@@ -10,16 +12,20 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
 {
     public class BotHandler : IBotHandler
     {
+        private readonly ITelegramMessageParser _messageParser;
         private readonly IBotCommandFactory _botCommandFactory;
         private readonly INotificationService _notificationService;
 
         public BotHandler(
+            ITelegramMessageParser messageParser,
             IBotCommandFactory botCommandFactory,
             INotificationService notificationService)
         {
+            ArgumentNullException.ThrowIfNull(messageParser);
             ArgumentNullException.ThrowIfNull(botCommandFactory);
             ArgumentNullException.ThrowIfNull(notificationService);
 
+            _messageParser = messageParser;
             _botCommandFactory = botCommandFactory;
             _notificationService = notificationService;
         }
@@ -70,32 +76,26 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
                 return;
             };
 
-            string text = message.Text!.Split(' ')[0];
+            ParsedMessage parsedMessage = _messageParser.Parse(message);
 
-            Task<bool> action = text switch
+            if (!string.IsNullOrEmpty(parsedMessage.Command))
             {
-                string command when
-                    command.StartsWith('/') => OnCommandReceivedAsync(botClient, message, cancellationToken),
-
-                _ => throw new InvalidOperationException()
-            };
-
-            await action;
+                await OnCommandReceivedAsync(botClient, parsedMessage, cancellationToken);
+            }
         }
 
-        private async Task<bool> OnCommandReceivedAsync(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
+        private async Task<bool> OnCommandReceivedAsync(ITelegramBotClient botClient, ParsedMessage parsedMessage, CancellationToken cancellationToken)
         {
-            string command = message.Text!.Split(' ')[0];
             string result = "Command is not supported.";
 
-            IBotCommand? botCommand = await _botCommandFactory.GetOrCreateAsync(command);
+            IBotCommand? botCommand = await _botCommandFactory.GetOrCreateAsync(parsedMessage);
 
             if (botCommand is not null)
             {
-                result = await botCommand.ExecuteAsync(command);
+                result = await botCommand.ExecuteAsync();
             }
 
-            return await _notificationService.SendNotificationAsync(botClient, message.Chat?.Id, result, cancellationToken);
+            return await _notificationService.SendNotificationAsync(botClient, parsedMessage.Message.Chat.Id, result, cancellationToken);
         }
 
         #endregion

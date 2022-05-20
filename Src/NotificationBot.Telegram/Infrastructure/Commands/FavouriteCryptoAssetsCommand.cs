@@ -34,6 +34,8 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         /// <inheritdoc cref="IBotCommand.ExecuteAsync(string[])" />
         public async Task<string> ExecuteAsync(params string[] arguments)
         {
+            // TODO: get userId from ParsedMessage
+
             string[] cryptoAssetsAbbreviations = 
                 (await _dataAccessService.GetFavouriteCryptoAssetsAsync(1))
                 .Select(x => x.Abbreviation)

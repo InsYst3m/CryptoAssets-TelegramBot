@@ -35,6 +35,8 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         /// <inheritdoc cref="IBotCommand.ExecuteAsync(string[])" />
         public async Task<string> ExecuteAsync(params string[] arguments)
         {
+            // TODO: refactor to ParsedMessage
+
             if (arguments.Length == 0)
             {
                 return "Text command not found.";

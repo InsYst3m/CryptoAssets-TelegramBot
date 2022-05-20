@@ -7,6 +7,8 @@ using NotificationBot.Telegram.Infrastructure.Generators;
 using NotificationBot.Telegram.Infrastructure.Handlers;
 using NotificationBot.Telegram.Infrastructure.HostedServices;
 using NotificationBot.Telegram.Infrastructure.HostedServices.Interfaces;
+using NotificationBot.Telegram.Infrastructure.Parsers;
+using NotificationBot.Telegram.Infrastructure.Parsers.Interfaces;
 using NotificationBot.Telegram.Infrastructure.Services;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Services;
@@ -33,6 +35,7 @@ services.AddMemoryCache();
 
 services.AddDataAccessLayer(configuration.GetConnectionString("DefaultConnection"));
 
+services.AddSingleton<ITelegramMessageParser, TelegramMessageParser>();
 services.AddSingleton<IBotClientFactory, BotClientFactory>();
 services.AddSingleton<IDataAccessService, DataAccessService>();
 services.AddSingleton<IMessageGenerator, MessageGenerator>();

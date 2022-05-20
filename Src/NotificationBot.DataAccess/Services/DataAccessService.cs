@@ -66,5 +66,66 @@ namespace NotificationBot.DataAccess.Services
 
             return null;
         }
+
+        public async Task<User> AddUserAsync(long? telegramUserId, long chatId, string? username)
+        {
+            using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+
+            User user = new()
+            {
+                Username = username,
+                TelegramUserId = telegramUserId,
+                ChatId = chatId,
+                IsActive = true
+            };
+
+            context.Users.Add(user);
+            context.SaveChanges();
+
+            return user;
+        }
+
+        public async Task<bool> RemoveUserAsync(User user)
+        {
+            using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+
+            user.IsActive = false;
+
+            context.Users.Update(user);
+            context.SaveChanges();
+
+            return true;
+        }
+
+        public async Task<User?> GetUserByChatIdAsync(long chatId)
+        {
+            using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+
+            return context.Users.FirstOrDefault(x => x.ChatId == chatId);
+        }
+
+        public async Task<User?> GetUserByTelegramUserIdAsync(long telegramUserId)
+        {
+            using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+
+            return context.Users.FirstOrDefault(x => x.TelegramUserId == telegramUserId);
+        }
+
+        public async Task<User?> GetUserById(long id)
+        {
+            using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+
+            return await context.Users.FindAsync(id);
+        }
+
+        public async Task<bool> UpdateUserAsync(User user)
+        {
+            using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+
+            context.Users.Update(user);
+            context.SaveChanges();
+
+            return true;
+        }
     }
 }

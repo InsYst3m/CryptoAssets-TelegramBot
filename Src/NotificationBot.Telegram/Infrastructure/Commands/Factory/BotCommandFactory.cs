@@ -1,5 +1,6 @@
 ﻿using NotificationBot.DataAccess.Services;
 using NotificationBot.Telegram.Infrastructure.Generators;
+using NotificationBot.Telegram.Infrastructure.Parsers.Models;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
@@ -9,7 +10,9 @@ namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
         private readonly IDataAccessService _dataAccessService;
         private readonly IServiceProvider _serviceProvider;
 
-        public BotCommandFactory(IDataAccessService dataAccessService, IServiceProvider serviceProvider)
+        public BotCommandFactory(
+            IDataAccessService dataAccessService,
+            IServiceProvider serviceProvider)
         {
             ArgumentNullException.ThrowIfNull(dataAccessService);
             ArgumentNullException.ThrowIfNull(serviceProvider);
@@ -18,33 +21,40 @@ namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
             _serviceProvider = serviceProvider;
         }
 
-        public async Task<IBotCommand?> GetOrCreateAsync(string command)
+        public async Task<IBotCommand?> GetOrCreateAsync(ParsedMessage parsedMessage)
         {
-            // TODO: add cache
             List<string> supportedCryptoAssetsAbbreviations = 
                 (await _dataAccessService.GetCryptoAssetsLookupAsync())
                 .Select(x => x.Abbreviation)
                 .ToList();
 
-            IBotCommand? botCommand = command switch
+            if (string.IsNullOrWhiteSpace(parsedMessage.Command))
             {
-                string text when text.StartsWith('/') => text switch 
-                {
-                    string textCommand when supportedCryptoAssetsAbbreviations.Contains(textCommand[1..])
-                        => new CryptoAssetInfoCommand(
-                                _serviceProvider.GetRequiredService<IDataAccessService>(),
-                                _serviceProvider.GetRequiredService<IGraphService>(),
-                                _serviceProvider.GetRequiredService<IMessageGenerator>()),
+                return null;
+            }
 
-                    "/favourites" or
-                    "/favorites"
-                        => new FavouriteCryptoAssetsCommand(
-                                _serviceProvider.GetRequiredService<IDataAccessService>(),
-                                _serviceProvider.GetRequiredService<IGraphService>(),
-                                _serviceProvider.GetRequiredService<IMessageGenerator>()),
+            IBotCommand? botCommand = parsedMessage.Command switch
+            {
+                "favourites" or
+                "favorites" => new FavouriteCryptoAssetsCommand(
+                    _serviceProvider.GetRequiredService<IDataAccessService>(),
+                    _serviceProvider.GetRequiredService<IGraphService>(),
+                    _serviceProvider.GetRequiredService<IMessageGenerator>()),
 
-                    _ => null
-                },
+                "start" => new BotStartCommand(
+                    parsedMessage,
+                    _serviceProvider.GetRequiredService<IDataAccessService>()),
+
+                "stop" => new BotStopCommand(
+                    parsedMessage,
+                    _serviceProvider.GetRequiredService<IDataAccessService>()),
+
+                string value when supportedCryptoAssetsAbbreviations.Contains(parsedMessage.CommandText!)
+                    => new CryptoAssetInfoCommand(
+                        _serviceProvider.GetRequiredService<IDataAccessService>(),
+                        _serviceProvider.GetRequiredService<IGraphService>(),
+                        _serviceProvider.GetRequiredService<IMessageGenerator>()),
+
                 _ => null
             };
 

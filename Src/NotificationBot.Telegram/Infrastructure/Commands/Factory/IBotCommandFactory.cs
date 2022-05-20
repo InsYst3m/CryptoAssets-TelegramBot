@@ -1,7 +1,9 @@
-﻿namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
+﻿using NotificationBot.Telegram.Infrastructure.Parsers.Models;
+
+namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
 {
     public interface IBotCommandFactory
     {
-        Task<IBotCommand?> GetOrCreateAsync(string command);
+        Task<IBotCommand?> GetOrCreateAsync(ParsedMessage message);
     }
 }
