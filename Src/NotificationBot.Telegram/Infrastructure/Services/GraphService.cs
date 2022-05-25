@@ -59,7 +59,18 @@ namespace NotificationBot.Telegram.Infrastructure.Services
                 return null;
             }
 
-            return new CryptoAssetViewModel(cryptoAssetGraphData.Abbreviation, cryptoAssetGraphData.MarketData!.CurrentPrice!.Usd);
+            return new CryptoAssetViewModel(
+                cryptoAssetGraphData.Name,
+                cryptoAssetGraphData.Abbreviation,
+                cryptoAssetGraphData.Rank,
+                cryptoAssetGraphData.CapitalizationUsd,
+                cryptoAssetGraphData.CurrentPriceUsd,
+                cryptoAssetGraphData.AllTimeHighPriceUsd,
+                cryptoAssetGraphData.AllTimeLowPriceUsd,
+                cryptoAssetGraphData.HighTwentyFourHoursUsd,
+                cryptoAssetGraphData.LowTwentyFourHoursUsd,
+                cryptoAssetGraphData.AllTimeHighChangePercentage,
+                cryptoAssetGraphData.AllTimeLowChangePercentage);
         }
 
         #endregion

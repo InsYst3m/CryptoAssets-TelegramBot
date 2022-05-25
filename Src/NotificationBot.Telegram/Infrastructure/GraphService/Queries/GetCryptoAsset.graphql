@@ -1,10 +1,22 @@
 ﻿query GetCryptoAsset($abbreviation: String!) {
   cryptoAsset(abbreviation: $abbreviation) {
-     abbreviation
-     marketData {
-       currentPrice {
-         usd
-       }
-     }
+    name
+    abbreviation
+    rank
+    capitalizationUsd
+    currentPriceUsd
+    allTimeHighPriceUsd
+    allTimeLowPriceUsd
+    highTwentyFourHoursUsd
+    lowTwentyFourHoursUsd
+    priceChangePercentageTwentyFourHours
+    priceChangePercentageSevenDays
+    priceChangePercentageThirtyDays
+    priceChangePercentageSixtyDays
+    priceChangePercentageOneYear
+    allTimeHighChangePercentage
+    allTimeHighDate
+    allTimeLowChangePercentage
+    allTimeLowDate
   }
 }

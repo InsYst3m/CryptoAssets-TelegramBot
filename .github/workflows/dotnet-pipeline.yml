@@ -73,3 +73,5 @@ jobs:
                 local_path: './build/*'
                 remote_path: '/var/www/cryptoassets-telegrambot-app'
                 args: '-o ConnectTimeout=5'
+
+            # Step to restart service: systemctl restart ...service

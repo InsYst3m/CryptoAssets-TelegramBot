@@ -154,15 +154,63 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class GetCryptoAsset_CryptoAsset_CryptoAsset : global::System.IEquatable<GetCryptoAsset_CryptoAsset_CryptoAsset>, IGetCryptoAsset_CryptoAsset_CryptoAsset
     {
-        public GetCryptoAsset_CryptoAsset_CryptoAsset(global::System.String abbreviation, global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData? marketData)
+        public GetCryptoAsset_CryptoAsset_CryptoAsset(global::System.String name, global::System.String abbreviation, global::System.Int64 rank, global::System.Decimal capitalizationUsd, global::System.Decimal currentPriceUsd, global::System.Decimal allTimeHighPriceUsd, global::System.Decimal allTimeLowPriceUsd, global::System.Decimal highTwentyFourHoursUsd, global::System.Decimal lowTwentyFourHoursUsd, global::System.String priceChangePercentageTwentyFourHours, global::System.String priceChangePercentageSevenDays, global::System.String priceChangePercentageThirtyDays, global::System.String priceChangePercentageSixtyDays, global::System.String priceChangePercentageOneYear, global::System.String allTimeHighChangePercentage, global::System.DateTimeOffset allTimeHighDate, global::System.String allTimeLowChangePercentage, global::System.DateTimeOffset allTimeLowDate)
         {
+            Name = name;
             Abbreviation = abbreviation;
-            MarketData = marketData;
+            Rank = rank;
+            CapitalizationUsd = capitalizationUsd;
+            CurrentPriceUsd = currentPriceUsd;
+            AllTimeHighPriceUsd = allTimeHighPriceUsd;
+            AllTimeLowPriceUsd = allTimeLowPriceUsd;
+            HighTwentyFourHoursUsd = highTwentyFourHoursUsd;
+            LowTwentyFourHoursUsd = lowTwentyFourHoursUsd;
+            PriceChangePercentageTwentyFourHours = priceChangePercentageTwentyFourHours;
+            PriceChangePercentageSevenDays = priceChangePercentageSevenDays;
+            PriceChangePercentageThirtyDays = priceChangePercentageThirtyDays;
+            PriceChangePercentageSixtyDays = priceChangePercentageSixtyDays;
+            PriceChangePercentageOneYear = priceChangePercentageOneYear;
+            AllTimeHighChangePercentage = allTimeHighChangePercentage;
+            AllTimeHighDate = allTimeHighDate;
+            AllTimeLowChangePercentage = allTimeLowChangePercentage;
+            AllTimeLowDate = allTimeLowDate;
         }
+
+        public global::System.String Name { get; }
 
         public global::System.String Abbreviation { get; }
 
-        public global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData? MarketData { get; }
+        public global::System.Int64 Rank { get; }
+
+        public global::System.Decimal CapitalizationUsd { get; }
+
+        public global::System.Decimal CurrentPriceUsd { get; }
+
+        public global::System.Decimal AllTimeHighPriceUsd { get; }
+
+        public global::System.Decimal AllTimeLowPriceUsd { get; }
+
+        public global::System.Decimal HighTwentyFourHoursUsd { get; }
+
+        public global::System.Decimal LowTwentyFourHoursUsd { get; }
+
+        public global::System.String PriceChangePercentageTwentyFourHours { get; }
+
+        public global::System.String PriceChangePercentageSevenDays { get; }
+
+        public global::System.String PriceChangePercentageThirtyDays { get; }
+
+        public global::System.String PriceChangePercentageSixtyDays { get; }
+
+        public global::System.String PriceChangePercentageOneYear { get; }
+
+        public global::System.String AllTimeHighChangePercentage { get; }
+
+        public global::System.DateTimeOffset AllTimeHighDate { get; }
+
+        public global::System.String AllTimeLowChangePercentage { get; }
+
+        public global::System.DateTimeOffset AllTimeLowDate { get; }
 
         public virtual global::System.Boolean Equals(GetCryptoAsset_CryptoAsset_CryptoAsset? other)
         {
@@ -181,7 +229,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
                 return false;
             }
 
-            return (Abbreviation.Equals(other.Abbreviation)) && ((MarketData is null && other.MarketData is null) || MarketData != null && MarketData.Equals(other.MarketData));
+            return (Name.Equals(other.Name)) && Abbreviation.Equals(other.Abbreviation) && Rank == other.Rank && CapitalizationUsd == other.CapitalizationUsd && CurrentPriceUsd == other.CurrentPriceUsd && AllTimeHighPriceUsd == other.AllTimeHighPriceUsd && AllTimeLowPriceUsd == other.AllTimeLowPriceUsd && HighTwentyFourHoursUsd == other.HighTwentyFourHoursUsd && LowTwentyFourHoursUsd == other.LowTwentyFourHoursUsd && PriceChangePercentageTwentyFourHours.Equals(other.PriceChangePercentageTwentyFourHours) && PriceChangePercentageSevenDays.Equals(other.PriceChangePercentageSevenDays) && PriceChangePercentageThirtyDays.Equals(other.PriceChangePercentageThirtyDays) && PriceChangePercentageSixtyDays.Equals(other.PriceChangePercentageSixtyDays) && PriceChangePercentageOneYear.Equals(other.PriceChangePercentageOneYear) && AllTimeHighChangePercentage.Equals(other.AllTimeHighChangePercentage) && AllTimeHighDate.Equals(other.AllTimeHighDate) && AllTimeLowChangePercentage.Equals(other.AllTimeLowChangePercentage) && AllTimeLowDate.Equals(other.AllTimeLowDate);
         }
 
         public override global::System.Boolean Equals(global::System.Object? obj)
@@ -209,138 +257,24 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
             unchecked
             {
                 int hash = 5;
+                hash ^= 397 * Name.GetHashCode();
                 hash ^= 397 * Abbreviation.GetHashCode();
-                if (MarketData != null)
-                {
-                    hash ^= 397 * MarketData.GetHashCode();
-                }
-
-                return hash;
-            }
-        }
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
-    public partial class GetCryptoAsset_CryptoAsset_MarketData_MarketData : global::System.IEquatable<GetCryptoAsset_CryptoAsset_MarketData_MarketData>, IGetCryptoAsset_CryptoAsset_MarketData_MarketData
-    {
-        public GetCryptoAsset_CryptoAsset_MarketData_MarketData(global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice? currentPrice)
-        {
-            CurrentPrice = currentPrice;
-        }
-
-        public global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice? CurrentPrice { get; }
-
-        public virtual global::System.Boolean Equals(GetCryptoAsset_CryptoAsset_MarketData_MarketData? other)
-        {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            if (other.GetType() != GetType())
-            {
-                return false;
-            }
-
-            return (((CurrentPrice is null && other.CurrentPrice is null) || CurrentPrice != null && CurrentPrice.Equals(other.CurrentPrice)));
-        }
-
-        public override global::System.Boolean Equals(global::System.Object? obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-
-            return Equals((GetCryptoAsset_CryptoAsset_MarketData_MarketData)obj);
-        }
-
-        public override global::System.Int32 GetHashCode()
-        {
-            unchecked
-            {
-                int hash = 5;
-                if (CurrentPrice != null)
-                {
-                    hash ^= 397 * CurrentPrice.GetHashCode();
-                }
-
-                return hash;
-            }
-        }
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
-    public partial class GetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice : global::System.IEquatable<GetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice>, IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice
-    {
-        public GetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice(global::System.Decimal usd)
-        {
-            Usd = usd;
-        }
-
-        public global::System.Decimal Usd { get; }
-
-        public virtual global::System.Boolean Equals(GetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice? other)
-        {
-            if (ReferenceEquals(null, other))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            if (other.GetType() != GetType())
-            {
-                return false;
-            }
-
-            return (Usd == other.Usd);
-        }
-
-        public override global::System.Boolean Equals(global::System.Object? obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-
-            return Equals((GetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice)obj);
-        }
-
-        public override global::System.Int32 GetHashCode()
-        {
-            unchecked
-            {
-                int hash = 5;
-                hash ^= 397 * Usd.GetHashCode();
+                hash ^= 397 * Rank.GetHashCode();
+                hash ^= 397 * CapitalizationUsd.GetHashCode();
+                hash ^= 397 * CurrentPriceUsd.GetHashCode();
+                hash ^= 397 * AllTimeHighPriceUsd.GetHashCode();
+                hash ^= 397 * AllTimeLowPriceUsd.GetHashCode();
+                hash ^= 397 * HighTwentyFourHoursUsd.GetHashCode();
+                hash ^= 397 * LowTwentyFourHoursUsd.GetHashCode();
+                hash ^= 397 * PriceChangePercentageTwentyFourHours.GetHashCode();
+                hash ^= 397 * PriceChangePercentageSevenDays.GetHashCode();
+                hash ^= 397 * PriceChangePercentageThirtyDays.GetHashCode();
+                hash ^= 397 * PriceChangePercentageSixtyDays.GetHashCode();
+                hash ^= 397 * PriceChangePercentageOneYear.GetHashCode();
+                hash ^= 397 * AllTimeHighChangePercentage.GetHashCode();
+                hash ^= 397 * AllTimeHighDate.GetHashCode();
+                hash ^= 397 * AllTimeLowChangePercentage.GetHashCode();
+                hash ^= 397 * AllTimeLowDate.GetHashCode();
                 return hash;
             }
         }
@@ -355,35 +289,45 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial interface IGetCryptoAsset_CryptoAsset
     {
+        public global::System.String Name { get; }
+
         public global::System.String Abbreviation { get; }
 
-        public global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData? MarketData { get; }
+        public global::System.Int64 Rank { get; }
+
+        public global::System.Decimal CapitalizationUsd { get; }
+
+        public global::System.Decimal CurrentPriceUsd { get; }
+
+        public global::System.Decimal AllTimeHighPriceUsd { get; }
+
+        public global::System.Decimal AllTimeLowPriceUsd { get; }
+
+        public global::System.Decimal HighTwentyFourHoursUsd { get; }
+
+        public global::System.Decimal LowTwentyFourHoursUsd { get; }
+
+        public global::System.String PriceChangePercentageTwentyFourHours { get; }
+
+        public global::System.String PriceChangePercentageSevenDays { get; }
+
+        public global::System.String PriceChangePercentageThirtyDays { get; }
+
+        public global::System.String PriceChangePercentageSixtyDays { get; }
+
+        public global::System.String PriceChangePercentageOneYear { get; }
+
+        public global::System.String AllTimeHighChangePercentage { get; }
+
+        public global::System.DateTimeOffset AllTimeHighDate { get; }
+
+        public global::System.String AllTimeLowChangePercentage { get; }
+
+        public global::System.DateTimeOffset AllTimeLowDate { get; }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial interface IGetCryptoAsset_CryptoAsset_CryptoAsset : IGetCryptoAsset_CryptoAsset
-    {
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
-    public partial interface IGetCryptoAsset_CryptoAsset_MarketData
-    {
-        public global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice? CurrentPrice { get; }
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
-    public partial interface IGetCryptoAsset_CryptoAsset_MarketData_MarketData : IGetCryptoAsset_CryptoAsset_MarketData
-    {
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
-    public partial interface IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice
-    {
-        public global::System.Decimal Usd { get; }
-    }
-
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
-    public partial interface IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice : IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice
     {
     }
 
@@ -393,14 +337,24 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
     /// query GetCryptoAsset($abbreviation: String!) {
     ///   cryptoAsset(abbreviation: $abbreviation) {
     ///     __typename
+    ///     name
     ///     abbreviation
-    ///     marketData {
-    ///       __typename
-    ///       currentPrice {
-    ///         __typename
-    ///         usd
-    ///       }
-    ///     }
+    ///     rank
+    ///     capitalizationUsd
+    ///     currentPriceUsd
+    ///     allTimeHighPriceUsd
+    ///     allTimeLowPriceUsd
+    ///     highTwentyFourHoursUsd
+    ///     lowTwentyFourHoursUsd
+    ///     priceChangePercentageTwentyFourHours
+    ///     priceChangePercentageSevenDays
+    ///     priceChangePercentageThirtyDays
+    ///     priceChangePercentageSixtyDays
+    ///     priceChangePercentageOneYear
+    ///     allTimeHighChangePercentage
+    ///     allTimeHighDate
+    ///     allTimeLowChangePercentage
+    ///     allTimeLowDate
     ///   }
     /// }
     /// </code>
@@ -414,8 +368,8 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
 
         public static GetCryptoAssetQueryDocument Instance { get; } = new GetCryptoAssetQueryDocument();
         public global::StrawberryShake.OperationKind Kind => global::StrawberryShake.OperationKind.Query;
-        public global::System.ReadOnlySpan<global::System.Byte> Body => new global::System.Byte[]{0x71, 0x75, 0x65, 0x72, 0x79, 0x20, 0x47, 0x65, 0x74, 0x43, 0x72, 0x79, 0x70, 0x74, 0x6f, 0x41, 0x73, 0x73, 0x65, 0x74, 0x28, 0x24, 0x61, 0x62, 0x62, 0x72, 0x65, 0x76, 0x69, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x3a, 0x20, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x21, 0x29, 0x20, 0x7b, 0x20, 0x63, 0x72, 0x79, 0x70, 0x74, 0x6f, 0x41, 0x73, 0x73, 0x65, 0x74, 0x28, 0x61, 0x62, 0x62, 0x72, 0x65, 0x76, 0x69, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x3a, 0x20, 0x24, 0x61, 0x62, 0x62, 0x72, 0x65, 0x76, 0x69, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x29, 0x20, 0x7b, 0x20, 0x5f, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x20, 0x61, 0x62, 0x62, 0x72, 0x65, 0x76, 0x69, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x20, 0x6d, 0x61, 0x72, 0x6b, 0x65, 0x74, 0x44, 0x61, 0x74, 0x61, 0x20, 0x7b, 0x20, 0x5f, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x20, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x50, 0x72, 0x69, 0x63, 0x65, 0x20, 0x7b, 0x20, 0x5f, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x20, 0x75, 0x73, 0x64, 0x20, 0x7d, 0x20, 0x7d, 0x20, 0x7d, 0x20, 0x7d};
-        public global::StrawberryShake.DocumentHash Hash { get; } = new global::StrawberryShake.DocumentHash("md5Hash", "841e9a6bae38619e32fd98a816cf1fb2");
+        public global::System.ReadOnlySpan<global::System.Byte> Body => new global::System.Byte[]{0x71, 0x75, 0x65, 0x72, 0x79, 0x20, 0x47, 0x65, 0x74, 0x43, 0x72, 0x79, 0x70, 0x74, 0x6f, 0x41, 0x73, 0x73, 0x65, 0x74, 0x28, 0x24, 0x61, 0x62, 0x62, 0x72, 0x65, 0x76, 0x69, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x3a, 0x20, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x21, 0x29, 0x20, 0x7b, 0x20, 0x63, 0x72, 0x79, 0x70, 0x74, 0x6f, 0x41, 0x73, 0x73, 0x65, 0x74, 0x28, 0x61, 0x62, 0x62, 0x72, 0x65, 0x76, 0x69, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x3a, 0x20, 0x24, 0x61, 0x62, 0x62, 0x72, 0x65, 0x76, 0x69, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x29, 0x20, 0x7b, 0x20, 0x5f, 0x5f, 0x74, 0x79, 0x70, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x20, 0x6e, 0x61, 0x6d, 0x65, 0x20, 0x61, 0x62, 0x62, 0x72, 0x65, 0x76, 0x69, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x20, 0x72, 0x61, 0x6e, 0x6b, 0x20, 0x63, 0x61, 0x70, 0x69, 0x74, 0x61, 0x6c, 0x69, 0x7a, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x55, 0x73, 0x64, 0x20, 0x63, 0x75, 0x72, 0x72, 0x65, 0x6e, 0x74, 0x50, 0x72, 0x69, 0x63, 0x65, 0x55, 0x73, 0x64, 0x20, 0x61, 0x6c, 0x6c, 0x54, 0x69, 0x6d, 0x65, 0x48, 0x69, 0x67, 0x68, 0x50, 0x72, 0x69, 0x63, 0x65, 0x55, 0x73, 0x64, 0x20, 0x61, 0x6c, 0x6c, 0x54, 0x69, 0x6d, 0x65, 0x4c, 0x6f, 0x77, 0x50, 0x72, 0x69, 0x63, 0x65, 0x55, 0x73, 0x64, 0x20, 0x68, 0x69, 0x67, 0x68, 0x54, 0x77, 0x65, 0x6e, 0x74, 0x79, 0x46, 0x6f, 0x75, 0x72, 0x48, 0x6f, 0x75, 0x72, 0x73, 0x55, 0x73, 0x64, 0x20, 0x6c, 0x6f, 0x77, 0x54, 0x77, 0x65, 0x6e, 0x74, 0x79, 0x46, 0x6f, 0x75, 0x72, 0x48, 0x6f, 0x75, 0x72, 0x73, 0x55, 0x73, 0x64, 0x20, 0x70, 0x72, 0x69, 0x63, 0x65, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x54, 0x77, 0x65, 0x6e, 0x74, 0x79, 0x46, 0x6f, 0x75, 0x72, 0x48, 0x6f, 0x75, 0x72, 0x73, 0x20, 0x70, 0x72, 0x69, 0x63, 0x65, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x53, 0x65, 0x76, 0x65, 0x6e, 0x44, 0x61, 0x79, 0x73, 0x20, 0x70, 0x72, 0x69, 0x63, 0x65, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x54, 0x68, 0x69, 0x72, 0x74, 0x79, 0x44, 0x61, 0x79, 0x73, 0x20, 0x70, 0x72, 0x69, 0x63, 0x65, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x53, 0x69, 0x78, 0x74, 0x79, 0x44, 0x61, 0x79, 0x73, 0x20, 0x70, 0x72, 0x69, 0x63, 0x65, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x4f, 0x6e, 0x65, 0x59, 0x65, 0x61, 0x72, 0x20, 0x61, 0x6c, 0x6c, 0x54, 0x69, 0x6d, 0x65, 0x48, 0x69, 0x67, 0x68, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x20, 0x61, 0x6c, 0x6c, 0x54, 0x69, 0x6d, 0x65, 0x48, 0x69, 0x67, 0x68, 0x44, 0x61, 0x74, 0x65, 0x20, 0x61, 0x6c, 0x6c, 0x54, 0x69, 0x6d, 0x65, 0x4c, 0x6f, 0x77, 0x43, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x50, 0x65, 0x72, 0x63, 0x65, 0x6e, 0x74, 0x61, 0x67, 0x65, 0x20, 0x61, 0x6c, 0x6c, 0x54, 0x69, 0x6d, 0x65, 0x4c, 0x6f, 0x77, 0x44, 0x61, 0x74, 0x65, 0x20, 0x7d, 0x20, 0x7d};
+        public global::StrawberryShake.DocumentHash Hash { get; } = new global::StrawberryShake.DocumentHash("md5Hash", "93ff63c745dd3b2a987e83eec23c46fd");
         public override global::System.String ToString()
         {
 #if NETSTANDARD2_0
@@ -432,14 +386,24 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
     /// query GetCryptoAsset($abbreviation: String!) {
     ///   cryptoAsset(abbreviation: $abbreviation) {
     ///     __typename
+    ///     name
     ///     abbreviation
-    ///     marketData {
-    ///       __typename
-    ///       currentPrice {
-    ///         __typename
-    ///         usd
-    ///       }
-    ///     }
+    ///     rank
+    ///     capitalizationUsd
+    ///     currentPriceUsd
+    ///     allTimeHighPriceUsd
+    ///     allTimeLowPriceUsd
+    ///     highTwentyFourHoursUsd
+    ///     lowTwentyFourHoursUsd
+    ///     priceChangePercentageTwentyFourHours
+    ///     priceChangePercentageSevenDays
+    ///     priceChangePercentageThirtyDays
+    ///     priceChangePercentageSixtyDays
+    ///     priceChangePercentageOneYear
+    ///     allTimeHighChangePercentage
+    ///     allTimeHighDate
+    ///     allTimeLowChangePercentage
+    ///     allTimeLowDate
     ///   }
     /// }
     /// </code>
@@ -502,14 +466,24 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService
     /// query GetCryptoAsset($abbreviation: String!) {
     ///   cryptoAsset(abbreviation: $abbreviation) {
     ///     __typename
+    ///     name
     ///     abbreviation
-    ///     marketData {
-    ///       __typename
-    ///       currentPrice {
-    ///         __typename
-    ///         usd
-    ///       }
-    ///     }
+    ///     rank
+    ///     capitalizationUsd
+    ///     currentPriceUsd
+    ///     allTimeHighPriceUsd
+    ///     allTimeLowPriceUsd
+    ///     highTwentyFourHoursUsd
+    ///     lowTwentyFourHoursUsd
+    ///     priceChangePercentageTwentyFourHours
+    ///     priceChangePercentageSevenDays
+    ///     priceChangePercentageThirtyDays
+    ///     priceChangePercentageSixtyDays
+    ///     priceChangePercentageOneYear
+    ///     allTimeHighChangePercentage
+    ///     allTimeHighDate
+    ///     allTimeLowChangePercentage
+    ///     allTimeLowDate
     ///   }
     /// }
     /// </code>
@@ -584,47 +558,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
             IGetCryptoAsset_CryptoAsset returnValue = default !;
             if (data?.__typename.Equals("CryptoAsset", global::System.StringComparison.Ordinal) ?? false)
             {
-                returnValue = new GetCryptoAsset_CryptoAsset_CryptoAsset(data.Abbreviation ?? throw new global::System.ArgumentNullException(), MapIGetCryptoAsset_CryptoAsset_MarketData(data.MarketData, snapshot));
-            }
-            else
-            {
-                throw new global::System.NotSupportedException();
-            }
-
-            return returnValue;
-        }
-
-        private global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData? MapIGetCryptoAsset_CryptoAsset_MarketData(global::NotificationBot.Telegram.Infrastructure.GraphService.State.MarketDataData? data, global::StrawberryShake.IEntityStoreSnapshot snapshot)
-        {
-            if (data is null)
-            {
-                return null;
-            }
-
-            IGetCryptoAsset_CryptoAsset_MarketData returnValue = default !;
-            if (data?.__typename.Equals("MarketData", global::System.StringComparison.Ordinal) ?? false)
-            {
-                returnValue = new GetCryptoAsset_CryptoAsset_MarketData_MarketData(MapIGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice(data.CurrentPrice, snapshot));
-            }
-            else
-            {
-                throw new global::System.NotSupportedException();
-            }
-
-            return returnValue;
-        }
-
-        private global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice? MapIGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice(global::NotificationBot.Telegram.Infrastructure.GraphService.State.CurrentPriceData? data, global::StrawberryShake.IEntityStoreSnapshot snapshot)
-        {
-            if (data is null)
-            {
-                return null;
-            }
-
-            IGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice returnValue = default !;
-            if (data?.__typename.Equals("CurrentPrice", global::System.StringComparison.Ordinal) ?? false)
-            {
-                returnValue = new GetCryptoAsset_CryptoAsset_MarketData_CurrentPrice_CurrentPrice(data.Usd ?? throw new global::System.ArgumentNullException());
+                returnValue = new GetCryptoAsset_CryptoAsset_CryptoAsset(data.Name ?? throw new global::System.ArgumentNullException(), data.Abbreviation ?? throw new global::System.ArgumentNullException(), data.Rank ?? throw new global::System.ArgumentNullException(), data.CapitalizationUsd ?? throw new global::System.ArgumentNullException(), data.CurrentPriceUsd ?? throw new global::System.ArgumentNullException(), data.AllTimeHighPriceUsd ?? throw new global::System.ArgumentNullException(), data.AllTimeLowPriceUsd ?? throw new global::System.ArgumentNullException(), data.HighTwentyFourHoursUsd ?? throw new global::System.ArgumentNullException(), data.LowTwentyFourHoursUsd ?? throw new global::System.ArgumentNullException(), data.PriceChangePercentageTwentyFourHours ?? throw new global::System.ArgumentNullException(), data.PriceChangePercentageSevenDays ?? throw new global::System.ArgumentNullException(), data.PriceChangePercentageThirtyDays ?? throw new global::System.ArgumentNullException(), data.PriceChangePercentageSixtyDays ?? throw new global::System.ArgumentNullException(), data.PriceChangePercentageOneYear ?? throw new global::System.ArgumentNullException(), data.AllTimeHighChangePercentage ?? throw new global::System.ArgumentNullException(), data.AllTimeHighDate ?? throw new global::System.ArgumentNullException(), data.AllTimeLowChangePercentage ?? throw new global::System.ArgumentNullException(), data.AllTimeLowDate ?? throw new global::System.ArgumentNullException());
             }
             else
             {
@@ -669,14 +603,18 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
         private readonly global::StrawberryShake.IEntityIdSerializer _idSerializer;
         private readonly global::StrawberryShake.IOperationResultDataFactory<global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAssetResult> _resultDataFactory;
         private readonly global::StrawberryShake.Serialization.ILeafValueParser<global::System.String, global::System.String> _stringParser;
+        private readonly global::StrawberryShake.Serialization.ILeafValueParser<global::System.Int64, global::System.Int64> _longParser;
         private readonly global::StrawberryShake.Serialization.ILeafValueParser<global::System.Decimal, global::System.Decimal> _decimalParser;
+        private readonly global::StrawberryShake.Serialization.ILeafValueParser<global::System.String, global::System.DateTimeOffset> _dateTimeParser;
         public GetCryptoAssetBuilder(global::StrawberryShake.IEntityStore entityStore, global::StrawberryShake.IEntityIdSerializer idSerializer, global::StrawberryShake.IOperationResultDataFactory<global::NotificationBot.Telegram.Infrastructure.GraphService.IGetCryptoAssetResult> resultDataFactory, global::StrawberryShake.Serialization.ISerializerResolver serializerResolver)
         {
             _entityStore = entityStore ?? throw new global::System.ArgumentNullException(nameof(entityStore));
             _idSerializer = idSerializer ?? throw new global::System.ArgumentNullException(nameof(idSerializer));
             _resultDataFactory = resultDataFactory ?? throw new global::System.ArgumentNullException(nameof(resultDataFactory));
             _stringParser = serializerResolver.GetLeafValueParser<global::System.String, global::System.String>("String") ?? throw new global::System.ArgumentException("No serializer for type `String` found.");
+            _longParser = serializerResolver.GetLeafValueParser<global::System.Int64, global::System.Int64>("Long") ?? throw new global::System.ArgumentException("No serializer for type `Long` found.");
             _decimalParser = serializerResolver.GetLeafValueParser<global::System.Decimal, global::System.Decimal>("Decimal") ?? throw new global::System.ArgumentException("No serializer for type `Decimal` found.");
+            _dateTimeParser = serializerResolver.GetLeafValueParser<global::System.String, global::System.DateTimeOffset>("DateTime") ?? throw new global::System.ArgumentException("No serializer for type `DateTime` found.");
         }
 
         public global::StrawberryShake.IOperationResult<IGetCryptoAssetResult> Build(global::StrawberryShake.Response<global::System.Text.Json.JsonDocument> response)
@@ -742,7 +680,7 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
             var typename = obj.Value.GetProperty("__typename").GetString();
             if (typename?.Equals("CryptoAsset", global::System.StringComparison.Ordinal) ?? false)
             {
-                return new global::NotificationBot.Telegram.Infrastructure.GraphService.State.CryptoAssetData(typename, abbreviation: DeserializeNonNullableString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "abbreviation")), marketData: DeserializeIGetCryptoAsset_CryptoAsset_MarketData(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "marketData")));
+                return new global::NotificationBot.Telegram.Infrastructure.GraphService.State.CryptoAssetData(typename, name: DeserializeNonNullableString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "name")), abbreviation: DeserializeNonNullableString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "abbreviation")), rank: DeserializeNonNullableInt64(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "rank")), capitalizationUsd: DeserializeNonNullableDecimal(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "capitalizationUsd")), currentPriceUsd: DeserializeNonNullableDecimal(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "currentPriceUsd")), allTimeHighPriceUsd: DeserializeNonNullableDecimal(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "allTimeHighPriceUsd")), allTimeLowPriceUsd: DeserializeNonNullableDecimal(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "allTimeLowPriceUsd")), highTwentyFourHoursUsd: DeserializeNonNullableDecimal(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "highTwentyFourHoursUsd")), lowTwentyFourHoursUsd: DeserializeNonNullableDecimal(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "lowTwentyFourHoursUsd")), priceChangePercentageTwentyFourHours: DeserializeNonNullableString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "priceChangePercentageTwentyFourHours")), priceChangePercentageSevenDays: DeserializeNonNullableString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "priceChangePercentageSevenDays")), priceChangePercentageThirtyDays: DeserializeNonNullableString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "priceChangePercentageThirtyDays")), priceChangePercentageSixtyDays: DeserializeNonNullableString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "priceChangePercentageSixtyDays")), priceChangePercentageOneYear: DeserializeNonNullableString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "priceChangePercentageOneYear")), allTimeHighChangePercentage: DeserializeNonNullableString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "allTimeHighChangePercentage")), allTimeHighDate: DeserializeNonNullableDateTimeOffset(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "allTimeHighDate")), allTimeLowChangePercentage: DeserializeNonNullableString(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "allTimeLowChangePercentage")), allTimeLowDate: DeserializeNonNullableDateTimeOffset(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "allTimeLowDate")));
             }
 
             throw new global::System.NotSupportedException();
@@ -758,36 +696,14 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
             return _stringParser.Parse(obj.Value.GetString()!);
         }
 
-        private global::NotificationBot.Telegram.Infrastructure.GraphService.State.MarketDataData? DeserializeIGetCryptoAsset_CryptoAsset_MarketData(global::System.Text.Json.JsonElement? obj)
+        private global::System.Int64 DeserializeNonNullableInt64(global::System.Text.Json.JsonElement? obj)
         {
             if (!obj.HasValue)
             {
-                return null;
+                throw new global::System.ArgumentNullException();
             }
 
-            var typename = obj.Value.GetProperty("__typename").GetString();
-            if (typename?.Equals("MarketData", global::System.StringComparison.Ordinal) ?? false)
-            {
-                return new global::NotificationBot.Telegram.Infrastructure.GraphService.State.MarketDataData(typename, currentPrice: DeserializeIGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "currentPrice")));
-            }
-
-            throw new global::System.NotSupportedException();
-        }
-
-        private global::NotificationBot.Telegram.Infrastructure.GraphService.State.CurrentPriceData? DeserializeIGetCryptoAsset_CryptoAsset_MarketData_CurrentPrice(global::System.Text.Json.JsonElement? obj)
-        {
-            if (!obj.HasValue)
-            {
-                return null;
-            }
-
-            var typename = obj.Value.GetProperty("__typename").GetString();
-            if (typename?.Equals("CurrentPrice", global::System.StringComparison.Ordinal) ?? false)
-            {
-                return new global::NotificationBot.Telegram.Infrastructure.GraphService.State.CurrentPriceData(typename, usd: DeserializeNonNullableDecimal(global::StrawberryShake.Json.JsonElementExtensions.GetPropertyOrNull(obj, "usd")));
-            }
-
-            throw new global::System.NotSupportedException();
+            return _longParser.Parse(obj.Value.GetInt64()!);
         }
 
         private global::System.Decimal DeserializeNonNullableDecimal(global::System.Text.Json.JsonElement? obj)
@@ -799,51 +715,81 @@ namespace NotificationBot.Telegram.Infrastructure.GraphService.State
 
             return _decimalParser.Parse(obj.Value.GetDecimal()!);
         }
+
+        private global::System.DateTimeOffset DeserializeNonNullableDateTimeOffset(global::System.Text.Json.JsonElement? obj)
+        {
+            if (!obj.HasValue)
+            {
+                throw new global::System.ArgumentNullException();
+            }
+
+            return _dateTimeParser.Parse(obj.Value.GetString()!);
+        }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
     public partial class CryptoAssetData
     {
-        public CryptoAssetData(global::System.String __typename, global::System.String? abbreviation = default !, global::NotificationBot.Telegram.Infrastructure.GraphService.State.MarketDataData? marketData = default !)
+        public CryptoAssetData(global::System.String __typename, global::System.String? name = default !, global::System.String? abbreviation = default !, global::System.Int64? rank = default !, global::System.Decimal? capitalizationUsd = default !, global::System.Decimal? currentPriceUsd = default !, global::System.Decimal? allTimeHighPriceUsd = default !, global::System.Decimal? allTimeLowPriceUsd = default !, global::System.Decimal? highTwentyFourHoursUsd = default !, global::System.Decimal? lowTwentyFourHoursUsd = default !, global::System.String? priceChangePercentageTwentyFourHours = default !, global::System.String? priceChangePercentageSevenDays = default !, global::System.String? priceChangePercentageThirtyDays = default !, global::System.String? priceChangePercentageSixtyDays = default !, global::System.String? priceChangePercentageOneYear = default !, global::System.String? allTimeHighChangePercentage = default !, global::System.DateTimeOffset? allTimeHighDate = default !, global::System.String? allTimeLowChangePercentage = default !, global::System.DateTimeOffset? allTimeLowDate = default !)
         {
             this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
+            Name = name;
             Abbreviation = abbreviation;
-            MarketData = marketData;
+            Rank = rank;
+            CapitalizationUsd = capitalizationUsd;
+            CurrentPriceUsd = currentPriceUsd;
+            AllTimeHighPriceUsd = allTimeHighPriceUsd;
+            AllTimeLowPriceUsd = allTimeLowPriceUsd;
+            HighTwentyFourHoursUsd = highTwentyFourHoursUsd;
+            LowTwentyFourHoursUsd = lowTwentyFourHoursUsd;
+            PriceChangePercentageTwentyFourHours = priceChangePercentageTwentyFourHours;
+            PriceChangePercentageSevenDays = priceChangePercentageSevenDays;
+            PriceChangePercentageThirtyDays = priceChangePercentageThirtyDays;
+            PriceChangePercentageSixtyDays = priceChangePercentageSixtyDays;
+            PriceChangePercentageOneYear = priceChangePercentageOneYear;
+            AllTimeHighChangePercentage = allTimeHighChangePercentage;
+            AllTimeHighDate = allTimeHighDate;
+            AllTimeLowChangePercentage = allTimeLowChangePercentage;
+            AllTimeLowDate = allTimeLowDate;
         }
 
         public global::System.String __typename { get; }
+
+        public global::System.String? Name { get; }
 
         public global::System.String? Abbreviation { get; }
 
-        public global::NotificationBot.Telegram.Infrastructure.GraphService.State.MarketDataData? MarketData { get; }
-    }
+        public global::System.Int64? Rank { get; }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
-    public partial class MarketDataData
-    {
-        public MarketDataData(global::System.String __typename, global::NotificationBot.Telegram.Infrastructure.GraphService.State.CurrentPriceData? currentPrice = default !)
-        {
-            this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
-            CurrentPrice = currentPrice;
-        }
+        public global::System.Decimal? CapitalizationUsd { get; }
 
-        public global::System.String __typename { get; }
+        public global::System.Decimal? CurrentPriceUsd { get; }
 
-        public global::NotificationBot.Telegram.Infrastructure.GraphService.State.CurrentPriceData? CurrentPrice { get; }
-    }
+        public global::System.Decimal? AllTimeHighPriceUsd { get; }
 
-    [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
-    public partial class CurrentPriceData
-    {
-        public CurrentPriceData(global::System.String __typename, global::System.Decimal? usd = default !)
-        {
-            this.__typename = __typename ?? throw new global::System.ArgumentNullException(nameof(__typename));
-            Usd = usd;
-        }
+        public global::System.Decimal? AllTimeLowPriceUsd { get; }
 
-        public global::System.String __typename { get; }
+        public global::System.Decimal? HighTwentyFourHoursUsd { get; }
 
-        public global::System.Decimal? Usd { get; }
+        public global::System.Decimal? LowTwentyFourHoursUsd { get; }
+
+        public global::System.String? PriceChangePercentageTwentyFourHours { get; }
+
+        public global::System.String? PriceChangePercentageSevenDays { get; }
+
+        public global::System.String? PriceChangePercentageThirtyDays { get; }
+
+        public global::System.String? PriceChangePercentageSixtyDays { get; }
+
+        public global::System.String? PriceChangePercentageOneYear { get; }
+
+        public global::System.String? AllTimeHighChangePercentage { get; }
+
+        public global::System.DateTimeOffset? AllTimeHighDate { get; }
+
+        public global::System.String? AllTimeLowChangePercentage { get; }
+
+        public global::System.DateTimeOffset? AllTimeLowDate { get; }
     }
 
     [global::System.CodeDom.Compiler.GeneratedCode("StrawberryShake", "12.8.2.0")]
