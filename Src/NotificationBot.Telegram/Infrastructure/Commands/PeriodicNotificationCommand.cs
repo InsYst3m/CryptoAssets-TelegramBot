@@ -1,8 +1,8 @@
-﻿using NotificationBot.DataAccess.Entities;
-using NotificationBot.DataAccess.Services;
+﻿using NotificationBot.DataAccess.Services;
 using NotificationBot.Telegram.Infrastructure.Generators;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Infrastructure.ViewModels;
+using NotifiicationBot.Domain.Entities;
 using Telegram.Bot;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands
@@ -51,7 +51,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
             foreach (User user in users)
             {
                 string[] cryptoAssetsAbbreviations =
-                    (await _dataAccessService.GetFavoriteCryptoAssetsByTelegramUserIdAsync(user.ChatId))
+                    (await _dataAccessService.GetFollowedCryptoAssetsByTelegramUserIdAsync(user.ChatId))
                     .Select(x => x.Abbreviation)
                     .ToArray();
 

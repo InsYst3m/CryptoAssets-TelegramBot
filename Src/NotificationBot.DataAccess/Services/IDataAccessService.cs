@@ -1,4 +1,4 @@
-﻿using NotificationBot.DataAccess.Entities;
+﻿using NotifiicationBot.Domain.Entities;
 
 namespace NotificationBot.DataAccess.Services
 {
@@ -11,7 +11,7 @@ namespace NotificationBot.DataAccess.Services
         /// </summary>
         /// <param name="telegramUserId">The telegram user identifier.</param>
         /// <returns>List of crypto assets related to user or empty list.</returns>
-        Task<List<CryptoAsset>> GetFavoriteCryptoAssetsByTelegramUserIdAsync(long telegramUserId);
+        Task<List<CryptoAsset>> GetFollowedCryptoAssetsByTelegramUserIdAsync(long telegramUserId);
 
         /// <summary>
         /// Gets the list of users with <see cref="UserSettings.UsePeriodicNotifications"/> flag

@@ -1,4 +1,4 @@
-﻿namespace NotificationBot.DataAccess.Entities
+﻿namespace NotifiicationBot.Domain.Entities
 {
     public class UserSettings
     {

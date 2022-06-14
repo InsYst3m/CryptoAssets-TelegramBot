@@ -24,7 +24,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         {
             Chat chat = _parsedMessage.Message.Chat;
 
-            DataAccess.Entities.User? user = await _dataAccessService.GetUserByChatIdAsync(chat.Id);
+            NotifiicationBot.Domain.Entities.User? user = await _dataAccessService.GetUserByChatIdAsync(chat.Id);
 
             if (user is not null)
             {

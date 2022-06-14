@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NotificationBot.DataAccess.Entities
+namespace NotifiicationBot.Domain.Entities
 {
     public class User
     {
@@ -11,11 +11,13 @@ namespace NotificationBot.DataAccess.Entities
 
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
-        
+
         public bool IsActive { get; set; }
         public long ChatId { get; set; }
 
-        public List<CryptoAsset> CryptoAssets { get; set; } = new List<CryptoAsset>();
+        public IList<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
+        public IList<UsersFollowingCryptoAssets> FollowedCryptoAssets { get; set; } = new List<UsersFollowingCryptoAssets>();
+
         public UserSettings Settings { get; set; } = null!;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NotificationBot.DataAccess.Entities;
+using NotifiicationBot.Domain.Entities;
 
 namespace NotificationBot.DataAccess.EntityConfigurations
 {
@@ -8,6 +8,8 @@ namespace NotificationBot.DataAccess.EntityConfigurations
     {
         public void Configure(EntityTypeBuilder<CryptoAsset> builder)
         {
+            builder.HasKey(x => x.Id);
+
             builder.Property(asset => asset.Id)
                 .IsRequired()
                 .UseIdentityColumn();

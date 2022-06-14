@@ -4,20 +4,16 @@ using NotifiicationBot.Domain.Entities;
 
 namespace NotificationBot.DataAccess.EntityConfigurations
 {
-    public class UserConfiguration : IEntityTypeConfiguration<User>
+    public class PortfolioConfiguration : IEntityTypeConfiguration<Portfolio>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Portfolio> builder)
         {
-            builder.HasKey(x => x.Id);
+            builder.HasKey(p => p.Id);
 
             builder
-                .Property(user => user.Id)
+                .Property(p => p.Id)
                 .IsRequired()
                 .UseIdentityColumn();
-
-            builder
-                .Property(user => user.Email)
-                .IsRequired();
         }
     }
 }

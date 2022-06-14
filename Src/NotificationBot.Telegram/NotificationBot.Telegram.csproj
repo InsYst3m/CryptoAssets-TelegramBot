@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>340291fc-6772-480b-ae37-a0b02a8e31d3</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NotificationBot.DataAccess\NotificationBot.DataAccess.csproj" />
+    <ProjectReference Include="..\NotifiicationBot.Domain\NotifiicationBot.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -41,7 +41,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         public async Task<string> ExecuteAsync(params string[] arguments)
         {
             string[] cryptoAssetsAbbreviations = 
-                (await _dataAccessService.GetFavoriteCryptoAssetsByTelegramUserIdAsync(_parsedMessage.Message.Chat.Id))
+                (await _dataAccessService.GetFollowedCryptoAssetsByTelegramUserIdAsync(_parsedMessage.Message.Chat.Id))
                 .Select(x => x.Abbreviation)
                 .ToArray();
 

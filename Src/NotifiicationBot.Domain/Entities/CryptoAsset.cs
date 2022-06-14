@@ -1,4 +1,4 @@
-﻿namespace NotificationBot.DataAccess.Entities
+﻿namespace NotifiicationBot.Domain.Entities
 {
     public class CryptoAsset
     {
@@ -7,6 +7,7 @@
         public string Abbreviation { get; set; } = string.Empty;
         public string CoinGeckoAbbreviation { get; set; } = string.Empty;
 
-        public List<User> Users { get; set; } = new List<User>();
+        public IList<CryptoTransaction> CryptoTransactions { get; set; } = new List<CryptoTransaction>();
+        public IList<UsersFollowingCryptoAssets> Followers { get; set; } = new List<UsersFollowingCryptoAssets>();
     }
 }

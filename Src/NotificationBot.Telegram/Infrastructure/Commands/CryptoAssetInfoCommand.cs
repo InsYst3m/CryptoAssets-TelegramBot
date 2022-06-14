@@ -1,9 +1,9 @@
-﻿using NotificationBot.DataAccess.Entities;
-using NotificationBot.DataAccess.Services;
+﻿using NotificationBot.DataAccess.Services;
 using NotificationBot.Telegram.Infrastructure.Generators;
 using NotificationBot.Telegram.Infrastructure.Parsers.Models;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Infrastructure.ViewModels;
+using NotifiicationBot.Domain.Entities;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using NotificationBot.DataAccess.Entities;
+using NotifiicationBot.Domain.Entities;
 
 namespace NotificationBot.DataAccess.Services
 {
@@ -39,16 +39,21 @@ namespace NotificationBot.DataAccess.Services
                 });
         }
 
-        /// <inheritdoc cref="IDataAccessService.GetFavoriteCryptoAssetsByTelegramUserIdAsync(long)" />
-        public async Task<List<CryptoAsset>> GetFavoriteCryptoAssetsByTelegramUserIdAsync(long telegramUserId)
+        /// <inheritdoc cref="IDataAccessService.GetFollowedCryptoAssetsByTelegramUserIdAsync(long)" />
+        public async Task<List<CryptoAsset>> GetFollowedCryptoAssetsByTelegramUserIdAsync(long telegramUserId)
         {
             using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
 
-            User? user = context.Users.Include(x => x.CryptoAssets).FirstOrDefault(x => x.ChatId == telegramUserId);
+            User? user = context.Users
+                .Include(x => x.FollowedCryptoAssets)
+                .ThenInclude(x => x.CryptoAsset)
+                .FirstOrDefault(x => x.ChatId == telegramUserId);
 
             if (user is not null)
             {
-                return user.CryptoAssets;
+                return user.FollowedCryptoAssets
+                    .Select(x => x.CryptoAsset)
+                    .ToList();
             }
 
             return new List<CryptoAsset>();

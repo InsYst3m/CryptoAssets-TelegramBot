@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
-using NotificationBot.DataAccess.Entities;
 using NotificationBot.DataAccess.Services;
 using NotificationBot.Telegram.Configuration;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
+using NotifiicationBot.Domain.Entities;
 using Telegram.Bot;
 
 namespace NotificationBot.Telegram.Infrastructure.Services
