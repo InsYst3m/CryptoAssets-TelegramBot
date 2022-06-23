@@ -1,15 +1,17 @@
 ﻿using NotificationBot.Telegram.Infrastructure.Parsers.Models;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
-using Telegram.Bot.Types.ReplyMarkups;
+using Telegram.Bot;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands
 {
-    public class PortfolioCommand : IBotCommand
+    public class NotSupportedCommand : IBotCommand
     {
+        private const string COMMAND_IS_NOT_SUPPORTED = "Command is not supported.";
+
         private readonly ParsedMessage _parsedMessage;
         private readonly INotificationService _notificationService;
 
-        public PortfolioCommand(
+        public NotSupportedCommand(
             ParsedMessage parsedMessage,
             INotificationService notificationService)
         {
@@ -22,19 +24,9 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
 
         public async Task ExecuteAsync(params string[] arguments)
         {
-            ReplyKeyboardMarkup keyboard = new(new[]
-            {
-                new KeyboardButton[] { "Add", "Remove" },
-                new KeyboardButton[] { "Update", "View" }
-            })
-            {
-                ResizeKeyboard = true
-            };
-
-            await _notificationService.SendMarkupNotificationAsync(
+            await _notificationService.SendNotificationAsync(
                 _parsedMessage.Message.Chat.Id,
-                string.Empty,
-                keyboard);
+                COMMAND_IS_NOT_SUPPORTED);
         }
     }
 }

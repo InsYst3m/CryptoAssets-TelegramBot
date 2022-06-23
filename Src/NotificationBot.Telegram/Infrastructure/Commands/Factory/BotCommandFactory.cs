@@ -47,24 +47,34 @@ namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
                     parsedMessage,
                     _serviceProvider.GetRequiredService<IDataAccessService>(),
                     _serviceProvider.GetRequiredService<IGraphService>(),
-                    _serviceProvider.GetRequiredService<IMessageGenerator>()),
+                    _serviceProvider.GetRequiredService<IMessageGenerator>(),
+                    _serviceProvider.GetRequiredService<INotificationService>()),
 
                 "/start" => new BotStartCommand(
                     parsedMessage,
-                    _serviceProvider.GetRequiredService<IDataAccessService>()),
+                    _serviceProvider.GetRequiredService<IDataAccessService>(),
+                    _serviceProvider.GetRequiredService<INotificationService>()),
 
                 "/stop" => new BotStopCommand(
                     parsedMessage,
-                    _serviceProvider.GetRequiredService<IDataAccessService>()),
+                    _serviceProvider.GetRequiredService<IDataAccessService>(),
+                    _serviceProvider.GetRequiredService<INotificationService>()),
+
+                "/portfolio" => new PortfolioCommand(
+                    parsedMessage,
+                    _serviceProvider.GetRequiredService<INotificationService>()),
 
                 string value when supportedCryptoAssetsAbbreviations.Contains(parsedMessage.CommandText!)
                     => new CryptoAssetInfoCommand(
                         parsedMessage,
                         _serviceProvider.GetRequiredService<IDataAccessService>(),
                         _serviceProvider.GetRequiredService<IGraphService>(),
-                        _serviceProvider.GetRequiredService<IMessageGenerator>()),
+                        _serviceProvider.GetRequiredService<IMessageGenerator>(),
+                        _serviceProvider.GetRequiredService<INotificationService>()),
 
-                _ => null
+                _ => new NotSupportedCommand(
+                    parsedMessage,
+                    _serviceProvider.GetRequiredService<INotificationService>())
             };
 
             return botCommand;
@@ -82,8 +92,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
                         _serviceProvider.GetRequiredService<IDataAccessService>(),
                         _serviceProvider.GetRequiredService<IGraphService>(),
                         _serviceProvider.GetRequiredService<IMessageGenerator>(),
-                        _serviceProvider.GetRequiredService<INotificationService>(),
-                        _serviceProvider.GetRequiredService<IBotClientFactory>());
+                        _serviceProvider.GetRequiredService<INotificationService>());
                 });
         }
     }

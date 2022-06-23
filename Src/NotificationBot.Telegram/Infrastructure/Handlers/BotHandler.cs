@@ -2,7 +2,6 @@
 using NotificationBot.Telegram.Infrastructure.Commands.Factory;
 using NotificationBot.Telegram.Infrastructure.Parsers.Interfaces;
 using NotificationBot.Telegram.Infrastructure.Parsers.Models;
-using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
@@ -14,20 +13,16 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
     {
         private readonly ITelegramMessageParser _messageParser;
         private readonly IBotCommandFactory _botCommandFactory;
-        private readonly INotificationService _notificationService;
 
         public BotHandler(
             ITelegramMessageParser messageParser,
-            IBotCommandFactory botCommandFactory,
-            INotificationService notificationService)
+            IBotCommandFactory botCommandFactory)
         {
             ArgumentNullException.ThrowIfNull(messageParser);
             ArgumentNullException.ThrowIfNull(botCommandFactory);
-            ArgumentNullException.ThrowIfNull(notificationService);
 
             _messageParser = messageParser;
             _botCommandFactory = botCommandFactory;
-            _notificationService = notificationService;
         }
 
         #region IBotHandlers Implementation
@@ -94,22 +89,18 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
 
             if (!string.IsNullOrEmpty(parsedMessage.Command))
             {
-                await OnCommandReceivedAsync(botClient, parsedMessage, cancellationToken);
+                await OnCommandReceivedAsync(parsedMessage);
             }
         }
 
-        private async Task<bool> OnCommandReceivedAsync(ITelegramBotClient botClient, ParsedMessage parsedMessage, CancellationToken cancellationToken)
+        private async Task OnCommandReceivedAsync(ParsedMessage parsedMessage)
         {
-            string result = "Command is not supported.";
-
             IBotCommand? botCommand = await _botCommandFactory.GetOrCreateAsync(parsedMessage);
 
             if (botCommand is not null)
             {
-                result = await botCommand.ExecuteAsync();
+                await botCommand.ExecuteAsync();
             }
-
-            return await _notificationService.SendNotificationAsync(botClient, parsedMessage.Message.Chat.Id, result, cancellationToken);
         }
 
         #endregion

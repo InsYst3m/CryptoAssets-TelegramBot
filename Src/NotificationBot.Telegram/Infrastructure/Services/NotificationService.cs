@@ -4,6 +4,7 @@ using NotificationBot.Telegram.Configuration;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotifiicationBot.Domain.Entities;
 using Telegram.Bot;
+using Telegram.Bot.Types.ReplyMarkups;
 
 namespace NotificationBot.Telegram.Infrastructure.Services
 {
@@ -11,6 +12,7 @@ namespace NotificationBot.Telegram.Infrastructure.Services
     {
         private readonly NotificationsSettings _notificationsSettings;
         private readonly IDataAccessService _dataAccessService;
+        private readonly ITelegramBotClient _botClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotificationService"/> class.
@@ -19,18 +21,20 @@ namespace NotificationBot.Telegram.Infrastructure.Services
         /// <param name="dataAccessService">The data access service.</param>
         public NotificationService(
             IOptions<NotificationsSettings> notificationsSettings,
-            IDataAccessService dataAccessService)
+            IDataAccessService dataAccessService,
+            IBotClientFactory botClientFactory)
         {
             ArgumentNullException.ThrowIfNull(notificationsSettings);
             ArgumentNullException.ThrowIfNull(dataAccessService);
+            ArgumentNullException.ThrowIfNull(botClientFactory);
 
             _notificationsSettings = notificationsSettings.Value;
             _dataAccessService = dataAccessService;
+            _botClient = botClientFactory.GetOrCreate();
         }
 
         /// <inheritdoc cref="INotificationService.SendNotificationAsync(ITelegramBotClient, long, string, CancellationToken)" />
         public async Task<bool> SendNotificationAsync(
-            ITelegramBotClient botClient,
             long chatId,
             string message,
             CancellationToken cancellationToken = default)
@@ -40,7 +44,22 @@ namespace NotificationBot.Telegram.Infrastructure.Services
                 return false;
             }
 
-            await botClient.SendTextMessageAsync(chatId, message, cancellationToken: cancellationToken);
+            await _botClient.SendTextMessageAsync(chatId, message, cancellationToken: cancellationToken);
+
+            return true;
+        }
+
+        public async Task<bool> SendMarkupNotificationAsync(
+            long chatId,
+            string message,
+            IReplyMarkup replyMarkup,
+            CancellationToken cancellationToken = default)
+        {
+            await _botClient.SendTextMessageAsync(
+                chatId,
+                message,
+                replyMarkup: replyMarkup,
+                cancellationToken: cancellationToken);
 
             return true;
         }

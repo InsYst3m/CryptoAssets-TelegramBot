@@ -3,17 +3,17 @@ using NotificationBot.Telegram.Infrastructure.Generators;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Infrastructure.ViewModels;
 using NotifiicationBot.Domain.Entities;
-using Telegram.Bot;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands
 {
     public class PeriodicNotificationCommand : IBotCommand
     {
+        private const string FAVORITE_CRYPTO_ASSETS_NOT_FOUND = "You have not selected any favorite crypto asset yet.";
+
         private readonly IDataAccessService _dataAccessService;
         private readonly IGraphService _graphService;
         private readonly IMessageGenerator _messageGenerator;
         private readonly INotificationService _notificationService;
-        private readonly ITelegramBotClient _botClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PeriodicNotificationCommand"/> class.
@@ -27,25 +27,23 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
             IDataAccessService dataAccessService,
             IGraphService graphService,
             IMessageGenerator messageGenerator,
-            INotificationService notificationService,
-            IBotClientFactory botClientFactory)
+            INotificationService notificationService)
         {
             ArgumentNullException.ThrowIfNull(dataAccessService);
             ArgumentNullException.ThrowIfNull(graphService);
             ArgumentNullException.ThrowIfNull(messageGenerator);
             ArgumentNullException.ThrowIfNull(notificationService);
-            ArgumentNullException.ThrowIfNull(botClientFactory);
 
             _dataAccessService = dataAccessService;
             _graphService = graphService;
             _messageGenerator = messageGenerator;
             _notificationService = notificationService;
-
-            _botClient = botClientFactory.GetOrCreate();
         }
 
-        public async Task<string> ExecuteAsync(params string[] arguments)
+        public async Task ExecuteAsync(params string[] arguments)
         {
+            string message = string.Empty;
+
             List<User> users = await _dataAccessService.GetUsersToSendPeriodicNotificationsAsync();
 
             foreach (User user in users)
@@ -57,17 +55,17 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
 
                 List<CryptoAssetViewModel> cryptoAssets = await _graphService.GetCryptoAssetsAsync(cryptoAssetsAbbreviations);
 
-                if (!cryptoAssets.Any())
+                if (cryptoAssets.Any())
                 {
-                    return "You have not selected any favorite crypto asset yet.";
+                    message = _messageGenerator.GenerateFavoriteCryptoAssetsInfoMessageAsync(cryptoAssets);
+                }
+                else
+                {
+                    message = FAVORITE_CRYPTO_ASSETS_NOT_FOUND;
                 }
 
-                string message = _messageGenerator.GenerateFavoriteCryptoAssetsInfoMessageAsync(cryptoAssets);
-
-                await _notificationService.SendNotificationAsync(_botClient, user.ChatId, message);
+                await _notificationService.SendNotificationAsync(user.ChatId, message);
             }
-
-            return "Operation completed.";
         }
     }
 }

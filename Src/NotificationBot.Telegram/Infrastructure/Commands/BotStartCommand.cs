@@ -1,26 +1,33 @@
 ﻿using NotificationBot.DataAccess.Services;
 using NotificationBot.Telegram.Infrastructure.Parsers.Models;
+using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using Telegram.Bot.Types;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands
 {
     public class BotStartCommand : IBotCommand
     {
+        private const string GREETING_MESSAGE = "This is the coolest greeting message you have ever seen!";
+
         private readonly ParsedMessage _parsedMessage;
         private readonly IDataAccessService _dataAccessService;
+        private readonly INotificationService _notificationService;
 
         public BotStartCommand(
             ParsedMessage parsedMessage,
-            IDataAccessService dataAccessService)
+            IDataAccessService dataAccessService,
+            INotificationService notificationService)
         {
             ArgumentNullException.ThrowIfNull(parsedMessage);
             ArgumentNullException.ThrowIfNull(dataAccessService);
+            ArgumentNullException.ThrowIfNull(notificationService);
 
             _parsedMessage = parsedMessage;
             _dataAccessService = dataAccessService;
+            _notificationService = notificationService;
         }
 
-        public async Task<string> ExecuteAsync(params string[] arguments)
+        public async Task ExecuteAsync(params string[] arguments)
         {
             Chat chat = _parsedMessage.Message.Chat;
             User? telegramUser = _parsedMessage.Message.From;
@@ -41,7 +48,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
                 await _dataAccessService.UpdateUserAsync(user);
             }
 
-            return "This is the coolest greeting message you have ever seen!!!";
+            await _notificationService.SendNotificationAsync(chat.Id, GREETING_MESSAGE);
         }
     }
 }
