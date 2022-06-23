@@ -22,18 +22,23 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
 
         public async Task ExecuteAsync(params string[] arguments)
         {
-            ReplyKeyboardMarkup keyboard = new(new[]
+            InlineKeyboardMarkup keyboard = new(new[]
             {
-                new KeyboardButton[] { "Add", "Remove" },
-                new KeyboardButton[] { "Update", "View" }
-            })
-            {
-                ResizeKeyboard = true
-            };
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Add", "add_command"),
+                    InlineKeyboardButton.WithCallbackData("Remove", "remove_command"),
+                },
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData("Update", "update_command"),
+                    InlineKeyboardButton.WithCallbackData("View", "view_command")
+                },
+            });
 
             await _notificationService.SendMarkupNotificationAsync(
                 _parsedMessage.Message.Chat.Id,
-                string.Empty,
+                "Portfolio manipulation commands",
                 keyboard);
         }
     }

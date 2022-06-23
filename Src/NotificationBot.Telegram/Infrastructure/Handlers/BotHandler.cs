@@ -47,7 +47,8 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
             Task handler = update.Type switch
             {
                 UpdateType.Message => OnMessageReceivedAsync(botClient, update.Message!, cancellationToken),
-                _ => throw new InvalidOperationException()
+                UpdateType.CallbackQuery => OnCallbackQueryReceived(botClient, update.CallbackQuery!, cancellationToken),
+                _ => Task.CompletedTask
             };
 
             try
@@ -77,6 +78,12 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
         #endregion
 
         #region Internal Events Implementation
+
+        private async Task OnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery, CancellationToken cancellationToken)
+        {
+            //await OnMessageReceivedAsync(botClient, callbackQuery.Message!, cancellationToken);
+            await botClient.SendTextMessageAsync(callbackQuery.Message!.Chat.Id, $"You choose: {callbackQuery.Data}.");
+        }
 
         private async Task OnMessageReceivedAsync(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
         {
