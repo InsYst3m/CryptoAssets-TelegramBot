@@ -1,6 +1,6 @@
 ﻿using NotificationBot.DataAccess.Services;
-using NotificationBot.Telegram.Infrastructure.Parsers.Models;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
+using NotificationBot.Telegram.Models;
 using Telegram.Bot.Types;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands
@@ -9,28 +9,28 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
     {
         private const string GREETING_MESSAGE = "This is the coolest greeting message you have ever seen!";
 
-        private readonly ParsedMessage _parsedMessage;
+        private readonly CommandMessage _commandMessage;
         private readonly IDataAccessService _dataAccessService;
         private readonly INotificationService _notificationService;
 
         public BotStartCommand(
-            ParsedMessage parsedMessage,
+            CommandMessage commandMessage,
             IDataAccessService dataAccessService,
             INotificationService notificationService)
         {
-            ArgumentNullException.ThrowIfNull(parsedMessage);
+            ArgumentNullException.ThrowIfNull(commandMessage);
             ArgumentNullException.ThrowIfNull(dataAccessService);
             ArgumentNullException.ThrowIfNull(notificationService);
 
-            _parsedMessage = parsedMessage;
+            _commandMessage = commandMessage;
             _dataAccessService = dataAccessService;
             _notificationService = notificationService;
         }
 
-        public async Task ExecuteAsync(params string[] arguments)
+        public async Task ExecuteAsync()
         {
-            Chat chat = _parsedMessage.Message.Chat;
-            User? telegramUser = _parsedMessage.Message.From;
+            Chat chat = _commandMessage.Message.Chat;
+            User? telegramUser = _commandMessage.Message.From;
 
             NotifiicationBot.Domain.Entities.User? user = await _dataAccessService.GetUserByChatIdAsync(chat.Id);
 

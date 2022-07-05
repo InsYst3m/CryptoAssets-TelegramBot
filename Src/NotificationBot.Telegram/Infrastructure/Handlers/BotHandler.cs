@@ -1,7 +1,6 @@
 ﻿using NotificationBot.Telegram.Infrastructure.Commands;
 using NotificationBot.Telegram.Infrastructure.Commands.Factory;
-using NotificationBot.Telegram.Infrastructure.Parsers.Interfaces;
-using NotificationBot.Telegram.Infrastructure.Parsers.Models;
+using NotificationBot.Telegram.Models;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
@@ -11,22 +10,24 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
 {
     public class BotHandler : IBotHandler
     {
-        private readonly ITelegramMessageParser _messageParser;
         private readonly IBotCommandFactory _botCommandFactory;
 
         public BotHandler(
-            ITelegramMessageParser messageParser,
             IBotCommandFactory botCommandFactory)
         {
-            ArgumentNullException.ThrowIfNull(messageParser);
             ArgumentNullException.ThrowIfNull(botCommandFactory);
 
-            _messageParser = messageParser;
             _botCommandFactory = botCommandFactory;
         }
 
         #region IBotHandlers Implementation
 
+        /// <summary>
+        /// Handles service errors.
+        /// </summary>
+        /// <param name="botClient"></param>
+        /// <param name="exception"></param>
+        /// <param name="cancellationToken"></param>
         public Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
         {
             string errorMessage = exception switch
@@ -79,30 +80,30 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
 
         #region Internal Events Implementation
 
+        /// <summary>
+        /// Waits for user keyboard callback.
+        /// </summary>
+        /// <param name="botClient"></param>
+        /// <param name="callbackQuery"></param>
+        /// <param name="cancellationToken"></param>
         private async Task OnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery, CancellationToken cancellationToken)
         {
-            //await OnMessageReceivedAsync(botClient, callbackQuery.Message!, cancellationToken);
-            await botClient.SendTextMessageAsync(callbackQuery.Message!.Chat.Id, $"You choose: {callbackQuery.Data}.");
+            await OnMessageReceivedAsync(botClient, callbackQuery.Message!, cancellationToken);
         }
 
         private async Task OnMessageReceivedAsync(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
         {
-            if (message.Type is not MessageType.Text)
-            {
-                return;
-            };
+            CommandMessage commandMessage = CommandMessage.Parse(message);
 
-            ParsedMessage parsedMessage = _messageParser.Parse(message);
-
-            if (!string.IsNullOrEmpty(parsedMessage.Command))
+            if (!string.IsNullOrEmpty(commandMessage.Command))
             {
-                await OnCommandReceivedAsync(parsedMessage);
+                await OnCommandReceivedAsync(commandMessage);
             }
         }
 
-        private async Task OnCommandReceivedAsync(ParsedMessage parsedMessage)
+        private async Task OnCommandReceivedAsync(CommandMessage commandMessage)
         {
-            IBotCommand? botCommand = await _botCommandFactory.GetOrCreateAsync(parsedMessage);
+            IBotCommand? botCommand = await _botCommandFactory.GetOrCreateAsync(commandMessage);
 
             if (botCommand is not null)
             {

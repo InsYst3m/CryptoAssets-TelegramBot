@@ -1,7 +1,16 @@
 ﻿namespace NotifiicationBot.Domain.Entities
 {
+    /// <summary>
+    /// Represents crypto assets portfolio.
+    /// </summary>
     public class Portfolio
     {
+        public Portfolio(string name, long userId)
+        {
+            Name = name;
+            UserId = userId;
+        }
+
         public long Id { get; set; }
         public string Name { get; set; } = string.Empty;
 

@@ -1,5 +1,5 @@
-﻿using NotificationBot.Telegram.Infrastructure.Parsers.Models;
-using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
+﻿using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
+using NotificationBot.Telegram.Models;
 using Telegram.Bot;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands
@@ -8,24 +8,24 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
     {
         private const string COMMAND_IS_NOT_SUPPORTED = "Command is not supported.";
 
-        private readonly ParsedMessage _parsedMessage;
+        private readonly CommandMessage _commandMessage;
         private readonly INotificationService _notificationService;
 
         public NotSupportedCommand(
-            ParsedMessage parsedMessage,
+            CommandMessage commandMessage,
             INotificationService notificationService)
         {
-            ArgumentNullException.ThrowIfNull(parsedMessage);
+            ArgumentNullException.ThrowIfNull(commandMessage);
             ArgumentNullException.ThrowIfNull(notificationService);
 
-            _parsedMessage = parsedMessage;
+            _commandMessage = commandMessage;
             _notificationService = notificationService;
         }
 
-        public async Task ExecuteAsync(params string[] arguments)
+        public async Task ExecuteAsync()
         {
             await _notificationService.SendNotificationAsync(
-                _parsedMessage.Message.Chat.Id,
+                _commandMessage.Message.Chat.Id,
                 COMMAND_IS_NOT_SUPPORTED);
         }
     }

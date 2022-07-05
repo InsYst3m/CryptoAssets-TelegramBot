@@ -40,7 +40,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
             _notificationService = notificationService;
         }
 
-        public async Task ExecuteAsync(params string[] arguments)
+        public async Task ExecuteAsync()
         {
             string message = string.Empty;
 

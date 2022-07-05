@@ -1,8 +1,8 @@
 ﻿using NotificationBot.DataAccess.Services;
 using NotificationBot.Telegram.Infrastructure.Generators;
-using NotificationBot.Telegram.Infrastructure.Parsers.Models;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Infrastructure.ViewModels;
+using NotificationBot.Telegram.Models;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands
 {
@@ -10,7 +10,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
     {
         private const string FAVORITE_CRYPTO_ASSETS_NOT_FOUND = "You have not selected any favorite crypto asset yet.";
 
-        private readonly ParsedMessage _parsedMessage;
+        private readonly CommandMessage _commandMessage;
         private readonly IDataAccessService _dataAccessService;
         private readonly IGraphService _graphService;
         private readonly IMessageGenerator _messageGenerator;
@@ -19,24 +19,24 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="FavoriteCryptoAssetsCommand"/> class.
         /// </summary>
-        /// <param name="parsedMessage">The parsed telegram bot message.</param>
+        /// <param name="commandMessage">The parsed telegram bot message.</param>
         /// <param name="dataAccessService">The data access service.</param>
         /// <param name="graphService">The graph service.</param>
         /// <param name="messageGenerator">The message generator.</param>
         public FavoriteCryptoAssetsCommand(
-            ParsedMessage parsedMessage,
+            CommandMessage commandMessage,
             IDataAccessService dataAccessService,
             IGraphService graphService,
             IMessageGenerator messageGenerator,
             INotificationService notificationService)
         {
-            ArgumentNullException.ThrowIfNull(parsedMessage);
+            ArgumentNullException.ThrowIfNull(commandMessage);
             ArgumentNullException.ThrowIfNull(dataAccessService);
             ArgumentNullException.ThrowIfNull(graphService);
             ArgumentNullException.ThrowIfNull(messageGenerator);
             ArgumentNullException.ThrowIfNull(notificationService);
             
-            _parsedMessage = parsedMessage;
+            _commandMessage = commandMessage;
             _dataAccessService = dataAccessService;
             _graphService = graphService;
             _messageGenerator = messageGenerator;
@@ -44,12 +44,12 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         }
 
         /// <inheritdoc cref="IBotCommand.ExecuteAsync(string[])" />
-        public async Task ExecuteAsync(params string[] arguments)
+        public async Task ExecuteAsync()
         {
             string message = string.Empty;
 
             string[] cryptoAssetsAbbreviations = 
-                (await _dataAccessService.GetFollowedCryptoAssetsByTelegramUserIdAsync(_parsedMessage.Message.Chat.Id))
+                (await _dataAccessService.GetFollowedCryptoAssetsByTelegramUserIdAsync(_commandMessage.Message.Chat.Id))
                 .Select(x => x.Abbreviation)
                 .ToArray();
 
@@ -64,7 +64,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
                 message = "You have not selected any favorite crypto asset yet.";
             }
 
-            await _notificationService.SendNotificationAsync(_parsedMessage.Message.Chat.Id, message);
+            await _notificationService.SendNotificationAsync(_commandMessage.Message.Chat.Id, message);
         }
     }
 }

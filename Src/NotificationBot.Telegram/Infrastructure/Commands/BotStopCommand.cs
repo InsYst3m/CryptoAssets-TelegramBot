@@ -1,6 +1,6 @@
 ﻿using NotificationBot.DataAccess.Services;
-using NotificationBot.Telegram.Infrastructure.Parsers.Models;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
+using NotificationBot.Telegram.Models;
 using Telegram.Bot.Types;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands
@@ -9,27 +9,27 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
     {
         private const string OPERATION_COMPLETED = "Operation successfully completed.";
 
-        private readonly ParsedMessage _parsedMessage;
+        private readonly CommandMessage _commandMessage;
         private readonly IDataAccessService _dataAccessService;
         private readonly INotificationService _notificationService;
 
         public BotStopCommand(
-            ParsedMessage parsedMessage,
+            CommandMessage commandMessage,
             IDataAccessService dataAccessService,
             INotificationService notificationService)
         {
-            ArgumentNullException.ThrowIfNull(parsedMessage);
+            ArgumentNullException.ThrowIfNull(commandMessage);
             ArgumentNullException.ThrowIfNull(dataAccessService);
             ArgumentNullException.ThrowIfNull(notificationService);
 
-            _parsedMessage = parsedMessage;
+            _commandMessage = commandMessage;
             _dataAccessService = dataAccessService;
             _notificationService = notificationService;
         }
 
-        public async Task ExecuteAsync(params string[] arguments)
+        public async Task ExecuteAsync()
         {
-            Chat chat = _parsedMessage.Message.Chat;
+            Chat chat = _commandMessage.Message.Chat;
 
             NotifiicationBot.Domain.Entities.User? user = await _dataAccessService.GetUserByChatIdAsync(chat.Id);
 
@@ -38,7 +38,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
                 await _dataAccessService.RemoveUserAsync(user);
             }
 
-            await _notificationService.SendNotificationAsync(_parsedMessage.Message.Chat.Id, OPERATION_COMPLETED);
+            await _notificationService.SendNotificationAsync(_commandMessage.Message.Chat.Id, OPERATION_COMPLETED);
         }
     }
 }

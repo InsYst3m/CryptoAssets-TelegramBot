@@ -147,5 +147,23 @@ namespace NotificationBot.DataAccess.Services
 
             return true;
         }
+
+        /// <summary>
+        /// Creates crypto assets portfolio with specified name.
+        /// </summary>
+        /// <param name="name">The portfolio name.</param>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>Instance of <see cref="Portfolio"/> class.</returns>
+        public async Task<Portfolio> CreatePortfolioAsync(string name, long userId)
+        {
+            Portfolio portfolio = new(name, userId);
+
+            using AppDbContext context = await _dbContextFactory.CreateDbContextAsync();
+
+            context.Portfolios.Add(portfolio);
+            context.SaveChanges();
+
+            return portfolio;
+        }
     }
 }

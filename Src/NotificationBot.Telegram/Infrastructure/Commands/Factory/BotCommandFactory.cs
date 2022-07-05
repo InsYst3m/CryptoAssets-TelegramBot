@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using NotificationBot.DataAccess.Services;
+using NotificationBot.Telegram.Infrastructure.Commands.Portfolio;
 using NotificationBot.Telegram.Infrastructure.Generators;
-using NotificationBot.Telegram.Infrastructure.Parsers.Models;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
+using NotificationBot.Telegram.Models;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
 {
@@ -28,52 +29,57 @@ namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
             _memoryCache = memoryCache;
         }
 
-        public async Task<IBotCommand?> GetOrCreateAsync(ParsedMessage parsedMessage)
+        public async Task<IBotCommand?> GetOrCreateAsync(CommandMessage commandMessage)
         {
             List<string> supportedCryptoAssetsAbbreviations = 
                 (await _dataAccessService.GetCryptoAssetsLookupAsync())
                 .Select(x => x.Abbreviation)
                 .ToList();
 
-            if (string.IsNullOrWhiteSpace(parsedMessage.Command))
+            if (string.IsNullOrWhiteSpace(commandMessage.Command))
             {
                 return null;
             }
 
-            IBotCommand? botCommand = parsedMessage.Command switch
+            IBotCommand? botCommand = commandMessage.Command switch
             {
                 "/favourites" or
                 "/favorites" => new FavoriteCryptoAssetsCommand(
-                    parsedMessage,
+                    commandMessage,
                     _serviceProvider.GetRequiredService<IDataAccessService>(),
                     _serviceProvider.GetRequiredService<IGraphService>(),
                     _serviceProvider.GetRequiredService<IMessageGenerator>(),
                     _serviceProvider.GetRequiredService<INotificationService>()),
 
                 "/start" => new BotStartCommand(
-                    parsedMessage,
+                    commandMessage,
                     _serviceProvider.GetRequiredService<IDataAccessService>(),
                     _serviceProvider.GetRequiredService<INotificationService>()),
 
                 "/stop" => new BotStopCommand(
-                    parsedMessage,
+                    commandMessage,
                     _serviceProvider.GetRequiredService<IDataAccessService>(),
                     _serviceProvider.GetRequiredService<INotificationService>()),
 
                 "/portfolio" => new PortfolioCommand(
-                    parsedMessage,
+                    commandMessage,
                     _serviceProvider.GetRequiredService<INotificationService>()),
 
-                string value when supportedCryptoAssetsAbbreviations.Contains(parsedMessage.CommandText!)
+                string value when supportedCryptoAssetsAbbreviations.Contains(commandMessage.CommandText!)
                     => new CryptoAssetInfoCommand(
-                        parsedMessage,
+                        commandMessage,
                         _serviceProvider.GetRequiredService<IDataAccessService>(),
                         _serviceProvider.GetRequiredService<IGraphService>(),
                         _serviceProvider.GetRequiredService<IMessageGenerator>(),
                         _serviceProvider.GetRequiredService<INotificationService>()),
 
+                "/createportfolio" => new PortfolioCreateCommand(
+                    commandMessage,
+                    _serviceProvider.GetRequiredService<IDataAccessService>(),
+                    _serviceProvider.GetRequiredService<INotificationService>()),
+
                 _ => new NotSupportedCommand(
-                    parsedMessage,
+                    commandMessage,
                     _serviceProvider.GetRequiredService<INotificationService>())
             };
 

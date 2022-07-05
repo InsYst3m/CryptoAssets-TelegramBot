@@ -1,8 +1,8 @@
 ﻿using NotificationBot.DataAccess.Services;
 using NotificationBot.Telegram.Infrastructure.Generators;
-using NotificationBot.Telegram.Infrastructure.Parsers.Models;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Infrastructure.ViewModels;
+using NotificationBot.Telegram.Models;
 using NotifiicationBot.Domain.Entities;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands
@@ -12,7 +12,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         private const string CRYPTO_ASSET_NOT_SUPPORTED = "Crypto Asset is not supported.";
         private const string CRYPTO_ASSET_NOT_FOUND = "Crypto Asset not found.";
 
-        private readonly ParsedMessage _parsedMessage;
+        private readonly CommandMessage _commandMessage;
         private readonly IDataAccessService _dataAccessService;
         private readonly IGraphService _graphService;
         private readonly IMessageGenerator _messageGenerator;
@@ -21,25 +21,25 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="CryptoAssetInfoCommand"/> class.
         /// </summary>
-        /// <param name="parsedMessage">The parsed telegram bot message.</param>
+        /// <param name="commandMessage">The parsed telegram bot message.</param>
         /// <param name="dataAccessService">The data access service.</param>
         /// <param name="graphService">The graph service.</param>
         /// <param name="messageGenerator">The message generator.</param>
         /// <param name="notificationService">The notification service.</param>
         public CryptoAssetInfoCommand(
-            ParsedMessage parsedMessage,
+            CommandMessage commandMessage,
             IDataAccessService dataAccessService,
             IGraphService graphService,
             IMessageGenerator messageGenerator,
             INotificationService notificationService)
         {
-            ArgumentNullException.ThrowIfNull(parsedMessage);
+            ArgumentNullException.ThrowIfNull(commandMessage);
             ArgumentNullException.ThrowIfNull(dataAccessService);
             ArgumentNullException.ThrowIfNull(graphService);
             ArgumentNullException.ThrowIfNull(messageGenerator);
             ArgumentNullException.ThrowIfNull(notificationService);
 
-            _parsedMessage = parsedMessage;
+            _commandMessage = commandMessage;
             _dataAccessService = dataAccessService;
             _graphService = graphService;
             _messageGenerator = messageGenerator;
@@ -47,27 +47,27 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         }
 
         /// <inheritdoc cref="IBotCommand.ExecuteAsync(string[])" />
-        public async Task ExecuteAsync(params string[] arguments)
+        public async Task ExecuteAsync()
         {
             List<CryptoAsset> supportedCryptoAssets = await _dataAccessService.GetCryptoAssetsLookupAsync();
 
-            if (!supportedCryptoAssets.Exists(x => x.Abbreviation == _parsedMessage.CommandText!))
+            if (!supportedCryptoAssets.Exists(x => x.Abbreviation == _commandMessage.CommandText!))
 {
-                await _notificationService.SendNotificationAsync(_parsedMessage.Message.Chat.Id, CRYPTO_ASSET_NOT_SUPPORTED);
+                await _notificationService.SendNotificationAsync(_commandMessage.Message.Chat.Id, CRYPTO_ASSET_NOT_SUPPORTED);
                 return;
             }
 
-            CryptoAssetViewModel? cryptoAsset = await _graphService.GetCryptoAssetAsync(_parsedMessage.CommandText!);
+            CryptoAssetViewModel? cryptoAsset = await _graphService.GetCryptoAssetAsync(_commandMessage.CommandText!);
 
             if (cryptoAsset is null)
             {
-                await _notificationService.SendNotificationAsync(_parsedMessage.Message.Chat.Id, CRYPTO_ASSET_NOT_FOUND);
+                await _notificationService.SendNotificationAsync(_commandMessage.Message.Chat.Id, CRYPTO_ASSET_NOT_FOUND);
                 return;
             }
 
             string result = _messageGenerator.GenerateCryptoAssetInfoMessageAsync(cryptoAsset);
 
-            await _notificationService.SendNotificationAsync(_parsedMessage.Message.Chat.Id, result);
+            await _notificationService.SendNotificationAsync(_commandMessage.Message.Chat.Id, result);
         }
     }
 }

@@ -27,5 +27,8 @@ namespace NotificationBot.DataAccess.Services
         Task<User?> GetUserByTelegramUserIdAsync(long telegramUserId);
         Task<User?> GetUserById(long id);
         Task<bool> UpdateUserAsync(User user);
+
+        /// <inheritdoc cref="IDataAccessService.CreatePortfolioAsync(string, long)" />
+        Task<Portfolio> CreatePortfolioAsync(string name, long userId);
     }
 }
