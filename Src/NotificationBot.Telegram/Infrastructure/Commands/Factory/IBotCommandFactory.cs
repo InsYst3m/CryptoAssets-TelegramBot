@@ -1,4 +1,5 @@
-﻿using NotificationBot.Telegram.Models;
+﻿using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
+using NotificationBot.Telegram.Models;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
 {

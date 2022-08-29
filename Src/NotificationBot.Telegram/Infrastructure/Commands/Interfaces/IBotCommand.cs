@@ -1,4 +1,4 @@
-﻿namespace NotificationBot.Telegram.Infrastructure.Commands
+﻿namespace NotificationBot.Telegram.Infrastructure.Commands.Interfaces
 {
     public interface IBotCommand
     {

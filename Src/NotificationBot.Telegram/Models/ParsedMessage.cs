@@ -8,7 +8,10 @@ namespace NotificationBot.Telegram.Models
     public class CommandMessage
     {
         public Message Message { get; set; } = null!;
+
+        public string CommandType CommandType {get;set;}
         public string? Command { get; set; }
+
 
         public string[]? Arguments { get; set; }
 
@@ -20,6 +23,7 @@ namespace NotificationBot.Telegram.Models
         public static CommandMessage Parse(Message message)
         {
             string[] content = message.Text!.Split(' ');
+
             bool isCommand = content[0].StartsWith('/');
 
             CommandMessage result = new()

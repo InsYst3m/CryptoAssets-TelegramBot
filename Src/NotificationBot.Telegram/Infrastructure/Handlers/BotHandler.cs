@@ -1,5 +1,5 @@
-﻿using NotificationBot.Telegram.Infrastructure.Commands;
-using NotificationBot.Telegram.Infrastructure.Commands.Factory;
+﻿using NotificationBot.Telegram.Infrastructure.Commands.Factory;
+using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
 using NotificationBot.Telegram.Models;
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;

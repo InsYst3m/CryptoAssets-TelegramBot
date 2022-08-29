@@ -1,4 +1,5 @@
 ﻿using NotificationBot.DataAccess.Services;
+using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
 using NotificationBot.Telegram.Infrastructure.Generators;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Infrastructure.ViewModels;
@@ -52,7 +53,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
             List<CryptoAsset> supportedCryptoAssets = await _dataAccessService.GetCryptoAssetsLookupAsync();
 
             if (!supportedCryptoAssets.Exists(x => x.Abbreviation == _commandMessage.CommandText!))
-{
+            {
                 await _notificationService.SendNotificationAsync(_commandMessage.Message.Chat.Id, CRYPTO_ASSET_NOT_SUPPORTED);
                 return;
             }
