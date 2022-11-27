@@ -1,11 +1,17 @@
 ﻿using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
-using NotificationBot.Telegram.Models;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
 {
-    public interface IBotCommandFactory
-    {
-        Task<IBotCommand?> GetOrCreateAsync(CommandMessage message);
-        IBotCommand GetOrCreatePeriodicNotificationCommand();
-    }
+	public interface IBotCommandProcessorFactory
+	{
+		/// <summary>
+		/// Creates command by the provided <see cref="Command.CommandType"/>.
+		/// </summary>
+		/// <param name="command"></param>
+		/// <returns>
+		/// Returns new instance of the <see cref="IBotCommandProcessor"/> type.
+		/// </returns>
+		IBotCommandProcessor Create(Command command);
+		//IBotCommandProcessor GetOrCreatePeriodicNotificationCommand();
+	}
 }

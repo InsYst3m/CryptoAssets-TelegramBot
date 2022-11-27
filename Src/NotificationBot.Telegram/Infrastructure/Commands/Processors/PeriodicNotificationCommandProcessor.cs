@@ -4,9 +4,9 @@ using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Infrastructure.ViewModels;
 using NotifiicationBot.Domain.Entities;
 
-namespace NotificationBot.Telegram.Infrastructure.Commands
+namespace NotificationBot.Telegram.Infrastructure.Commands.Processors
 {
-    public class PeriodicNotificationCommand : IBotCommand
+    public class PeriodicNotificationCommandProcessor : IBotCommandProcessor
     {
         private const string FAVORITE_CRYPTO_ASSETS_NOT_FOUND = "You have not selected any favorite crypto asset yet.";
 
@@ -15,14 +15,14 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         private readonly INotificationService _notificationService;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PeriodicNotificationCommand"/> class.
+        /// Initializes a new instance of the <see cref="PeriodicNotificationCommandProcessor"/> class.
         /// </summary>
         /// <param name="dataAccessService">The data access service.</param>
         /// <param name="graphService">The graph service.</param>
         /// <param name="messageGenerator">The message generator.</param>
         /// <param name="notificationService">The notification service.</param>
         /// <param name="botClientFactory">The telegram bot client factory.</param>
-        public PeriodicNotificationCommand(
+        public PeriodicNotificationCommandProcessor(
             IGraphService graphService,
             IMessageGenerator messageGenerator,
             INotificationService notificationService)
@@ -36,7 +36,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
             _notificationService = notificationService;
         }
 
-        public async Task ExecuteAsync()
+        public async Task ProcessAsync()
         {
             string message = string.Empty;
 

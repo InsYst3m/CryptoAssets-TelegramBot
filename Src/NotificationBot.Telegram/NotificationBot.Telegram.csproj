@@ -55,4 +55,8 @@
     <AdditionalFiles Remove="Infrastructure\GraphService\Queries\GetGlobalMarketData.graphql" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

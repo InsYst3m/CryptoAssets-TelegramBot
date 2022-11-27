@@ -1,6 +1,8 @@
-﻿using NotificationBot.Telegram.Infrastructure.Commands.Factory;
+﻿using NotificationBot.Telegram.Infrastructure.Commands;
+using NotificationBot.Telegram.Infrastructure.Commands.Factory;
 using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
-using NotificationBot.Telegram.Models;
+using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
+
 using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
@@ -8,109 +10,101 @@ using Telegram.Bot.Types.Enums;
 
 namespace NotificationBot.Telegram.Infrastructure.Handlers
 {
-    public class BotHandler : IBotHandler
-    {
-        private readonly IBotCommandFactory _botCommandFactory;
+	public class BotHandler : IBotHandler
+	{
+		private readonly IMessageParser _messageParser;
+		private readonly IBotCommandProcessorFactory _botCommandProcessorFactory;
 
-        public BotHandler(
-            IBotCommandFactory botCommandFactory)
-        {
-            ArgumentNullException.ThrowIfNull(botCommandFactory);
+		public BotHandler(
+			IMessageParser messageParser,
+			IBotCommandProcessorFactory botCommandFactory)
+		{
+			_messageParser = messageParser ?? throw new ArgumentNullException(nameof(messageParser));
+			_botCommandProcessorFactory = botCommandFactory ?? throw new ArgumentNullException(nameof(botCommandFactory));
+		}
 
-            _botCommandFactory = botCommandFactory;
-        }
+		#region IBotHandlers Implementation
 
-        #region IBotHandlers Implementation
+		/// <summary>
+		/// Handles service errors.
+		/// </summary>
+		/// <param name="botClient"></param>
+		/// <param name="exception"></param>
+		/// <param name="cancellationToken"></param>
+		public Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
+		{
+			string errorMessage = exception switch
+			{
+				ApiRequestException apiRequestException
+					=> $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
 
-        /// <summary>
-        /// Handles service errors.
-        /// </summary>
-        /// <param name="botClient"></param>
-        /// <param name="exception"></param>
-        /// <param name="cancellationToken"></param>
-        public Task HandleErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
-        {
-            string errorMessage = exception switch
-            {
-                ApiRequestException apiRequestException 
-                    => $"Telegram API Error:\n[{apiRequestException.ErrorCode}]\n{apiRequestException.Message}",
+				_ => exception.ToString()
+			};
 
-                _ => exception.ToString()
-            };
+			Console.WriteLine(errorMessage);
 
-            Console.WriteLine(errorMessage);
+			return Task.CompletedTask;
+		}
 
-            return Task.CompletedTask;
-        }
+		public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+		{
+			Task handler = update.Type switch
+			{
+				UpdateType.Message => OnMessageReceivedAsync(update.Message!, cancellationToken),
+				UpdateType.CallbackQuery => OnCallbackQueryReceived(botClient, update.CallbackQuery!, cancellationToken),
+				_ => Task.CompletedTask
+			};
 
-        public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
-        {
-            Task handler = update.Type switch
-            {
-                UpdateType.Message => OnMessageReceivedAsync(botClient, update.Message!, cancellationToken),
-                UpdateType.CallbackQuery => OnCallbackQueryReceived(botClient, update.CallbackQuery!, cancellationToken),
-                _ => Task.CompletedTask
-            };
+			try
+			{
+				await handler;
+			}
+			catch (Exception ex)
+			{
+				await HandleErrorAsync(botClient, ex, cancellationToken);
+			}
+		}
 
-            try
-            {
-                await handler;
-            }
-            catch (Exception ex)
-            {
-                await HandleErrorAsync(botClient, ex, cancellationToken);
-            }
-        }
+		public async Task HandlePeriodicTimerTickAsync(ITelegramBotClient botClient, CancellationToken cancellationToken)
+		{
+			//try
+			//{
+			//	IBotCommandProcessor command = _botCommandProcessorFactory.GetOrCreatePeriodicNotificationCommand();
 
-        public async Task HandlePeriodicTimerTickAsync(ITelegramBotClient botClient, CancellationToken cancellationToken)
-        {
-            try
-            {
-                IBotCommand command = _botCommandFactory.GetOrCreatePeriodicNotificationCommand();
+			//	await command.ProcessAsync();
+			//}
+			//catch (Exception ex)
+			//{
+			//	await HandleErrorAsync(botClient, ex, cancellationToken);
+			//}
 
-                await command.ExecuteAsync();
-            }
-            catch (Exception ex)
-            {
-                await HandleErrorAsync(botClient, ex, cancellationToken);
-            }
-        }
+			await Task.CompletedTask;
+		}
 
-        #endregion
+		#endregion
 
-        #region Internal Events Implementation
+		#region Internal Events Implementation
 
-        /// <summary>
-        /// Waits for user keyboard callback.
-        /// </summary>
-        /// <param name="botClient"></param>
-        /// <param name="callbackQuery"></param>
-        /// <param name="cancellationToken"></param>
-        private async Task OnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery, CancellationToken cancellationToken)
-        {
-            await OnMessageReceivedAsync(botClient, callbackQuery.Message!, cancellationToken);
-        }
+		/// <summary>
+		/// Waits for user keyboard callback.
+		/// </summary>
+		/// <param name="botClient"></param>
+		/// <param name="callbackQuery"></param>
+		/// <param name="cancellationToken"></param>
+		private async Task OnCallbackQueryReceived(ITelegramBotClient botClient, CallbackQuery callbackQuery, CancellationToken cancellationToken)
+		{
+			await OnMessageReceivedAsync(callbackQuery.Message!, cancellationToken);
+		}
 
-        private async Task OnMessageReceivedAsync(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
-        {
-            CommandMessage commandMessage = CommandMessage.Parse(message);
+		private async Task OnMessageReceivedAsync(Message message, CancellationToken cancellationToken)
+		{
+			Command commandInfo = await _messageParser.ParseAsync(message);
 
-            if (!string.IsNullOrEmpty(commandMessage.Command))
-            {
-                await OnCommandReceivedAsync(commandMessage);
-            }
-        }
+			IBotCommandProcessor command = _botCommandProcessorFactory.Create(commandInfo);
 
-        private async Task OnCommandReceivedAsync(CommandMessage commandMessage)
-        {
-            IBotCommand? botCommand = await _botCommandFactory.GetOrCreateAsync(commandMessage);
+			await command.ProcessAsync();
+		}
 
-            if (botCommand is not null)
-            {
-                await botCommand.ExecuteAsync();
-            }
-        }
-
-        #endregion
-    }
+		#endregion
+	}
 }

@@ -46,12 +46,12 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 
             _isBotInitialized = true;
             
-            _timerProvider.OnPeriodicTimerTickEventHandler += 
-                (sender, args) => _botHandler.HandlePeriodicTimerTickAsync(
-                    _botClient,
-                    cancellationToken);
+            //_timerProvider.OnPeriodicTimerTickEventHandler += 
+            //    (sender, args) => _botHandler.HandlePeriodicTimerTickAsync(
+            //        _botClient,
+            //        cancellationToken);
 
-            _timerProvider.SetupPeriodicTimer(cancellationToken);
+            //_timerProvider.SetupPeriodicTimer(cancellationToken);
         }
 
         #region IDiagnosticService Implementation

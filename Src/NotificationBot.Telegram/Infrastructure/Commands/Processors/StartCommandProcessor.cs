@@ -1,34 +1,25 @@
 ﻿using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
-using NotificationBot.Telegram.Models;
 
-using Telegram.Bot.Types;
-
-namespace NotificationBot.Telegram.Infrastructure.Commands
+namespace NotificationBot.Telegram.Infrastructure.Commands.Processors
 {
-    public class BotStartCommand : IBotCommand
+    public class StartCommandProcessor : IBotCommandProcessor
     {
         private const string GREETING_MESSAGE = "This is the coolest greeting message you have ever seen!";
 
-        private readonly CommandMessage _commandMessage;
+        private readonly Command _commandInfo;
         private readonly INotificationService _notificationService;
 
-        public BotStartCommand(
-            CommandMessage commandMessage,
+        public StartCommandProcessor(
+            Command commandInfo,
             INotificationService notificationService)
         {
-            ArgumentNullException.ThrowIfNull(commandMessage);
-            ArgumentNullException.ThrowIfNull(notificationService);
-
-            _commandMessage = commandMessage;
-            _notificationService = notificationService;
+            _commandInfo = commandInfo ?? throw new ArgumentNullException(nameof(commandInfo));
+            _notificationService = notificationService ?? throw new ArgumentNullException(nameof(notificationService));
         }
 
-        public async Task ExecuteAsync()
+        public async Task ProcessAsync()
         {
-            Chat chat = _commandMessage.Message.Chat;
-            User? telegramUser = _commandMessage.Message.From;
-
             //NotifiicationBot.Domain.Entities.User? user = await _dataAccessService.GetUserByChatIdAsync(chat.Id);
 
             //if (user == null)
@@ -45,7 +36,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
             //    await _dataAccessService.UpdateUserAsync(user);
             //}
 
-            await _notificationService.SendNotificationAsync(chat.Id, GREETING_MESSAGE);
+            await _notificationService.SendNotificationAsync(_commandInfo.ReceiverId, GREETING_MESSAGE);
         }
     }
 }

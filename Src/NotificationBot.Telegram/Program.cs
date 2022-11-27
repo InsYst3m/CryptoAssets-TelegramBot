@@ -43,7 +43,8 @@ services
 	.ConfigureHttpClient(client => client.BaseAddress = new Uri($"{configuration.GetValue<string>("GraphServiceSettings:RequestEndpoint")}"));
 
 services.AddSingleton<IGraphService, GraphService>();
-services.AddSingleton<IBotCommandFactory, BotCommandFactory>();
+services.AddSingleton<IMessageParser, MessageParser>();
+services.AddSingleton<IBotCommandProcessorFactory, BotCommandFactory>();
 
 services.AddSingleton<ITimerWrapper, TimerWrapper>();
 services.AddSingleton<IDiagnosticService>(x => x.GetRequiredService<ITimerWrapper>());
