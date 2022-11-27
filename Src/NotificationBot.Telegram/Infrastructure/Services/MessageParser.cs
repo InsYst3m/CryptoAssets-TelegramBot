@@ -37,6 +37,11 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 
 			switch (command)
 			{
+				case ConstantsHelper.Commands.START:
+					return new StartCommand(message.Chat.Id);
+				case ConstantsHelper.Commands.STOP:
+					return new StopCommand(message.Chat.Id);
+
 				case ConstantsHelper.Commands.GET_ASSET:
 
 					string[] supportedAssets = await _graphService.GetSupportedCryptoAssetsAsync();
@@ -50,6 +55,11 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 					{
 						return new UnknownCommand(message.Chat.Id);
 					}
+
+				case ConstantsHelper.Commands.GET_ASSETS:
+					return new GetAssetsCommand(message.Chat.Id);
+
+				
 
 				default:
 					return new UnknownCommand(message.Chat.Id);

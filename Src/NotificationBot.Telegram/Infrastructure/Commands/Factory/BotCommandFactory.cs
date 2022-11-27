@@ -26,16 +26,20 @@ namespace NotificationBot.Telegram.Infrastructure.Commands.Factory
 		{
 			IBotCommandProcessor botCommand = command switch
 			{
-				//StartCommand => new StartCommand(
-				//	command,
-				//	_serviceProvider.GetRequiredService<INotificationService>()),
-				//CommandTypes.Stop => new StopCommand(
-				//	command,
-				//	_serviceProvider.GetRequiredService<INotificationService>()),
+				StartCommand => new StartCommandProcessor(
+					command,
+					_serviceProvider.GetRequiredService<INotificationService>()),
+				StopCommand => new StopCommandProcessor(
+					command,
+					_serviceProvider.GetRequiredService<INotificationService>()),
 				GetAssetCommand getAssetCommand => new GetAssetCommandProcessor(
 					getAssetCommand,
 					_serviceProvider.GetRequiredService<IGraphService>(),
 					_serviceProvider.GetRequiredService<IMessageGenerator>(),
+					_serviceProvider.GetRequiredService<INotificationService>()),
+				GetAssetsCommand getAssetsCommand => new GetAssetsCommandProcessor(
+					getAssetsCommand,
+					_serviceProvider.GetRequiredService<IGraphService>(),
 					_serviceProvider.GetRequiredService<INotificationService>()),
 				_ => new NotSupportedCommandProcessor(
 					command,
