@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
-using NotificationBot.DataAccess.Services;
+
 using NotificationBot.Telegram.Configuration;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
+
 using NotifiicationBot.Domain.Entities;
+
 using Telegram.Bot;
 using Telegram.Bot.Types.ReplyMarkups;
 
@@ -11,7 +13,6 @@ namespace NotificationBot.Telegram.Infrastructure.Services
     public class NotificationService : INotificationService
     {
         private readonly NotificationsSettings _notificationsSettings;
-        private readonly IDataAccessService _dataAccessService;
         private readonly ITelegramBotClient _botClient;
 
         /// <summary>
@@ -21,15 +22,12 @@ namespace NotificationBot.Telegram.Infrastructure.Services
         /// <param name="dataAccessService">The data access service.</param>
         public NotificationService(
             IOptions<NotificationsSettings> notificationsSettings,
-            IDataAccessService dataAccessService,
             IBotClientFactory botClientFactory)
         {
             ArgumentNullException.ThrowIfNull(notificationsSettings);
-            ArgumentNullException.ThrowIfNull(dataAccessService);
             ArgumentNullException.ThrowIfNull(botClientFactory);
 
             _notificationsSettings = notificationsSettings.Value;
-            _dataAccessService = dataAccessService;
             _botClient = botClientFactory.GetOrCreate();
         }
 
@@ -69,9 +67,11 @@ namespace NotificationBot.Telegram.Infrastructure.Services
         /// </summary>
         public async Task<bool> IsValidTimeIntervalAsync(long userId)
         {
-            UserSettings? userSettings = await _dataAccessService.GetUserSettingsAsync(userId);
+            //UserSettings? userSettings = await _dataAccessService.GetUserSettingsAsync(userId);
+            UserSettings? userSettings = null;
 
-            if (userSettings == null || !userSettings.UseSleepHours)
+
+			if (userSettings == null || !userSettings.UseSleepHours)
             {
                 return true;
             }

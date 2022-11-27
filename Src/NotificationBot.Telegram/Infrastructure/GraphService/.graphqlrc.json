@@ -5,7 +5,7 @@
     "strawberryShake": {
       "name": "CryptoAssetsGraphServiceClient",
       "namespace": "NotificationBot.Telegram.Infrastructure.GraphService",
-      "url": "http://insyst3m-002-site1.btempurl.com/graphql/",
+      "url": "http://localhost/GraphService/graphql/",
       "dependencyInjection": true,
       "strictSchemaValidation": true,
       "hashAlgorithm": "md5",

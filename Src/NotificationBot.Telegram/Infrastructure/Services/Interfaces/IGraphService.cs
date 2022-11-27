@@ -4,13 +4,15 @@ namespace NotificationBot.Telegram.Infrastructure.Services.Interfaces
 {
     public interface IGraphService
     {
-        /// <summary>
-        /// Gets the crypto asset from GraphQL service asynchronous.
-        /// </summary>
-        /// <param name="abbreviation">The abbreviation.</param>
-        /// <param name="cancellationToken">The cancellation token.</param>
-        /// <returns>Returns <see cref="CryptoAssetViewModel"/> if exists.</returns>
-        Task<CryptoAssetViewModel?> GetCryptoAssetAsync(string abbreviation, CancellationToken cancellationToken = default);
+        Task<string[]> GetSupportedCryptoAssetsAsync();
+
+		/// <summary>
+		/// Gets the crypto asset from GraphQL service asynchronous.
+		/// </summary>
+		/// <param name="abbreviation">The abbreviation.</param>
+		/// <param name="cancellationToken">The cancellation token.</param>
+		/// <returns>Returns <see cref="CryptoAssetViewModel"/> if exists.</returns>
+		Task<CryptoAssetViewModel?> GetCryptoAssetAsync(string abbreviation, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the crypto assets asynchronous.

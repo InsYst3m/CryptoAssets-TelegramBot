@@ -1,79 +1,94 @@
 ﻿using NotificationBot.Telegram.Infrastructure.GraphService;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Infrastructure.ViewModels;
+
 using StrawberryShake;
 
 namespace NotificationBot.Telegram.Infrastructure.Services
 {
-    public class GraphService : IGraphService
-    {
-        private readonly ICryptoAssetsGraphServiceClient _graphService;
+	public class GraphService : IGraphService
+	{
+		private readonly ICryptoAssetsGraphServiceClient _graphService;
 
-        public GraphService(ICryptoAssetsGraphServiceClient graphService)
-        {
-            ArgumentNullException.ThrowIfNull(graphService);
+		public GraphService(ICryptoAssetsGraphServiceClient graphService)
+		{
+			ArgumentNullException.ThrowIfNull(graphService);
 
-            _graphService = graphService;
-        }
+			_graphService = graphService;
+		}
 
-        /// <inheritdoc cref="IGraphService.GetCryptoAssetAsync(string, CancellationToken)"/>
-        public async Task<CryptoAssetViewModel?> GetCryptoAssetAsync(string abbreviation, CancellationToken cancellationToken)
-        {
-            IOperationResult<IGetCryptoAssetResult> cryptoAssetGraphData =
-                await _graphService.GetCryptoAsset.ExecuteAsync(abbreviation, cancellationToken);
+		public async Task<string[]> GetSupportedCryptoAssetsAsync()
+		{
+			IOperationResult<IGetSupportedCryptoAssetsResult> result = await _graphService.GetSupportedCryptoAssets.ExecuteAsync();
 
-            cryptoAssetGraphData.EnsureNoErrors();
+			result.EnsureNoErrors();
 
-            return MapToCryptoAssetViewModel(cryptoAssetGraphData.Data?.CryptoAsset);
-        }
+			if (result.Data is not null)
+			{
+				return result.Data.SupportedCryptoAssets.ToArray();
+			}
 
-        /// <inheritdoc cref="IGraphService.GetCryptoAssetsAsync(string[], CancellationToken)"/>
-        public async Task<List<CryptoAssetViewModel>> GetCryptoAssetsAsync(string[] abbreviations, CancellationToken cancellationToken)
-        {
-            List<CryptoAssetViewModel> result = new();
+			return Array.Empty<string>();
+		}
 
-            foreach (string abbreviation in abbreviations)
-            {
-                IOperationResult<IGetCryptoAssetResult> cryptoAssetGraphData =
-                await _graphService.GetCryptoAsset.ExecuteAsync(abbreviation, cancellationToken);
+		/// <inheritdoc cref="IGraphService.GetCryptoAssetAsync(string, CancellationToken)"/>
+		public async Task<CryptoAssetViewModel?> GetCryptoAssetAsync(string abbreviation, CancellationToken cancellationToken)
+		{
+			IOperationResult<IGetCryptoAssetResult> cryptoAssetGraphData =
+				await _graphService.GetCryptoAsset.ExecuteAsync(abbreviation, cancellationToken);
 
-                cryptoAssetGraphData.EnsureNoErrors();
+			cryptoAssetGraphData.EnsureNoErrors();
 
-                CryptoAssetViewModel? cryptoAsset = MapToCryptoAssetViewModel(cryptoAssetGraphData.Data?.CryptoAsset);
+			return MapToCryptoAssetViewModel(cryptoAssetGraphData.Data?.CryptoAsset);
+		}
 
-                if (cryptoAsset is not null)
-                {
-                    result.Add(cryptoAsset);
-                }
-            }
+		/// <inheritdoc cref="IGraphService.GetCryptoAssetsAsync(string[], CancellationToken)"/>
+		public async Task<List<CryptoAssetViewModel>> GetCryptoAssetsAsync(string[] abbreviations, CancellationToken cancellationToken)
+		{
+			List<CryptoAssetViewModel> result = new();
 
-            return result;
-        }
+			foreach (string abbreviation in abbreviations)
+			{
+				IOperationResult<IGetCryptoAssetResult> cryptoAssetGraphData =
+				await _graphService.GetCryptoAsset.ExecuteAsync(abbreviation, cancellationToken);
 
-        #region Internal Implementation
+				cryptoAssetGraphData.EnsureNoErrors();
 
-        private CryptoAssetViewModel? MapToCryptoAssetViewModel(IGetCryptoAsset_CryptoAsset? cryptoAssetGraphData)
-        {
-            if (cryptoAssetGraphData == null)
-            {
-                return null;
-            }
+				CryptoAssetViewModel? cryptoAsset = MapToCryptoAssetViewModel(cryptoAssetGraphData.Data?.CryptoAsset);
 
-            return new CryptoAssetViewModel(
-                cryptoAssetGraphData.Name,
-                cryptoAssetGraphData.Abbreviation,
-                cryptoAssetGraphData.Rank,
-                cryptoAssetGraphData.CapitalizationUsd,
-                cryptoAssetGraphData.CurrentPriceUsd,
-                cryptoAssetGraphData.AllTimeHighPriceUsd,
-                cryptoAssetGraphData.AllTimeLowPriceUsd,
-                cryptoAssetGraphData.HighTwentyFourHoursUsd,
-                cryptoAssetGraphData.LowTwentyFourHoursUsd,
-                cryptoAssetGraphData.AllTimeHighChangePercentage,
-                cryptoAssetGraphData.AllTimeLowChangePercentage);
-        }
+				if (cryptoAsset is not null)
+				{
+					result.Add(cryptoAsset);
+				}
+			}
 
-        #endregion
+			return result;
+		}
 
-    }
+		#region Internal Implementation
+
+		private CryptoAssetViewModel? MapToCryptoAssetViewModel(IGetCryptoAsset_CryptoAsset? cryptoAssetGraphData)
+		{
+			if (cryptoAssetGraphData == null)
+			{
+				return null;
+			}
+
+			return new CryptoAssetViewModel(
+				cryptoAssetGraphData.Name,
+				cryptoAssetGraphData.Abbreviation,
+				cryptoAssetGraphData.Rank,
+				cryptoAssetGraphData.CapitalizationUsd,
+				cryptoAssetGraphData.CurrentPriceUsd,
+				cryptoAssetGraphData.AllTimeHighPriceUsd,
+				cryptoAssetGraphData.AllTimeLowPriceUsd,
+				cryptoAssetGraphData.HighTwentyFourHoursUsd,
+				cryptoAssetGraphData.LowTwentyFourHoursUsd,
+				cryptoAssetGraphData.AllTimeHighChangePercentage,
+				cryptoAssetGraphData.AllTimeLowChangePercentage);
+		}
+
+		#endregion
+
+	}
 }

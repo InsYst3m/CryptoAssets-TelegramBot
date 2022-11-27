@@ -1,5 +1,4 @@
-﻿using NotificationBot.DataAccess.Services;
-using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
+﻿using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
 using NotificationBot.Telegram.Infrastructure.Generators;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Infrastructure.ViewModels;
@@ -11,7 +10,6 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
     {
         private const string FAVORITE_CRYPTO_ASSETS_NOT_FOUND = "You have not selected any favorite crypto asset yet.";
 
-        private readonly IDataAccessService _dataAccessService;
         private readonly IGraphService _graphService;
         private readonly IMessageGenerator _messageGenerator;
         private readonly INotificationService _notificationService;
@@ -25,17 +23,14 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         /// <param name="notificationService">The notification service.</param>
         /// <param name="botClientFactory">The telegram bot client factory.</param>
         public PeriodicNotificationCommand(
-            IDataAccessService dataAccessService,
             IGraphService graphService,
             IMessageGenerator messageGenerator,
             INotificationService notificationService)
         {
-            ArgumentNullException.ThrowIfNull(dataAccessService);
             ArgumentNullException.ThrowIfNull(graphService);
             ArgumentNullException.ThrowIfNull(messageGenerator);
             ArgumentNullException.ThrowIfNull(notificationService);
 
-            _dataAccessService = dataAccessService;
             _graphService = graphService;
             _messageGenerator = messageGenerator;
             _notificationService = notificationService;
@@ -45,28 +40,28 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         {
             string message = string.Empty;
 
-            List<User> users = await _dataAccessService.GetUsersToSendPeriodicNotificationsAsync();
+            //List<User> users = await _dataAccessService.GetUsersToSendPeriodicNotificationsAsync();
 
-            foreach (User user in users)
-            {
-                string[] cryptoAssetsAbbreviations =
-                    (await _dataAccessService.GetFollowedCryptoAssetsByTelegramUserIdAsync(user.ChatId))
-                    .Select(x => x.Abbreviation)
-                    .ToArray();
+            //foreach (User user in users)
+            //{
+            //    string[] cryptoAssetsAbbreviations =
+            //        (await _dataAccessService.GetFollowedCryptoAssetsByTelegramUserIdAsync(user.ChatId))
+            //        .Select(x => x.Abbreviation)
+            //        .ToArray();
 
-                List<CryptoAssetViewModel> cryptoAssets = await _graphService.GetCryptoAssetsAsync(cryptoAssetsAbbreviations);
+            //    List<CryptoAssetViewModel> cryptoAssets = await _graphService.GetCryptoAssetsAsync(cryptoAssetsAbbreviations);
 
-                if (cryptoAssets.Any())
-                {
-                    message = _messageGenerator.GenerateFavoriteCryptoAssetsInfoMessageAsync(cryptoAssets);
-                }
-                else
-                {
-                    message = FAVORITE_CRYPTO_ASSETS_NOT_FOUND;
-                }
+            //    if (cryptoAssets.Any())
+            //    {
+            //        message = _messageGenerator.GenerateFavoriteCryptoAssetsInfoMessageAsync(cryptoAssets);
+            //    }
+            //    else
+            //    {
+            //        message = FAVORITE_CRYPTO_ASSETS_NOT_FOUND;
+            //    }
 
-                await _notificationService.SendNotificationAsync(user.ChatId, message);
-            }
+            //    await _notificationService.SendNotificationAsync(user.ChatId, message);
+            //}
         }
     }
 }

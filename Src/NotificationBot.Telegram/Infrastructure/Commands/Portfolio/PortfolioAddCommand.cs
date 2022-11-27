@@ -1,5 +1,4 @@
-﻿using NotificationBot.DataAccess.Services;
-using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
+﻿using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Models;
 
@@ -11,16 +10,13 @@ namespace NotificationBot.Telegram.Infrastructure.Commands.Portfolio
         private const string SPECIFY_PORTFOLIO_NAME = "Please specify portfolio name.";
 
         private readonly CommandMessage _commandMessage;
-        private readonly IDataAccessService _dataAccessService;
         private readonly INotificationService _notificationService;
 
         public PortfolioCreateCommand(
             CommandMessage commandMessage,
-            IDataAccessService dataAccessService,
             INotificationService notificationService)
         {
             _commandMessage = commandMessage;
-            _dataAccessService = dataAccessService;
             _notificationService = notificationService;
         }
 
@@ -37,7 +33,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands.Portfolio
             string name = _commandMessage.Arguments[0];
             long userId = _commandMessage.Message.Chat.Id;
 
-            await _dataAccessService.CreatePortfolioAsync(name, userId);
+            //await _dataAccessService.CreatePortfolioAsync(name, userId);
             await _notificationService.SendNotificationAsync(_commandMessage.Message.Chat.Id, SUCCESSFULLY_CREATED_MESSAGE);
         }
     }

@@ -4,11 +4,11 @@
 
 type CryptoQuery {
   supportedCryptoAssets: [String!]!
-  cryptoAsset(abbreviation: String!): CryptoAsset
-  globalCryptoMarketData: GlobalMarket
+  cryptoAsset(abbreviation: String!): CryptoAssetViewModel
+  globalCryptoMarketData: GlobalMarketViewModel
 }
 
-type CryptoAsset {
+type CryptoAssetViewModel {
   name: String!
   abbreviation: String!
   currentPriceUsd: Decimal!
@@ -29,7 +29,7 @@ type CryptoAsset {
   priceChangePercentageOneYear: String!
 }
 
-type GlobalMarket {
+type GlobalMarketViewModel {
   activeCryptoCurrencies: Long!
   capitalizationUsd: Decimal!
 }

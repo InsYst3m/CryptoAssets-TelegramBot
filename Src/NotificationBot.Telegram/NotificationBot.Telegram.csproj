@@ -9,22 +9,50 @@
 
   <ItemGroup>
     <GraphQL Remove="Infrastructure\GraphService\Queries\GetGlobalMarketData.graphql" />
+    <GraphQL Remove="Infrastructure\GraphService\Queries\GetSupportedCryptoAssets.graphql" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    <None Remove="Infrastructure\GraphService\Queries\GetGlobalMarketData.graphql" />
+    <None Remove="Infrastructure\GraphService\Queries\GetSupportedCryptoAssets.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <GraphQLConfig Include="Infrastructure\GraphService\Queries\GetGlobalMarketData.graphql">
+      <Generator>MSBuild:Compile</Generator>
+    </GraphQLConfig>
+    <GraphQLConfig Include="Infrastructure\GraphService\Queries\GetSupportedCryptoAssets.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StrawberryShake.CodeGeneration.CSharp.Analyzers" Version="12.8.2">
+      <TreatAsUsed>true</TreatAsUsed>
     </PackageReference>
-    <PackageReference Include="StrawberryShake.CodeGeneration.CSharp.Analyzers" Version="12.8.2" />
     <PackageReference Include="StrawberryShake.Transport.Http" Version="12.8.2" />
-    <PackageReference Include="Telegram.Bot" Version="17.0.0" />
+    <PackageReference Include="Telegram.Bot" Version="17.0.0">
+      <TreatAsUsed>true</TreatAsUsed>
+    </PackageReference>
     <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NotificationBot.DataAccess\NotificationBot.DataAccess.csproj" />
     <ProjectReference Include="..\NotifiicationBot.Domain\NotifiicationBot.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Remove="Infrastructure\GraphService\Queries\GetCryptoAsset.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <GraphQLConfig Include="Infrastructure\GraphService\Queries\GetCryptoAsset.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Remove="Infrastructure\GraphService\Queries\GetGlobalMarketData.graphql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Remove="Infrastructure\GraphService\Queries\GetGlobalMarketData.graphql" />
   </ItemGroup>
 
 </Project>

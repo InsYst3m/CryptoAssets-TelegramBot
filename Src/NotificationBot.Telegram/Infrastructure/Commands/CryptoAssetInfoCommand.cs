@@ -1,10 +1,8 @@
-﻿using NotificationBot.DataAccess.Services;
-using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
+﻿using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
 using NotificationBot.Telegram.Infrastructure.Generators;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
 using NotificationBot.Telegram.Infrastructure.ViewModels;
 using NotificationBot.Telegram.Models;
-using NotifiicationBot.Domain.Entities;
 
 namespace NotificationBot.Telegram.Infrastructure.Commands
 {
@@ -14,7 +12,6 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         private const string CRYPTO_ASSET_NOT_FOUND = "Crypto Asset not found.";
 
         private readonly CommandMessage _commandMessage;
-        private readonly IDataAccessService _dataAccessService;
         private readonly IGraphService _graphService;
         private readonly IMessageGenerator _messageGenerator;
         private readonly INotificationService _notificationService;
@@ -29,19 +26,16 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         /// <param name="notificationService">The notification service.</param>
         public CryptoAssetInfoCommand(
             CommandMessage commandMessage,
-            IDataAccessService dataAccessService,
             IGraphService graphService,
             IMessageGenerator messageGenerator,
             INotificationService notificationService)
         {
             ArgumentNullException.ThrowIfNull(commandMessage);
-            ArgumentNullException.ThrowIfNull(dataAccessService);
             ArgumentNullException.ThrowIfNull(graphService);
             ArgumentNullException.ThrowIfNull(messageGenerator);
             ArgumentNullException.ThrowIfNull(notificationService);
 
             _commandMessage = commandMessage;
-            _dataAccessService = dataAccessService;
             _graphService = graphService;
             _messageGenerator = messageGenerator;
             _notificationService = notificationService;
@@ -50,15 +44,7 @@ namespace NotificationBot.Telegram.Infrastructure.Commands
         /// <inheritdoc cref="IBotCommand.ExecuteAsync(string[])" />
         public async Task ExecuteAsync()
         {
-            List<CryptoAsset> supportedCryptoAssets = await _dataAccessService.GetCryptoAssetsLookupAsync();
-
-            if (!supportedCryptoAssets.Exists(x => x.Abbreviation == _commandMessage.CommandText!))
-            {
-                await _notificationService.SendNotificationAsync(_commandMessage.Message.Chat.Id, CRYPTO_ASSET_NOT_SUPPORTED);
-                return;
-            }
-
-            CryptoAssetViewModel? cryptoAsset = await _graphService.GetCryptoAssetAsync(_commandMessage.CommandText!);
+            CryptoAssetViewModel? cryptoAsset = await _graphService.GetCryptoAssetAsync(_commandMessage.Arguments[0]);
 
             if (cryptoAsset is null)
             {

@@ -2,38 +2,54 @@
 
 namespace NotificationBot.Telegram.Models
 {
-    /// <summary>
-    /// Represents telegram chat parsed message.
-    /// </summary>
-    public class CommandMessage
-    {
-        public Message Message { get; set; } = null!;
+	/// <summary>
+	/// Represents telegram chat parsed message.
+	/// </summary>
+	public class CommandMessage
+	{
+		#region Constants
 
-        public string CommandType CommandType {get;set;}
-        public string? Command { get; set; }
+		private const string ARGUMENTS_DELIMETER = ",";
 
+		#endregion
 
-        public string[]? Arguments { get; set; }
+		public Message Message { get; set; } = null!;
 
-        /// <summary>
-        /// Parses telegram chat message command.
-        /// </summary>
-        /// <param name="message"></param>
-        /// <returns>Returnes newly created instance of <see cref="CommandMessage"/> object.</returns>
-        public static CommandMessage Parse(Message message)
-        {
-            string[] content = message.Text!.Split(' ');
+		public string? Command { get; set; }
 
-            bool isCommand = content[0].StartsWith('/');
+		public string[]? Arguments { get; set; }
 
-            CommandMessage result = new()
-            {
-                Message = message,
-                Command = isCommand ? content[0] : null,
-                Arguments = content[1..]
-            };
+		/// <summary>
+		/// Parses telegram chat message command.
+		/// </summary>
+		/// <param name="message"></param>
+		/// <remarks>
+		/// Command format: /get {argument 1},{argument 2}
+		/// </remarks>
+		/// <returns>
+		/// Returnes newly created instance of <see cref="CommandMessage"/> object.
+		/// </returns>
+		public static CommandMessage Parse(Message message)
+		{
+			string messageText = message.Text!;
 
-            return result;
-        }
-    }
+			bool isCommand = messageText[0] == '/';
+			if (isCommand)
+			{
+				string[] splittedCommand = messageText.Split(" ");
+				string[] arguments = splittedCommand[1].Split(ARGUMENTS_DELIMETER);
+
+				CommandMessage result = new()
+				{
+					Message = message,
+					Command = splittedCommand[0],
+					Arguments = arguments
+				};
+
+				return result;
+			}
+
+			throw new InvalidOperationException();
+		}
+	}
 }
