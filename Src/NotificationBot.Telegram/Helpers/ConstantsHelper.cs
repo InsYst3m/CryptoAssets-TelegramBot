@@ -8,6 +8,7 @@
 			public const string STOP = "/stop";
 			public const string GET_ASSET = "/getasset";
 			public const string GET_ASSETS = "/getassets";
+			public const string GET_FAVORITE_ASSETS = "/getfavoriteassets";
 
 			public const string UNKNOWN = "unknown";
 		}

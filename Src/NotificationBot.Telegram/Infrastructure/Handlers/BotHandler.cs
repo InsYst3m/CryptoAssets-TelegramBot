@@ -1,4 +1,5 @@
-﻿using NotificationBot.Telegram.Infrastructure.Commands;
+﻿using NotificationBot.Telegram.Helpers;
+using NotificationBot.Telegram.Infrastructure.Commands;
 using NotificationBot.Telegram.Infrastructure.Commands.Factory;
 using NotificationBot.Telegram.Infrastructure.Commands.Interfaces;
 using NotificationBot.Telegram.Infrastructure.Services.Interfaces;
@@ -67,16 +68,29 @@ namespace NotificationBot.Telegram.Infrastructure.Handlers
 
 		public async Task HandlePeriodicTimerTickAsync(ITelegramBotClient botClient, CancellationToken cancellationToken)
 		{
-			//try
-			//{
-			//	IBotCommandProcessor command = _botCommandProcessorFactory.GetOrCreatePeriodicNotificationCommand();
+			try
+			{
+				// TODO:
+				// 1) Create table with notification types
+				// 2) Create link table between user and notification
+				// 3) Create graph service endpoint to return user favorite assets
+				// 4) Send notification to each user
 
-			//	await command.ProcessAsync();
-			//}
-			//catch (Exception ex)
-			//{
-			//	await HandleErrorAsync(botClient, ex, cancellationToken);
-			//}
+				// Flow:
+				// 1) Triggers periodic notification
+				// 2) Bot gets all users subscribed to the periodic notification with their favorite assets
+				// 3) Bot sends notification to all users
+
+				//Command commandInfo = new GetFavoriteAssetsCommand(0);
+
+				//IBotCommandProcessor command = _botCommandProcessorFactory.Create(commandInfo);
+
+				//await command.ProcessAsync();
+			}
+			catch (Exception ex)
+			{
+				await HandleErrorAsync(botClient, ex, cancellationToken);
+			}
 
 			await Task.CompletedTask;
 		}

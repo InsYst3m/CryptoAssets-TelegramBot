@@ -59,7 +59,8 @@ namespace NotificationBot.Telegram.Infrastructure.Services
 				case ConstantsHelper.Commands.GET_ASSETS:
 					return new GetAssetsCommand(message.Chat.Id);
 
-				
+				case ConstantsHelper.Commands.GET_FAVORITE_ASSETS:
+					return new GetFavoriteAssetsCommand(message.Chat.Id);
 
 				default:
 					return new UnknownCommand(message.Chat.Id);
